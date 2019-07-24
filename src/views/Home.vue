@@ -6,7 +6,7 @@
         <div class="container">
           <div class="navbar-brand">
             <a class="navbar-item" href="../">
-              <img src="http://bulma.io/images/bulma-type-white.png" alt="Logo" />
+              <img src="../assets/logo.png" alt="Logo" />
             </a>
             <span class="navbar-burger burger" data-target="navbarMenu">
               <span></span>
@@ -22,29 +22,12 @@
                     <a>Home</a>
                   </li>
                   <li>
-                    <a href>Examples</a>
+                    <a href>Marketplace</a>
                   </li>
                   <li>
-                    <a href>Features</a>
-                  </li>
-                  <li>
-                    <a href>Team</a>
-                  </li>
-                  <li>
-                    <a href>Help</a>
+                    <a href>Login</a>
                   </li>
                 </ul>
-                <span class="navbar-item">
-                  <a
-                    class="button is-white is-outlined"
-                    href="https://github.com/dansup/bulma-templates/blob/master/templates/hero.html"
-                  >
-                    <span class="icon">
-                      <i class="fa fa-github"></i>
-                    </span>
-                    <span title="Hello from the other side">View Source</span>
-                  </a>
-                </span>
               </div>
             </div>
           </div>
@@ -53,16 +36,16 @@
     </div>
     <div class="hero-body">
       <div class="container has-text-centered">
-        <h1 class="title">The new standard in &lt;insert industry here&gt;</h1>
+        <h1 class="title">Mira</h1>
         <h2
           class="subtitle"
-        >Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</h2>
+        >The fully extensible smart mirror.</h2>
       </div>
     </div>
   </section>
   <div class="box cta">
     <p class="has-text-centered">
-      <span class="tag is-primary">New</span> Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+      <span class="tag is-primary">New</span> Version 0.1 Beta
     </p>
   </div>
   <section class="container">
@@ -74,7 +57,7 @@
           </div>
           <div class="card-content">
             <div class="content">
-              <h4>Tristique senectus et netus et.</h4>
+              <h4>Community Marketplace</h4>
               <p>Purus semper eget duis at tellus at urna condimentum mattis. Non blandit massa enim nec. Integer enim neque volutpat ac tincidunt vitae semper quis. Accumsan tortor posuere ac ut consequat semper viverra nam.</p>
               <p>
                 <a href="#">Learn more</a>
@@ -90,7 +73,7 @@
           </div>
           <div class="card-content">
             <div class="content">
-              <h4>Tempor orci dapibus ultrices in.</h4>
+              <h4>SDK/Developer Portal</h4>
               <p>
                 Ut venenatis tellus in metus vulputate. Amet consectetur adipiscing elit pellentesque. Sed arcu non odio euismod lacinia at quis risus. Faucibus turpis in eu mi bibendum neque egestas cmonsu songue. Phasellus vestibulum lorem
                 sed risus.
@@ -109,7 +92,7 @@
           </div>
           <div class="card-content">
             <div class="content">
-              <h4>Leo integer malesuada nunc vel risus.</h4>
+              <h4>Fully Open Sourced</h4>
               <p>Imperdiet dui accumsan sit amet nulla facilisi morbi. Fusce ut placerat orci nulla pellentesque dignissim enim. Libero id faucibus nisl tincidunt eget nullam. Commodo viverra maecenas accumsan lacus vel facilisis.</p>
               <p>
                 <a href="#">Learn more</a>

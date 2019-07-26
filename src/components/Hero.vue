@@ -1,41 +1,27 @@
 <template>
   <section class="hero is-dark is-shadowless is-medium">
-    <div class="hero-head">
-      <div class="container">
-        <Navbar></Navbar>
-      </div>
-    </div>
     <div class="hero-body">
       <div class="container has-text-centered">
         <h1 class="title toggleadd is-1 is-cursor-pointer is-size-1-touch">
           Mira
-          <span>Smart Mirror</span>
+          <span class="highlight">Smart Mirror</span>
         </h1>
         <!-- TODO: Add action -->
-        <form action="/" method="post" id="games-form" class="field has-addons has-addons-centered">
+        <form class="field has-addons has-addons-centered">
           <p class="control is-expanded is-dark is-large">
             <input
               type="text"
-              name="nameid"
+              name="name"
               maxlength="20"
-              id="games"
-              value
               placeholder="search for a widget"
               class="input has-text-right is-large"
-              autocomplete="off"
               required="required"
             />
           </p>
           <p class="control">
-            <button type="submit" name value=".mod.io" class="button is-primary is-large">Go</button>
+            <button name value="go" class="button is-primary is-large">Go</button>
           </p>
         </form>
-        <div class="field fieldmsg has-text-centered">
-          <a
-            href="mailto:miradev@mira.com?subject=Demo"
-            class="is-opaque25"
-          >Get in touch for a demonstration</a>
-        </div>
       </div>
     </div>
     <!-- HERO FOOTER -->
@@ -103,7 +89,8 @@
           </div>
         </div>
       </div>
-      <div class="buttonpulse">
+      <!-- TODO: This is cool, maybe add later -->
+      <!-- <div class="buttonpulse">
         <a
           href="#"
           id="howdoesitwork"
@@ -113,19 +100,23 @@
           started?
         </a>
         <span class="button pulse is-dark is-medium is-rounded is-padded is-overlay is-ignored"></span>
-      </div>
+      </div> -->
     </div>
   </section>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import Navbar from '@/components/Navbar.vue'; // @ is an alias to /src
-@Component({
-  components: {
-    Navbar,
-  },
-})
 export default class Hero extends Vue {}
 </script>
+
+<style lang="stylus" scoped>
+.highlight
+  color #AFEDFA !important
+
+.is-dark
+  background-color #17171D
+
+</style>
+
 

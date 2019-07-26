@@ -1,93 +1,129 @@
 <template>
-  <div>
-    <div class="container">
-      <div id="flow">
-        <span class="flow-1"></span>
-        <span class="flow-2"></span>
-        <span class="flow-3"></span>
+<body id="home">
+  <section class="hero is-shadowless is-small">
+    <div class="hero-body is-dark">
+      <div class="container has-text-centered">
+        <h1
+          class="title text-white toggleadd is-1 is-cursor-pointer is-size-1-touch"
+        >Widget Marketplace</h1>
+        <!-- TODO: Add action -->
+        <form class="field has-addons has-addons-centered">
+          <p class="control is-expanded is-dark is-large">
+            <input
+              type="text"
+              name="nameid"
+              maxlength="20"
+              id="games"
+              value
+              placeholder="search for a widget"
+              class="input has-text-right is-large"
+              autocomplete="off"
+              required="required"
+            />
+          </p>
+          <p class="control">
+            <button type="submit" name value=".mod.io" class="button is-primary is-large">Go</button>
+          </p>
+        </form>
       </div>
-      <div class="section">
-        <h1 class="title">Install widgets for your Mira smart mirror</h1>
-        <div class="columns">
-          <div class="column is-offset-one-quarter is-two-quarters">
-            <div class="field has-addons">
-              <div class="control is-expanded">
-                <input
-                  class="input has-text-centered is-large"
-                  type="search"
-                  placeholder="Search for widgets"
-                />
-              </div>
-              <div class="control">
-                <a class="button is-info is-large">Search</a>
+    </div>
+    <br />
+    <div class="container bg-white">
+      <div class="columns columnsholder is-block">
+        <div class="column columnfull">
+          <h2 class="title is-3 has-text-centered">Featured Widgets</h2>
+          <div class="normalbox browsebox">
+            <div class="body">
+              <div
+                class="tablegrid tablebrowse columns is-multiline is-mobile is-centered is-slick"
+              >
+                <WidgetCard v-for="widget in featured" :key="widget.id" :widget="widget"></WidgetCard>
               </div>
             </div>
           </div>
-          <div class="column is-one-quarter"></div>
         </div>
       </div>
-      <div class="section">
-        <!-- Featured Widgets -->
-        <h1 class="title">Featured Widgets</h1>
-        <div class="row columns is-multiline">
-          <div class="column is-one-sixth">
-            <WidgetCard
-              title="Weather App"
-              author="Miradev"
-              imgLink="https://images.unsplash.com/photo-1508697014387-db70aad34f4d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=80"
-              description="This is a basic weather app"
-            ></WidgetCard>
-          </div>
-          <div class="column is-one-sixth">
-            <WidgetCard
-              title="Clock App"
-              author="Miradev"
-              imgLink="https://images.unsplash.com/photo-1547908068-b3c55fdda5be?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1652&q=80"
-              description="This is a basic clock app"
-            ></WidgetCard>
-          </div>
-          <div class="column is-one-sixth">
-            <WidgetCard
-              title="Lyft App"
-              author="Miradev"
-              imgLink="https://images.unsplash.com/photo-1531756346973-7b893b8dbbdd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1650&q=80"
-              description="This is a lyft app"
-            ></WidgetCard>
-          </div>
-          <div class="column is-one-sixth">
-            <WidgetCard
-              title="Calendar App"
-              author="Miradev"
-              imgLink="https://images.unsplash.com/photo-1543168256-4ae2229821f1?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=700&q=80"
-              description="This is a basic calendar app"
-            ></WidgetCard>
-          </div>
-          <div class="column is-one-sixth">
-            <WidgetCard
-              title="Notes App"
-              author="Miradev"
-              imgLink="https://images.unsplash.com/photo-1512314889357-e157c22f938d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1651&q=80"
-              description="This is a basic notes app"
-            ></WidgetCard>
-          </div>
-        </div>
-        <!-- End Featured -->
-      </div>
+      <div class="columns columnsholder is-block"></div>
     </div>
-  </div>
+    <br />
+    <div class="container bg-white">
+      <div class="columns columnsholder is-block">
+        <div class="column columnfull">
+          <h2 class="title is-3 has-text-centered">All Widgets</h2>
+          <div class="normalbox browsebox">
+            <div class="body">
+              <div
+                class="tablegrid tablebrowse columns is-multiline is-mobile is-centered is-slick"
+              >
+                <WidgetCard v-for="widget in widgets" :key="widget.id" :widget="widget"></WidgetCard>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="columns columnsholder is-block"></div>
+    </div>
+    <Footer></Footer>
+  </section>
+</body>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import WidgetCard from "@/components/WidgetCard.vue"; // @ is an alias to /src
+import { Component, Prop, Vue } from "vue-property-decorator";
+import WidgetCard from "@/components/WidgetCard.vue";
+import Navbar from "@/components/Navbar.vue";
+import Widget from "@/components/Widget";
+import Footer from "@/components/FooterSmall.vue"
+import axios from "axios";
 
 @Component({
   components: {
-    WidgetCard
+    WidgetCard,
+    Navbar,
+    Footer
   }
 })
-export default class Marketplace extends Vue {}
+export default class Marketplace extends Vue {
+  private featured: Widget[] = [];
+  private widgets: Widget[] = [];
+  mounted() {
+    axios
+      .get(
+        "http://mirabackend-env.zp8gkvhdwt.ca-central-1.elasticbeanstalk.com/getAllWidgets"
+      )
+      .then(response => {
+        this.widgets = this.shuffle(response.data);
+        this.featured = response.data.slice(0, 3);
+      });
+  }
+  shuffle(a: any) {
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+}
 </script>
 
-<style>
+<style lang="stylus" scoped>
+section {
+  background-color: white !important;
+}
+
+.highlight {
+  color: #AFEDFA !important;
+}
+
+.text-white {
+  color: white;
+}
+
+.is-dark {
+  background-color: #17171D;
+}
+
+.bg-white {
+  background-color: white;
+}
 </style>

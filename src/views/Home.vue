@@ -7,6 +7,7 @@
     </p>
   </div>-->
   <ExploreWidgets></ExploreWidgets>
+  <Footer></Footer>
 </body>
 </template>
 
@@ -14,11 +15,12 @@
 import { Component, Vue } from "vue-property-decorator";
 import Hero from "@/components/Hero.vue"; // @ is an alias to /src
 import ExploreWidgets from "@/components/ExploreWidgets.vue"; // @ is an alias to /src
-
+import Footer from "@/components/FooterLarge.vue"
 @Component({
   components: {
     Hero,
-    ExploreWidgets
+    ExploreWidgets,
+    Footer,
   }
 })
 export default class Home extends Vue {}
@@ -37,5 +39,8 @@ export default class Home extends Vue {}
   to {
     transform: translateX(0);
   }
+}
+body {
+  background-color: #17171D
 }
 </style>

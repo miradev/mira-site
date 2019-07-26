@@ -9,55 +9,8 @@
           </h2>
           <div class="normalbox browsebox">
             <div class="body">
-              <div
-                class="tablegrid tablebrowse columns is-multiline is-mobile is-centered is-slick is-slick1 slick-initialized slick-slider"
-              >
-                <div class="slick-prev slick-arrow" style="display: block;">
-                  <button type="button" class="button is-white is-large is-rounded is-hidden-touch">
-                    <span class="icon">
-                      <svg class="fa icon-light-chevron-left">
-                        <use
-                          xmlns:xlink="http://www.w3.org/1999/xlink"
-                          xlink:href="#icon-light-chevron-left"
-                        />
-                      </svg>
-                    </span>
-                  </button>
-                </div>
-                <div aria-live="polite" class="slick-list draggable" style="padding: 0px 50px;">
-                  <div
-                    class="slick-track"
-                    style="opacity: 1; width: 55000px; transform: translate3d(-1131px, 0px, 0px);"
-                    role="listbox"
-                  >
-                    <WidgetCard></WidgetCard>
-                  </div>
-                </div>
-                <div class="slick-next slick-arrow" style="display: block;">
-                  <button type="button" class="button is-white is-large is-rounded is-hidden-touch">
-                    <span class="icon">
-                      <svg class="fa icon-light-chevron-right">
-                        <use
-                          xmlns:xlink="http://www.w3.org/1999/xlink"
-                          xlink:href="#icon-light-chevron-right"
-                        />
-                      </svg>
-                    </span>
-                  </button>
-                </div>
-              </div>
-              <div class="content nomatches" style="display: none;">
-                <p>
-                  No games were found matching the criteria specified. We suggest you try the
-                  <a href="https://mod.io/games">game list</a> with no filter applied, to browse all available.
-                  <a
-                    href="https://mod.io/members/register/widget"
-                    class="thickbox"
-                    rel="iframe=true;innerHeight=640;innerWidth=800"
-                    target="_self"
-                  >Join now</a> to share your own
-                  content, we welcome creators and consumers alike and look forward to your comments.
-                </p>
+              <div class="tablegrid tablebrowse columns is-multiline is-mobile is-centered is-slick">
+                <WidgetCard v-for="widget in widgets" :key="widget.id" :widget="widget"></WidgetCard>
               </div>
               <div class="paginationurls has-text-centered">
                 <p>
@@ -66,7 +19,7 @@
                     to="/marketplace"
                   >
                     <span class="icon">
-                      <i class='fa fa-cogs'></i>
+                      <i class="fa fa-cogs"></i>
                     </span>
                     <span>View all widgets</span>
                   </router-link>
@@ -82,17 +35,33 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Prop, Vue } from "vue-property-decorator";
 import WidgetCard from "@/components/WidgetCard.vue"; // @ is an alias to /src
+import Widget from "@/components/Widget";
+import axios from "axios";
 
 @Component({
   components: {
-    WidgetCard
+    WidgetCard,
   }
 })
-@Component
-export default class ExploreWidgets extends Vue {}
+export default class ExploreWidgets extends Vue {
+  private widgets: Widget[] = [];
+  mounted() {
+    axios
+      .get(
+        "http://mirabackend-env.zp8gkvhdwt.ca-central-1.elasticbeanstalk.com/getAllWidgets"
+      )
+      .then(response => {
+        this.widgets = response.data;
+        this.widgets = this.widgets.slice(0,3)
+      });
+  }
+}
 </script>
 
-<style>
+<style lang="stylus" scoped>
+section 
+    margin 0 !important
+    background-color white
 </style>

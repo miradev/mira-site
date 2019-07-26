@@ -1,7 +1,5 @@
 <template>
 <body id="home">
-  <Navbar></Navbar>
-  <!-- getWidget($route.params.id).img_url -->
   <section class="hero is-dark">
     <div class="hero-body">
       <div class="container">

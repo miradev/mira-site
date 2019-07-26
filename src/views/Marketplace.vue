@@ -75,6 +75,7 @@ import Navbar from "@/components/Navbar.vue";
 import Widget from "@/components/Widget";
 import Footer from "@/components/FooterSmall.vue"
 import axios from "axios";
+import store from '../store';
 
 @Component({
   components: {
@@ -87,14 +88,18 @@ export default class Marketplace extends Vue {
   private featured: Widget[] = [];
   private widgets: Widget[] = [];
   mounted() {
-    axios
-      .get(
-        "http://mirabackend-env.zp8gkvhdwt.ca-central-1.elasticbeanstalk.com/getAllWidgets"
-      )
-      .then(response => {
-        this.widgets = this.shuffle(response.data);
-        this.featured = response.data.slice(0, 3);
-      });
+    // TODO: Fix SSL
+    // axios
+    //   .get(
+    //     "http://mirabackend-env.zp8gkvhdwt.ca-central-1.elasticbeanstalk.com/getAllWidgets"
+    //   )
+    //   .then(response => {
+    //     this.widgets = this.shuffle(response.data);
+    //     this.featured = response.data.slice(0, 3);
+    //     console.log(JSON.stringify(this.widgets))
+    //   });
+    this.widgets = this.shuffle(store.state.widgets)
+    this.featured = this.widgets.slice(0, 3);
   }
   shuffle(a: any) {
     for (let i = a.length - 1; i > 0; i--) {

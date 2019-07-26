@@ -71,24 +71,38 @@ export default class Login extends Vue {
   private msg: string = "";
 
   login() {
-    var form = new FormData();
-    form.set("username", this.username);
-    form.set("password", this.password);
-    axios
-      .post(this.url, form)
-      .then(response => {
+    // TODO: Fix SSL
+    // var form = new FormData();
+    // form.set("username", this.username);
+    // form.set("password", this.password);
+    // axios
+    //   .post(this.url, form)
+    //   .then(response => {
+    //     store.commit("login", this.username);
+    //     this.msg = "Logged in.";
+    //     this.$forceUpdate();
+    //     router.push("/");
+    //     return;
+    //   })
+    //   .catch(error => {
+    //     this.msg = "Incorrect credentials.";
+    //     this.$forceUpdate();
+    //     return;
+    //   });
+    var users = store.state.users;
+    if (this.username in users) {
+      if (users[this.username] === this.password) {
+        this.msg = "Logged In";
         store.commit("login", this.username);
-        this.msg = "Logged in.";
         this.$forceUpdate();
         router.push("/");
         return;
-      })
-      .catch(error => {
-        this.msg = "Incorrect credentials.";
-        this.$forceUpdate();
-        return;
-      });
+      }
+    }
+    this.msg = "Incorrect credentials.";
+    this.$forceUpdate();
   }
 }
 </script>
 
+this.widgets

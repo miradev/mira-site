@@ -39,6 +39,7 @@ import Navbar from "@/components/Navbar.vue";
 import Widget from "@/components/Widget";
 import Footer from "@/components/FooterSmall.vue";
 import axios from "axios";
+import store from "../store";
 
 @Component({
   components: {
@@ -50,18 +51,22 @@ import axios from "axios";
 export default class WidgetPage extends Vue {
   private widgets: Widget[] = [];
   mounted() {
-    axios
-      .get(
-        "http://mirabackend-env.zp8gkvhdwt.ca-central-1.elasticbeanstalk.com/getAllWidgets"
-      )
-      .then(response => {
-        this.widgets = response.data;
-        this.$forceUpdate();
-      });
+    // TODO: Fix SSL
+    // axios
+    //   .get(
+    //     "http://mirabackend-env.zp8gkvhdwt.ca-central-1.elasticbeanstalk.com/getAllWidgets"
+    //   )
+    //   .then(response => {
+    //     this.widgets = response.data;
+    //     this.$forceUpdate();
+    //   });
+    this.widgets = store.state.widgets;
   }
 
   private getWidget(id: number) {
-    return this.widgets[id];
+    return this.widgets.find(widget => {
+      return widget.id == id;
+    });
   }
 }
 </script>
@@ -74,7 +79,8 @@ export default class WidgetPage extends Vue {
 .widget-image {
   object-fit: cover;
 }
+
 button.button {
-  margin-right 1rem
+  margin-right: 1rem;
 }
 </style>

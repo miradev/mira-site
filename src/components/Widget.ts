@@ -1,6 +1,6 @@
 // Snake case for now since its coming from python
 interface Widget {
-  id: string;
+  id: number;
   title: string;
   author: string;
   img_url: string;

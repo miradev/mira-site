@@ -82,23 +82,39 @@ export default class Register extends Vue {
   public checked: boolean = false;
 
   register() {
-    var form = new FormData();
-    form.set("username", this.username);
-    form.set("password", this.password);
-    axios
-      .post(this.url, form)
-      .then(response => {
-        store.commit("login", this.username);
-        this.msg = "Logged in.";
+    // TODO: Fix SSL
+    // var form = new FormData();
+    // form.set("username", this.username);
+    // form.set("password", this.password);
+    // axios
+    //   .post(this.url, form)
+    //   .then(response => {
+    //     store.commit("login", this.username);
+    //     this.msg = "Logged in.";
+    //     this.$forceUpdate();
+    //     router.push("/");
+    //     return;
+    //   })
+    //   .catch(error => {
+    //     this.msg = "Incorrect credentials.";
+    //     this.$forceUpdate();
+    //     return;
+    //   });
+    if (this.username && this.password) {
+      var users = store.state.users;
+      if (this.username in users) {
+        this.msg = "Username taken!";
         this.$forceUpdate();
-        router.push("/");
         return;
-      })
-      .catch(error => {
-        this.msg = "Incorrect credentials.";
-        this.$forceUpdate();
-        return;
-      });
+      }
+      store.commit("register", { username :this.username, password: this.password });
+      store.commit("login", this.username);
+      this.$forceUpdate();
+      router.push("/");
+      return;
+    }
+    this.msg = "Invalid credentials.";
+    this.$forceUpdate();
   }
 }
 </script>

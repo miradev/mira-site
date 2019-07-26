@@ -56,6 +56,9 @@ export default class WidgetCard extends Vue {
 }
 </script>
 
-<style>
+<style lang="stylus" scoped>
+img {
+  object-fit: cover;
+}
 </style>
 

@@ -6,8 +6,6 @@
 set -e
 
 # build
-echo Linting..
-npm run lint
 echo Building. this may take a minute...
 npm run build
 
@@ -23,6 +21,6 @@ git add -A
 git commit -m 'deploy'
 
 # deploy
-git push -f git@github.com:<username>/<repo>.git <branch>
+git push -f git@github.com:miradev/mira-site.git master:github-pages
 
 cd -

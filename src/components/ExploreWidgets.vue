@@ -39,6 +39,7 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 import WidgetCard from "@/components/WidgetCard.vue"; // @ is an alias to /src
 import Widget from "@/components/Widget";
 import axios from "axios";
+import store from '../store';
 
 @Component({
   components: {
@@ -48,14 +49,23 @@ import axios from "axios";
 export default class ExploreWidgets extends Vue {
   private widgets: Widget[] = [];
   mounted() {
-    axios
-      .get(
-        "http://mirabackend-env.zp8gkvhdwt.ca-central-1.elasticbeanstalk.com/getAllWidgets"
-      )
-      .then(response => {
-        this.widgets = response.data;
-        this.widgets = this.widgets.slice(0,3)
-      });
+    // TODO: Fix SSL
+    // axios
+    //   .get(
+    //     "http://mirabackend-env.zp8gkvhdwt.ca-central-1.elasticbeanstalk.com/getAllWidgets"
+    //   )
+    //   .then(response => {
+    //     this.widgets = response.data;
+    //     this.widgets = this.widgets.slice(0,3)
+    //   });
+    this.widgets = this.shuffle(store.state.widgets).slice(0, 3)
+  }
+  shuffle(a: any) {
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
   }
 }
 </script>

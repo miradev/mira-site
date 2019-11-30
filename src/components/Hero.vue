@@ -19,7 +19,13 @@
             />
           </p>
           <p class="control">
-            <button name value="go" class="button is-primary is-large">Go</button>
+            <button
+              name
+              value="go"
+              class="button is-primary is-large"
+            >
+              Go
+            </button>
           </p>
         </form>
       </div>
@@ -42,7 +48,9 @@
                 <i class="fas fa-sliders-h"></i>
               </span>
             </span>
-            <h3 class="title">Easy to Setup</h3>
+            <h3 class="title">
+              Easy to Setup
+            </h3>
             <h4 class="subtitle is-6">
               Access your mirror from your pc or mobile device. Connect to your mirror and start adding widgets!
               <!-- <a href="https://mod.io/games/add">control panel</a> that puts you in charge. -->
@@ -62,10 +70,14 @@
                 <i class="fas fa-store-alt"></i>
               </span>
             </span>
-            <h3 class="title">Widget Marketplace</h3>
+            <h3 class="title">
+              Widget Marketplace
+            </h3>
             <h4
               class="subtitle is-6"
-            >From clocks and weather to news and calanders, search for anything in our widget repo</h4>
+            >
+              From clocks and weather to news and calanders, search for anything in our widget repo
+            </h4>
           </div>
           <div class="column is-3">
             <span class="button is-huge is-text">
@@ -81,7 +93,9 @@
                 <i class="fas fa-code"></i>
               </span>
             </span>
-            <h3 class="title">Development tools</h3>
+            <h3 class="title">
+              Development tools
+            </h3>
             <h4 class="subtitle is-6">
               <a>Download</a> our SDK.
               <a>Upload</a> your widget to Mira in seconds
@@ -106,7 +120,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Prop, Vue } from 'vue-property-decorator';
+
 export default class Hero extends Vue {}
 </script>
 
@@ -118,5 +133,3 @@ export default class Hero extends Vue {}
   background-color #17171D
 
 </style>
-
-

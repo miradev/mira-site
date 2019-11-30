@@ -7,8 +7,8 @@
           <span class="highlight">Development...</span>
         </h1>
         <span class="icon is-large">
-            <i class="fa fa-hammer fa-3x"></i>
-            <i class="fa fa-hard-hat fa-3x"></i>
+          <i class="fa fa-hammer fa-3x"></i>
+          <i class="fa fa-hard-hat fa-3x"></i>
         </span>
       </div>
     </div>
@@ -16,12 +16,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
-import Navbar from "@/components/Navbar.vue"; // @ is an alias to /src
+import { Component, Prop, Vue } from 'vue-property-decorator';
+import Navbar from '@/components/Navbar.vue'; // @ is an alias to /src
 @Component({
   components: {
-    Navbar
-  }
+    Navbar,
+  },
 })
 export default class Hero extends Vue {}
 </script>
@@ -35,5 +35,3 @@ export default class Hero extends Vue {}
   background-color: #17171D;
 }
 </style>
-
-

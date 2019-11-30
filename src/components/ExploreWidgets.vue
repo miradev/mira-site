@@ -5,12 +5,18 @@
         <div class="column columnfull">
           <h2 class="title is-3 has-text-centered">
             Explore
-            <router-link to="/marketplace">Featured Widgets</router-link>
+            <router-link to="/marketplace">
+              Featured Widgets
+            </router-link>
           </h2>
           <div class="normalbox browsebox">
             <div class="body">
               <div class="tablegrid tablebrowse columns is-multiline is-mobile is-centered is-slick">
-                <WidgetCard v-for="widget in widgets" :key="widget.id" :widget="widget"></WidgetCard>
+                <WidgetCard
+                  v-for="widget in widgets"
+                  :key="widget.id"
+                  :widget="widget"
+                ></WidgetCard>
               </div>
               <div class="paginationurls has-text-centered">
                 <p>
@@ -35,43 +41,44 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
-import WidgetCard from "@/components/WidgetCard.vue"; // @ is an alias to /src
-import Widget from "@/components/Widget";
-import axios from "axios";
+import { Component, Prop, Vue } from 'vue-property-decorator';
+import axios from 'axios';
+import WidgetCard from '@/components/WidgetCard.vue'; // @ is an alias to /src
+import Widget from '@/components/Widget';
 import store from '../store';
 
 @Component({
   components: {
     WidgetCard,
-  }
+  },
 })
 export default class ExploreWidgets extends Vue {
   private widgets: Widget[] = [];
+
   mounted() {
-    // TODO: Fix SSL
-    // axios
-    //   .get(
-    //     "http://mirabackend-env.zp8gkvhdwt.ca-central-1.elasticbeanstalk.com/getAllWidgets"
-    //   )
-    //   .then(response => {
-    //     this.widgets = response.data;
-    //     this.widgets = this.widgets.slice(0,3)
-    //   });
-    this.widgets = this.shuffle(store.state.widgets).slice(0, 3)
+    axios
+      .get(
+        'http://mirabackend-env.zp8gkvhdwt.ca-central-1.elasticbeanstalk.com/getAllWidgets',
+      )
+      .then((response) => {
+        this.widgets = response.data;
+        this.widgets = this.widgets.slice(0, 3);
+      });
   }
-  shuffle(a: any) {
-    for (let i = a.length - 1; i > 0; i--) {
+
+  static shuffle(a: any) {
+    const b = a;
+    for (let i = b.length - 1; i > 0; i -= 1) {
       const j = Math.floor(Math.random() * (i + 1));
-      [a[i], a[j]] = [a[j], a[i]];
+      [b[i], b[j]] = [b[j], b[i]];
     }
-    return a;
+    return b;
   }
 }
 </script>
 
 <style lang="stylus" scoped>
-section 
+section
     margin 0 !important
     background-color white
 </style>

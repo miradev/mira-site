@@ -9,13 +9,13 @@
   </div>
 </template>
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import Navbar from "@/components/Navbar.vue"; // @ is an alias to /src
+import { Component, Vue } from 'vue-property-decorator';
+import Navbar from '@/components/Navbar.vue'; // @ is an alias to /src
 
 @Component({
   components: {
-    Navbar
-  }
+    Navbar,
+  },
 })
 export default class App extends Vue {}
 </script>

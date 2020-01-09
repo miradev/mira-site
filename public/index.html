@@ -150,6 +150,28 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
   <script src="https://static.mod.io/html/external/min/index.php?g=js&amp;1"></script>
   <script src="https://static.mod.io/html/external/min/index.php?b=v1&amp;f=js/jquery.slick.js&amp;1"></script>
+  <script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : 'Mira',
+      cookie     : true,
+      xfbml      : true,
+      version    : 'v5.0'
+    });
+    console.log('Done FB init');
+    FB.getLoginStatus(function(response){
+      FB.AppEvents.logPageView();
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "https://connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+  </script>
   <script src="onLoad.js"></script>
 
   <script>

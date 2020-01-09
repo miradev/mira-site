@@ -156,6 +156,13 @@ import router from '../router';
 export default class Navbar extends Vue {
   public name = 'navbar'
 
+  mounted = () => {
+    console.log('Navbar Mounted');
+    FB.getLoginStatus((response:any) => {
+      console.log(response);
+    });
+  }
+
   static get authenticated() {
     return store.state.authenticated;
   }

@@ -18,7 +18,5 @@ export default new Vuex.Store({
       state.authenticated = false;
     },
   },
-  actions: {
-
-  },
+  actions: {},
 });

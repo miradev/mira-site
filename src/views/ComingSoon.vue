@@ -16,7 +16,9 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import Vue from 'vue';
+import Component from 'vue-class-component';
+import Prop from 'vue-property-decorator';
 import Navbar from '@/components/Navbar.vue'; // @ is an alias to /src
 @Component({
   components: {

@@ -29,7 +29,8 @@
         >
           <!-- For download count, we don't need this yet -->
           <!-- <span
-            class="togglehover button csstooltip is-text is-nolink is-paddingless is-small is-opaque75"
+            class="togglehover button csstooltip is-text
+            is-nolink is-paddingless is-small is-opaque75"
             original-title="Downloads"
           >
             <span class="icon is-small">
@@ -64,7 +65,10 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import Vue from 'vue';
+import Component from 'vue-class-component';
+import { Prop } from 'vue-property-decorator';
+
 import Widget from '@/components/Widget';
 
 @Component

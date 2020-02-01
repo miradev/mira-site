@@ -77,11 +77,13 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import Vue from 'vue';
+import Component from 'vue-class-component';
 import axios from 'axios';
 import router from '../router';
 import store from '../store';
 
+@Component
 export default class Login extends Vue {
   private url =
     'http://mirabackend-env.zp8gkvhdwt.ca-central-1.elasticbeanstalk.com/login';

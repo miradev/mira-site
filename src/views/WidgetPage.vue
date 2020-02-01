@@ -56,25 +56,26 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import Vue from 'vue';
 import axios from 'axios';
-import WidgetCard from '@/components/WidgetCard.vue'; // @ is an alias to /src
-import Navbar from '@/components/Navbar.vue';
-import Widget from '@/components/Widget';
+import Component from 'vue-class-component';
 import Footer from '@/components/FooterSmall.vue';
+import Navbar from '@/components/Navbar.vue';
 import store from '../store';
+import Widget from '@/components/Widget';
+import WidgetCard from '@/components/WidgetCard.vue'; // @ is an alias to /src
 
 @Component({
   components: {
-    WidgetCard,
-    Navbar,
     Footer,
+    Navbar,
+    WidgetCard,
   },
 })
 export default class WidgetPage extends Vue {
   private widgets: Widget[] = [];
 
-  mounted() {
+  private mounted() {
     axios
       .get(
         'http://mirabackend-env.zp8gkvhdwt.ca-central-1.elasticbeanstalk.com/getAllWidgets',

@@ -48,39 +48,6 @@
         </router-link>
       </div>
       <div class="navbar-end">
-        <!--TODO: Hide Search For Now -->
-        <!-- <div class="navbar-item navbar-search">
-          <div class="field fieldsearch">
-            <form action="https://mod.io/search" id="search-form" method="get">
-              <div class="field">
-                <p class="control has-icons-right is-dark">
-                  <input
-                    type="search"
-                    name="q"
-                    maxlength="500"
-                    value
-                    id="search"
-                    class="input"
-                    placeholder="Search"
-                    required="required"
-                    autocomplete="off"
-                  />
-                  <span class="icon is-small is-right">
-                    <svg class="fa icon-light-search" aria-label="Search">
-                      <use
-                        xmlns:xlink="http://www.w3.org/1999/xlink"
-                        xlink:href="#icon-light-search"
-                      />
-                    </svg>
-                  </span>
-                </p>
-              </div>
-            </form>
-            <div class="search-suggest" style="position:relative">
-              <div class="dropdown-menu"></div>
-            </div>
-          </div>
-        </div>-->
         <!-- Show if logged in -->
         <router-link
           v-show="authenticated"
@@ -148,7 +115,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import Vue from 'vue';
+import Component from 'vue-class-component';
 import store from '../store';
 import router from '../router';
 
@@ -156,17 +124,22 @@ import router from '../router';
 export default class Navbar extends Vue {
   public name = 'navbar'
 
-  static get authenticated() {
-    return store.state.authenticated;
+  get authenticated() {
+    return this.$store.state.authenticated;
   }
 
-  static get username() {
-    return store.state.username;
+  get username() {
+    return this.$store.state.username;
   }
 
-  static logout() {
-    store.commit('logout');
+  logout() {
+    this.$store.commit('logout');
     router.push('/');
+  }
+
+  beforeRouteUpdate(to: any, from: any, next: any) {
+    this.name = to.params.name;
+    next();
   }
 }
 </script>

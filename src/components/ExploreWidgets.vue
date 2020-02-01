@@ -11,7 +11,8 @@
           </h2>
           <div class="normalbox browsebox">
             <div class="body">
-              <div class="tablegrid tablebrowse columns is-multiline is-mobile is-centered is-slick">
+              <div class="tablegrid tablebrowse columns
+              is-multiline is-mobile is-centered is-slick">
                 <WidgetCard
                   v-for="widget in widgets"
                   :key="widget.id"
@@ -41,7 +42,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import Vue from 'vue';
+import Component from 'vue-class-component';
 import axios from 'axios';
 import WidgetCard from '@/components/WidgetCard.vue'; // @ is an alias to /src
 import Widget from '@/components/Widget';

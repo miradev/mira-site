@@ -27,7 +27,7 @@
               <button
                 type="submit"
                 name
-                value=".mod.io"
+                value="go"
                 class="button is-primary is-large"
               >
                 Go
@@ -90,7 +90,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import Vue from 'vue';
+import Component from 'vue-class-component';
 import axios from 'axios';
 import WidgetCard from '@/components/WidgetCard.vue';
 import Navbar from '@/components/Navbar.vue';

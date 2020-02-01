@@ -104,16 +104,20 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import Vue from 'vue';
+import Component from 'vue-class-component';
 import axios from 'axios';
 import router from '../router';
 import store from '../store';
 
+@Component
 export default class Register extends Vue {
   private url =
     'http://mirabackend-env.zp8gkvhdwt.ca-central-1.elasticbeanstalk.com/register';
 
   private username: string = '';
+
+  private email: string = '';
 
   private password: string = '';
 
@@ -137,6 +141,13 @@ export default class Register extends Vue {
         this.msg = 'Incorrect credentials.';
         this.$forceUpdate();
       });
+  }
+
+  beforeRouteUpdate(to: any, from: any, next: any) {
+    // just use `this`
+    this.$forceUpdate();
+    console.log('Hi');
+    next();
   }
 }
 </script>

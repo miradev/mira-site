@@ -10,7 +10,7 @@
             Forget about the complexities of setting up the backend and start
             configuring your own smart mirror today.</p>
         </div>
-        <HeroSVG/>
+        <img class="hero-image" src="../assets/Isometric.png" alt="">
       </div>
     </div>
   </section>
@@ -19,22 +19,17 @@
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import HeroSVG from '@/components/HeroSVG.vue';
-
-@Component({
-  components: {
-    HeroSVG,
-  },
-})
 
 export default class Hero extends Vue {}
 </script>
 
 <style lang="stylus" scoped>
-@import "../common/colors.styl"
 .container
   display flex
-  justify-content space-around
+  justify-content space-between
+
+.hero-image
+  height 75vh
 
 .highlight
   color #AFEDFA !important

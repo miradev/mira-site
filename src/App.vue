@@ -20,8 +20,7 @@ import Navbar from '@/components/Navbar.vue'; // @ is an alias to /src
 })
 export default class App extends Vue {}
 </script>
-<style lang='stylus' scoped>
-  @import 'common/colors.styl'
+<style lang='stylus'>
   .hero-head
     background-color $dark-gray
 </style>

@@ -147,7 +147,6 @@ export default class Navbar extends Vue {
 </script>
 
 <style lang="stylus" scoped>
-@import '../common/colors.styl'
 .navbar-item
   color $cream
 

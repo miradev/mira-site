@@ -8,7 +8,7 @@
               <figure class="image">
                 <img
                   class="widget-image"
-                  :src="getWidget($route.params.id).img_url"
+                  :src="getWidget($route.params.id).imgUrl"
                   alt
                 />
               </figure>

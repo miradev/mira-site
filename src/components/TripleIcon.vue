@@ -21,7 +21,8 @@
             Easy to Setup
           </h3>
           <h4 class="subtitle is-6">
-            Access your mirror from your pc or mobile device. Connect to your mirror and start adding widgets!
+            Access your mirror from your pc or mobile device.
+            Connect to your mirror and start adding widgets!
             <!-- <a href="https://mod.io/games/add">control panel</a> that puts you in charge. -->
           </h4>
         </div>
@@ -82,7 +83,8 @@
           How to get
           started?
         </a>
-        <span class="button pulse is-dark is-medium is-rounded is-padded is-overlay is-ignored"></span>
+        <span class="button pulse is-dark is-medium
+        is-rounded is-padded is-overlay is-ignored"></span>
       </div> -->
   </div>
 </template>

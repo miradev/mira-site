@@ -7,7 +7,7 @@
           class="image is-16by9"
         >
           <img
-            :src="widget.img_url"
+            :src="widget.imgUrl"
             alt="Foundation"
           />
           <span class="card-overlay is-overlay is-scrollable is-hidden-touch">

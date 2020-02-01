@@ -1,36 +1,16 @@
 <template>
   <section class="hero is-dark is-shadowless is-small">
     <div class="hero-body is-dark">
-      <div class="container has-text-centered">
-        <h1 class="title text-white toggleadd is-1 is-cursor-pointer is-size-1-touch">
-          Mira
-          <span class="highlight">Smart Mirror</span>
-        </h1>
-        <!-- TODO: Add action -->
-        <form class="field has-addons has-addons-centered">
-          <p class="control is-expanded is-dark is-large">
-            <input
-              id="games"
-              type="text"
-              name="nameid"
-              maxlength="20"
-              value
-              placeholder="search for a widget"
-              class="input has-text-right is-large"
-              autocomplete="off"
-              required="required"
-            />
-          </p>
-          <p class="control">
-            <button
-              name
-              value="go"
-              class="button is-primary is-large"
-            >
-              Go
-            </button>
-          </p>
-        </form>
+      <div class="container">
+        <div>
+          <h1>Your Smart Mirror Platform</h1>
+          <p>Spend your time building apps, not ops.
+            The Mira platform provides Mira OS, the Mira Marketplace,
+            and a plethora of helpful tools right out of the box.
+            Forget about the complexities of setting up the backend and start
+            configuring your own smart mirror today.</p>
+        </div>
+        <HeroSVG/>
       </div>
     </div>
   </section>
@@ -39,24 +19,33 @@
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
+import HeroSVG from '@/components/HeroSVG.vue';
+
+@Component({
+  components: {
+    HeroSVG,
+  },
+})
 
 export default class Hero extends Vue {}
 </script>
 
 <style lang="stylus" scoped>
-.highlight {
-  color: #AFEDFA !important;
-}
+@import "../common/colors.styl"
+.container
+  display flex
+  justify-content space-around
 
-.text-white {
-  color: white;
-}
+.highlight
+  color #AFEDFA !important
 
-.is-dark {
-  background-color: #17171D;
-}
+.text-white
+  color: white
 
-.bg-white {
-  background-color: white;
-}
+.is-dark
+  background-color: $dark-gray
+
+.bg-white
+  background-color white
+
 </style>

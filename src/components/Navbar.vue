@@ -1,15 +1,12 @@
 <template>
-  <nav class="navbar inverttooltips navbartooltips is-dark">
+  <nav class="navbar inverttooltips navbartooltips">
     <div class="navbar-brand">
       <router-link
         to="/"
         class="navbar-item navbar-logo"
         style="margin-right: auto;"
       >
-        <img
-          src="../assets/logo.png"
-          alt="mira"
-        />
+      <LogoSmall/>
       </router-link>
       <router-link
         to="/login"
@@ -32,19 +29,19 @@
           to="/marketplace"
           class="navbar-item"
         >
-          Marketplace
+          Features
         </router-link>
         <router-link
           to="/docs"
           class="navbar-item"
         >
-          Documentation
+          Marketplace
         </router-link>
         <router-link
           to="/about"
           class="navbar-item is-hidden-tablet-only"
         >
-          About
+          Developers
         </router-link>
       </div>
       <div class="navbar-end">
@@ -117,10 +114,15 @@
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
+import LogoSmall from '@/components/LogoSmall.vue';
 import store from '../store';
 import router from '../router';
 
-@Component
+@Component({
+  components: {
+    LogoSmall,
+  },
+})
 export default class Navbar extends Vue {
   public name = 'navbar'
 
@@ -145,6 +147,10 @@ export default class Navbar extends Vue {
 </script>
 
 <style lang="stylus" scoped>
+@import '../common/colors.styl'
+.navbar-item
+  color $cream
+
 .is-text
-  color #44bfd5 !important
+  color $cream !important
 </style>

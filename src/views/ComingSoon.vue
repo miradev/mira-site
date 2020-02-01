@@ -25,7 +25,7 @@ import Navbar from '@/components/Navbar.vue'; // @ is an alias to /src
     Navbar,
   },
 })
-export default class Hero extends Vue {}
+export default class ComingSoon extends Vue {}
 </script>
 
 <style lang="stylus" scoped>

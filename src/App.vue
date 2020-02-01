@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div class="hero-head is-dark">
+    <div class="hero-head">
       <div class="container">
         <Navbar></Navbar>
       </div>
@@ -20,3 +20,8 @@ import Navbar from '@/components/Navbar.vue'; // @ is an alias to /src
 })
 export default class App extends Vue {}
 </script>
+<style lang='stylus' scoped>
+  @import 'common/colors.styl'
+  .hero-head
+    background-color $dark-gray
+</style>

@@ -1,10 +1,6 @@
 <template>
   <div id="app">
-    <div class="hero-head">
-      <div class="container">
-        <Navbar></Navbar>
-      </div>
-    </div>
+    <!-- <Navbar></Navbar> -->
     <router-view />
   </div>
 </template>

@@ -1,10 +1,13 @@
 <template>
-  <section class="hero is-dark is-shadowless is-small">
+  <section class="hero is-dark is-shadowless is-fullheight">
+    <div class="hero-head">
+      <Navbar></Navbar>
+    </div>
     <div class="hero-body is-dark">
       <div class="container">
         <div>
-          <h1>Your Smart Mirror Platform</h1>
-          <p>Spend your time building apps, not ops.
+          <h1 class="text-white">Your Smart Mirror Platform</h1>
+          <p class="text-white">Spend your time building apps, not ops.
             The Mira platform provides Mira OS, the Mira Marketplace,
             and a plethora of helpful tools right out of the box.
             Forget about the complexities of setting up the backend and start
@@ -19,11 +22,27 @@
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
+import Navbar from '@/components/Navbar.vue'; // @ is an alias to /src
 
+@Component({
+  components: {
+    Navbar,
+  },
+})
 export default class Hero extends Vue {}
 </script>
 
 <style lang="stylus" scoped>
+h1
+  font-family 'Open Sans regular', sans-serif;
+  font-weight 300
+  font-size 3rem
+
+p
+  font-family 'Open Sans regular', sans-serif;
+  font-weight 300
+  font-size 1.5rem
+
 .container
   display flex
   justify-content space-between

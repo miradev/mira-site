@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar inverttooltips navbartooltips">
+  <header class="navbar">
     <div class="navbar-brand">
       <router-link
         to="/"
@@ -108,7 +108,7 @@
         </div>
       </div>
     </div>
-  </nav>
+  </header>
 </template>
 
 <script lang="ts">

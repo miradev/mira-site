@@ -1,11 +1,8 @@
 <template>
-  <section class="hero is-dark is-shadowless is-fullheight">
-    <div class="hero-head">
-      <Navbar></Navbar>
-    </div>
+  <section class="hero is-shadowless">
     <div class="hero-body is-dark">
       <div class="container">
-        <div>
+        <div class="blurb">
           <h1 class="text-white">Your Smart Mirror Platform</h1>
           <p class="text-white">Spend your time building apps, not ops.
             The Mira platform provides Mira OS, the Mira Marketplace,
@@ -13,7 +10,7 @@
             Forget about the complexities of setting up the backend and start
             configuring your own smart mirror today.</p>
         </div>
-        <img class="hero-image" src="../assets/Isometric.png" alt="">
+        <img class="hero-image is-hidden-mobile" src="../assets/isometric.svg" alt="Mira Hero">
       </div>
     </div>
   </section>
@@ -36,30 +33,22 @@ export default class Hero extends Vue {}
 h1
   font-family 'Open Sans regular', sans-serif;
   font-weight 300
-  font-size 3rem
+  font-size 2.2em
 
 p
   font-family 'Open Sans regular', sans-serif;
   font-weight 300
-  font-size 1.5rem
+  font-size 1.2em
 
 .container
   display flex
   justify-content space-between
 
 .hero-image
-  height 75vh
-
-.highlight
-  color #AFEDFA !important
-
-.text-white
-  color: white
-
-.is-dark
-  background-color: $dark-gray
-
-.bg-white
-  background-color white
+  width 50vw
+  height auto
+  margin-right 0 !important
+  // object-fit contain
+  // mask-image: linear-gradient(to right, rgba(0,0,0,1), rgba(0,0,0,0));
 
 </style>

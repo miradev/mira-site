@@ -1,114 +1,46 @@
 <template>
-  <header class="navbar">
+  <nav class="navbar">
+    <!-- Mobile -->
     <div class="navbar-brand">
-      <router-link
-        to="/"
-        class="navbar-item navbar-logo"
-        style="margin-right: auto;"
-      >
-      <LogoSmall/>
+      <router-link to="/" class="navbar-item navbar-logo" style="margin-right: auto;">
+        <LogoSmall/>
       </router-link>
-      <router-link
-        to="/login"
-        class="navbar-item is-hidden-tablet is-paddingless"
-      >
-        Login
+      <router-link to="/marketplace" class="navbar-item">
+        Features
       </router-link>
-      <div
-        class="navbar-burger burger"
-        style="margin-left: 0;"
-      >
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
+      <router-link to="/docs" class="navbar-item">
+        Marketplace
+      </router-link>
+      <router-link to="/about" class="navbar-item">
+        Developers
+      </router-link>
     </div>
+
+    <!-- Desktop/Tablet -->
     <div class="navbar-menu">
-      <div class="navbar-start">
-        <router-link
-          to="/marketplace"
-          class="navbar-item"
-        >
-          Features
-        </router-link>
-        <router-link
-          to="/docs"
-          class="navbar-item"
-        >
-          Marketplace
-        </router-link>
-        <router-link
-          to="/about"
-          class="navbar-item is-hidden-tablet-only"
-        >
-          Developers
-        </router-link>
-      </div>
       <div class="navbar-end">
         <!-- Show if logged in -->
         <router-link
-          v-show="authenticated"
-          to="/profile"
-          class="navbar-item is-hidden-mobile"
-        >
+          v-show="authenticated" to="/profile" class="navbar-item is-hidden-mobile">
           Hello {{ username }}
         </router-link>
-        <a
-          v-show="authenticated"
-          class="navbar-item is-hidden-mobile"
-          @click="logout()"
-        >Log Off</a>
+        <a v-show="authenticated" class="navbar-item is-hidden-mobile" @click="logout()">Log Off</a>
 
         <!-- Show if not logged in -->
-        <router-link
-          to="/login"
-          class="navbar-item is-hidden-tablet"
-        >
-          Login
-        </router-link>
-        <router-link
-          to="/register"
-          class="navbar-item is-hidden-tablet"
-        >
-          Sign Up
-        </router-link>
-        <div
-          v-show="!authenticated"
-          class="navbar-item is-hidden-mobile is-paddingless"
-        >
-          <router-link
-            to="/login"
-            class="button is-text is-nolink is-uppercase"
-          >
-            <span class="icon is-small">
-              <svg class="fa icon-light-sign-in">
-                <use
-                  xmlns:xlink="http://www.w3.org/1999/xlink"
-                  xlink:href="#icon-light-sign-in"
-                />
-              </svg>
-            </span>
+        <div v-show="!authenticated" class="navbar-item is-hidden-mobile is-paddingless">
+          <router-link to="/login" class="button is-text is-nolink is-uppercase">
             <span>Login</span>
           </router-link>
         </div>
-        <span
-          v-show="!authenticated"
-          class="navbar-item is-hidden-mobile is-paddingless"
-        >or</span>
-        <div
-          v-show="!authenticated"
-          class="navbar-item is-hidden-mobile"
-        >
-          <router-link
-            to="/register"
-            class="button is-primary is-uppercase"
-          >
+        <span v-show="!authenticated" class="navbar-item is-hidden-mobile is-paddingless">or</span>
+        <div v-show="!authenticated" class="navbar-item is-hidden-mobile">
+          <router-link to="/register" class="button is-primary is-uppercase">
             Sign Up
           </router-link>
         </div>
       </div>
     </div>
-  </header>
+  </nav>
 </template>
 
 <script lang="ts">
@@ -147,6 +79,8 @@ export default class Navbar extends Vue {
 </script>
 
 <style lang="stylus" scoped>
+nav
+  background-color $dark-gray
 .navbar-item
   color $cream
 

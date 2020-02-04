@@ -9,7 +9,6 @@
             <div class="section has-text-centered">
               <img
                 src="@/assets/logo_square.png"
-                alt="Bulma: a modern CSS framework based on Flexbox"
                 width="112"
                 height="28"
               />

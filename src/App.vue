@@ -16,7 +16,11 @@ import Navbar from '@/components/Navbar.vue'; // @ is an alias to /src
 })
 export default class App extends Vue {}
 </script>
-<style lang='stylus'>
-
-
+<style lang='scss'>
+// Import Bulma's core
+@import "~bulma/sass/utilities/_all";
+$navbar-breakpoint: 768px;
+// Import Bulma and Buefy styles
+@import "~bulma";
+@import "~buefy/src/scss/buefy";
 </style>

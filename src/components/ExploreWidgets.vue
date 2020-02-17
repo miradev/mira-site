@@ -5,14 +5,13 @@
         <div class="column columnfull">
           <h2 class="title is-3 has-text-centered">
             Explore
-            <router-link to="/marketplace">
-              Featured Widgets
-            </router-link>
+            <router-link to="/marketplace">Featured Widgets</router-link>
           </h2>
           <div class="normalbox browsebox">
             <div class="body">
-              <div class="tablegrid tablebrowse columns
-              is-multiline is-mobile is-centered is-slick">
+              <div
+                class="tablegrid tablebrowse columns is-multiline is-mobile is-centered is-slick"
+              >
                 <WidgetCard
                   v-for="widget in widgets"
                   :key="widget.id"
@@ -42,12 +41,12 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import Component from 'vue-class-component';
-import axios from 'axios';
-import WidgetCard from '@/components/WidgetCard.vue'; // @ is an alias to /src
-import Widget from '@/components/Widget';
-import store from '../store';
+import Vue from "vue"
+import Component from "vue-class-component"
+import axios from "axios"
+import WidgetCard from "@/components/WidgetCard.vue" // @ is an alias to /src
+import Widget from "@/components/Widget"
+import store from "../store"
 
 @Component({
   components: {
@@ -55,32 +54,29 @@ import store from '../store';
   },
 })
 export default class ExploreWidgets extends Vue {
-  private widgets: Widget[] = [];
+  private widgets: Widget[] = []
 
   mounted() {
-    axios
-      .get(
-        'http://mirabackend-env.zp8gkvhdwt.ca-central-1.elasticbeanstalk.com/getAllWidgets',
-      )
-      .then((response) => {
-        this.widgets = response.data;
-        this.widgets = this.widgets.slice(0, 3);
-      });
+    axios.get("http://99.226.211.125:58000/Widgets").then(response => {
+      this.widgets = response.data
+      this.widgets = this.widgets.slice(0, 3)
+    })
   }
 
   static shuffle(a: any) {
-    const b = a;
+    const b = a
     for (let i = b.length - 1; i > 0; i -= 1) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [b[i], b[j]] = [b[j], b[i]];
+      const j = Math.floor(Math.random() * (i + 1))
+      ;[b[i], b[j]] = [b[j], b[i]]
     }
-    return b;
+    return b
   }
 }
 </script>
 
 <style lang="stylus" scoped>
-section
-    margin 0 !important
-    background-color white
+section {
+  margin: 0 !important;
+  background-color: white;
+}
 </style>

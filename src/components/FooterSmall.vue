@@ -81,10 +81,6 @@
       </div>
       <div class="container has-text-centered">
         Mira © 2019
-        - <router-link to="/contact">
-          Contact
-        </router-link>
-        - <a href="https://github.com/modio/WebDesign">Template from Mod.io</a>
       </div>
     </div>
   </footer>

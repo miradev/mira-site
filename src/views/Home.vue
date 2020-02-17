@@ -62,7 +62,6 @@
         </div>
       </div>
     </section>
-    <Footer></Footer>
   </div>
 </template>
 
@@ -70,13 +69,11 @@
 import { Component, Vue } from 'vue-property-decorator';
 import Hero from '@/components/Hero.vue'; // @ is an alias to /src
 import ExploreWidgets from '@/components/ExploreWidgets.vue'; // @ is an alias to /src
-import Footer from '@/components/FooterLarge.vue';
 
 @Component({
   components: {
     Hero,
     ExploreWidgets,
-    Footer,
   },
 })
 export default class Home extends Vue {}

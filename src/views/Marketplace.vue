@@ -1,103 +1,46 @@
 <template>
-  <body id="home">
-    <section class="hero is-shadowless is-small">
-      <div class="hero-body is-dark">
-        <div class="container has-text-centered">
-          <h1
-            class="title text-white toggleadd is-1 is-cursor-pointer is-size-1-touch"
-          >
-            Widget Marketplace
-          </h1>
-          <!-- TODO: Add action -->
-          <form class="field has-addons has-addons-centered">
-            <p class="control is-expanded is-dark is-large">
-              <input
-                id="games"
-                type="text"
-                name="nameid"
-                maxlength="20"
-                value
-                placeholder="search for a widget"
-                class="input has-text-right is-large"
-                autocomplete="off"
-                required="required"
-              />
+  <section class="section">
+    <div class="container is-fluid">
+      <div class="columns">
+        <div class="column is-one-quarter">
+          <aside class="menu">
+            <p class="menu-label">
+              Discover
             </p>
-            <p class="control">
-              <button
-                type="submit"
-                name
-                value="go"
-                class="button is-primary is-large"
-              >
-                Go
-              </button>
+            <ul class="menu-list">
+              <li><a>Top Rated</a></li>
+              <li><a>Newest</a></li>
+              <li><a>Most Popular</a></li>
+            </ul>
+            <p class="menu-label">
+              Categories
             </p>
-          </form>
+            <ul class="menu-list">
+              <li><a>Accessories</a></li>
+              <li><a>Games</a></li>
+              <li><a>News</a></li>
+              <li><a>Social Media</a></li>
+              <li><a>Utilities</a></li>
+            </ul>
+          </aside>
+        </div>
+        <div class="column is-three-quarters">
+          <p>Some Body Stuff</p>
         </div>
       </div>
-      <br />
-      <div class="container bg-white">
-        <div class="columns columnsholder is-block">
-          <div class="column columnfull">
-            <h2 class="title is-3 has-text-centered">
-              Featured Widgets
-            </h2>
-            <div class="normalbox browsebox">
-              <div class="body">
-                <div
-                  class="tablegrid tablebrowse columns is-multiline is-mobile is-centered is-slick"
-                >
-                  <WidgetCard
-                    v-for="widget in featured"
-                    :key="widget.id"
-                    :widget="widget"
-                  ></WidgetCard>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="columns columnsholder is-block"></div>
-      </div>
-      <br />
-      <div class="container bg-white">
-        <div class="columns columnsholder is-block">
-          <div class="column columnfull">
-            <h2 class="title is-3 has-text-centered">
-              All Widgets
-            </h2>
-            <div class="normalbox browsebox">
-              <div class="body">
-                <div
-                  class="tablegrid tablebrowse columns is-multiline is-mobile is-centered is-slick"
-                >
-                  <WidgetCard
-                    v-for="widget in widgets"
-                    :key="widget.id"
-                    :widget="widget"
-                  ></WidgetCard>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="columns columnsholder is-block"></div>
-      </div>
-      <Footer></Footer>
-    </section>
-  </body>
+    </div>
+  </section>
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import Component from 'vue-class-component';
-import axios from 'axios';
-import WidgetCard from '@/components/WidgetCard.vue';
-import Navbar from '@/components/Navbar.vue';
-import Widget from '@/components/Widget';
-import Footer from '@/components/FooterSmall.vue';
-import store from '../store';
+import Vue from "vue"
+import Component from "vue-class-component"
+import axios from "axios"
+import WidgetCard from "@/components/WidgetCard.vue"
+import Navbar from "@/components/Navbar.vue"
+import Widget from "@/components/Widget"
+import Footer from "@/components/FooterLarge.vue"
+import store from "../store"
 
 @Component({
   components: {
@@ -107,28 +50,27 @@ import store from '../store';
   },
 })
 export default class Marketplace extends Vue {
-  private featured: Widget[] = [];
+  private featured: Widget[] = []
 
-  private widgets: Widget[] = [];
+  private widgets: Widget[] = []
+  private isActive: boolean = true
 
   mounted() {
     axios
-      .get(
-        'http://mirabackend-env.zp8gkvhdwt.ca-central-1.elasticbeanstalk.com/getAllWidgets',
-      )
-      .then((response) => {
-        this.widgets = Marketplace.shuffle(response.data);
-        this.featured = response.data.slice(0, 3);
-      });
+      .get("http://mirabackend-env.zp8gkvhdwt.ca-central-1.elasticbeanstalk.com/getAllWidgets")
+      .then(response => {
+        this.widgets = Marketplace.shuffle(response.data)
+        this.featured = response.data.slice(0, 3)
+      })
   }
 
   static shuffle(a: any) {
-    const b = a;
+    const b = a
     for (let i = b.length - 1; i > 0; i -= 1) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [b[i], b[j]] = [b[j], b[i]];
+      const j = Math.floor(Math.random() * (i + 1))
+      ;[b[i], b[j]] = [b[j], b[i]]
     }
-    return b;
+    return b
   }
 }
 </script>

@@ -46,7 +46,7 @@ import router from "../router"
 })
 export default class Navbar extends Vue {
   public name = "navbar"
-  private logoutUrl = process.env.VUE_APP_HAR + "logout"
+  private logoutURL = process.env.VUE_APP_HAR + "logout"
   get profile() {
     return "/profile/" + store.state.user.username
   }
@@ -66,12 +66,10 @@ export default class Navbar extends Vue {
         console.log(response)
         store.commit("logout")
         this.$forceUpdate()
-        router.push("/")
       })
       .catch(error => {
         console.log(`Error: ${error}`)
         this.$forceUpdate()
-        router.push("/")
       })
   }
 

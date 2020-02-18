@@ -47,8 +47,7 @@
             </div>
             <div class="control field">
               <label class="Checkbox">
-                <input type="Checkbox" v-model="checked" />
-                I would like to be a developer.
+                <b-checkbox v-model="checked">I would like to be a developer: {{checked}}</b-checkbox>
               </label>
             </div>
             <div class="level is-mobile">
@@ -99,10 +98,8 @@ export default class Register extends Vue {
       .post(this.url, body)
       .then(response => {
         let user: User = { username: this.username, id: response.id }
-        store.commit("login", user)
-        this.msg = "Logged in."
         this.$forceUpdate()
-        router.push("/")
+        router.push("/login")
       })
       .catch(error => {
         this.msg = "Invalid credentials."

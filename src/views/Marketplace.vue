@@ -4,28 +4,51 @@
       <div class="columns">
         <div class="column is-one-quarter">
           <aside class="menu">
-            <p class="menu-label">
-              Discover
-            </p>
+            <p class="menu-label">Discover</p>
             <ul class="menu-list">
-              <li><a>Top Rated</a></li>
-              <li><a>Newest</a></li>
-              <li><a>Most Popular</a></li>
+              <li>
+                <a>Top Rated</a>
+              </li>
+              <li>
+                <a>Newest</a>
+              </li>
+              <li>
+                <a>Most Popular</a>
+              </li>
             </ul>
-            <p class="menu-label">
-              Categories
-            </p>
+            <p class="menu-label">Categories</p>
             <ul class="menu-list">
-              <li><a>Accessories</a></li>
-              <li><a>Games</a></li>
-              <li><a>News</a></li>
-              <li><a>Social Media</a></li>
-              <li><a>Utilities</a></li>
+              <li>
+                <a>Accessories</a>
+              </li>
+              <li>
+                <a>Games</a>
+              </li>
+              <li>
+                <a>News</a>
+              </li>
+              <li>
+                <a>Social Media</a>
+              </li>
+              <li>
+                <a>Utilities</a>
+              </li>
             </ul>
           </aside>
         </div>
         <div class="column is-three-quarters">
-          <p>Some Body Stuff</p>
+          <h1 class="title">Featured Widgets</h1>
+          <div class="columns">
+            <WidgetCard v-for="widget in widgets" :key="widget.id" :widget="widget"></WidgetCard>
+          </div>
+          <h1 class="title">Top Rated</h1>
+          <div class="columns">
+            <WidgetCard v-for="widget in widgets" :key="widget.id" :widget="widget"></WidgetCard>
+          </div>
+          <h1 class="title">Newest</h1>
+          <div class="columns">
+            <WidgetCard v-for="widget in widgets" :key="widget.id" :widget="widget"></WidgetCard>
+          </div>
         </div>
       </div>
     </div>
@@ -54,14 +77,28 @@ export default class Marketplace extends Vue {
 
   private widgets: Widget[] = []
   private isActive: boolean = true
+  private url: string = process.env.VUE_APP_HAR + "widgets"
 
   mounted() {
-    axios
-      .get("http://mirabackend-env.zp8gkvhdwt.ca-central-1.elasticbeanstalk.com/getAllWidgets")
-      .then(response => {
-        this.widgets = Marketplace.shuffle(response.data)
-        this.featured = response.data.slice(0, 3)
-      })
+    //axios.get(this.url).then(response => {
+    //this.widgets = Marketplace.shuffle(response.data)
+    //this.featured = response.data.slice(0, 3)
+    //})
+    let widget = {
+      id: "0",
+      title: "Title",
+      author: "Jim",
+      imgUrl: "https://buefy.org/static/img/placeholder-1280x960.png",
+      description: "This is a sample",
+    }
+    let widget2 = {
+      id: "1",
+      title: "Widget 2",
+      author: "Jim",
+      imgUrl: "https://buefy.org/static/img/placeholder-1280x960.png",
+      description: "This is a sample",
+    }
+    this.widgets = [widget, widget2]
   }
 
   static shuffle(a: any) {

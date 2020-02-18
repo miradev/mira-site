@@ -7,59 +7,31 @@
         <div class="column is-4">
           <div class="box">
             <div class="section has-text-centered">
-              <img
-                src="@/assets/logo_square.png"
-                alt="Mira"
-                width="112"
-                height="28"
-              />
+              <img src="@/assets/logo_square.png" alt="Mira" width="112" height="28" />
             </div>
             <div class="field has-text-centered">
-              <h2 class="subtitle is-3">
-                Create an account
-              </h2>
+              <h2 class="subtitle is-3">Create an account</h2>
             </div>
             <div class="field">
-              <label
-                class="label"
-                for="username"
-              >User</label>
+              <label class="label" for="username">User</label>
               <div class="control has-icons-right">
-                <input
-                  id="name"
-                  v-model="username"
-                  class="input"
-                  type="text"
-                  name="username"
-                />
+                <input id="name" v-model="username" class="input" type="text" name="username" />
                 <span class="icon is-right">
                   <i class="fa fa-user"></i>
                 </span>
               </div>
             </div>
             <div class="field">
-              <label
-                class="label"
-                for="email"
-              >Email</label>
+              <label class="label" for="email">Email</label>
               <div class="control has-icons-right">
-                <input
-                  id="email"
-                  v-model="email"
-                  class="input"
-                  type="email"
-                  name="email"
-                />
+                <input id="email" v-model="email" class="input" type="email" name="email" />
                 <span class="icon is-right">
                   <i class="fa fa-at"></i>
                 </span>
               </div>
             </div>
             <div class="field">
-              <label
-                class="label"
-                for="password"
-              >Password</label>
+              <label class="label" for="password">Password</label>
               <div class="control has-icons-right">
                 <input
                   id="password"
@@ -75,10 +47,7 @@
             </div>
             <div class="control field">
               <label class="Checkbox">
-                <input
-                  type="Checkbox"
-                  name="answer"
-                />
+                <input type="Checkbox" v-model="checked" />
                 I would like to be a developer.
               </label>
             </div>
@@ -86,12 +55,7 @@
               <div class="level-left"></div>
               <div class="level-right">
                 <div class="level-item">
-                  <button
-                    class="button is-primary"
-                    @click="register()"
-                  >
-                    Sign In
-                  </button>
+                  <button class="button is-primary" @click="register()">Sign In</button>
                   <p>{{ msg }}</p>
                 </div>
               </div>
@@ -104,50 +68,53 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import Component from 'vue-class-component';
-import axios from 'axios';
-import router from '../router';
-import store from '../store';
+import Vue from "vue"
+import Component from "vue-class-component"
+import axios from "axios"
+import router from "../router"
+import store from "../store"
 
 @Component
 export default class Register extends Vue {
-  private url =
-    'http://mirabackend-env.zp8gkvhdwt.ca-central-1.elasticbeanstalk.com/register';
+  private url = process.env.VUE_APP_HAR + "signup"
 
-  private username: string = '';
+  private username: string = ""
 
-  private email: string = '';
+  private email: string = ""
 
-  private password: string = '';
+  private password: string = ""
 
-  private msg: string = '';
+  private msg: string = ""
 
-  public checked: boolean = false;
+  public checked: boolean = false
 
   register() {
-    const form = new FormData();
-    form.set('username', this.username);
-    form.set('password', this.password);
+    let body = {
+      username: this.username,
+      password: this.password,
+      email: this.email,
+      dev: this.checked,
+    }
     axios
-      .post(this.url, form)
-      .then((response) => {
-        store.commit('login', this.username);
-        this.msg = 'Logged in.';
-        this.$forceUpdate();
-        router.push('/');
+      .post(this.url, body)
+      .then(response => {
+        let user: User = { username: this.username, id: response.id }
+        store.commit("login", user)
+        this.msg = "Logged in."
+        this.$forceUpdate()
+        router.push("/")
       })
-      .catch((error) => {
-        this.msg = 'Incorrect credentials.';
-        this.$forceUpdate();
-      });
+      .catch(error => {
+        this.msg = "Invalid credentials."
+        this.$forceUpdate()
+      })
   }
 
   beforeRouteUpdate(to: any, from: any, next: any) {
     // just use `this`
-    this.$forceUpdate();
-    console.log('Hi');
-    next();
+    this.$forceUpdate()
+    console.log("Hi")
+    next()
   }
 }
 </script>

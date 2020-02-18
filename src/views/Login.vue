@@ -85,7 +85,7 @@ import store from '../store';
 @Component
 export default class Login extends Vue {
   private url =
-    'http://mirabackend-env.zp8gkvhdwt.ca-central-1.elasticbeanstalk.com/login';
+    'http://99.226.211.125:58000/login';
 
   private username: string = '';
 
@@ -94,12 +94,18 @@ export default class Login extends Vue {
   private msg: string = '';
 
   login() {
-    const form = new FormData();
-    form.set('username', this.username);
-    form.set('password', this.password);
+    const body = {
+      username: this.username,
+      password: this.password
+    };
     axios
-      .post(this.url, form)
+      .post(this.url, body)
       .then((response) => {
+        console.log(response);
+        if (response.data.redirect == '/login') {
+          router.push('/login');
+          return;
+        }
         store.commit('login', this.username);
         this.msg = 'Logged in.';
         this.$forceUpdate();

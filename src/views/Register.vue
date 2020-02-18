@@ -78,6 +78,7 @@
                 <input
                   type="Checkbox"
                   name="answer"
+                  v-model="checked"
                 />
                 I would like to be a developer.
               </label>
@@ -113,7 +114,7 @@ import store from '../store';
 @Component
 export default class Register extends Vue {
   private url =
-    'http://mirabackend-env.zp8gkvhdwt.ca-central-1.elasticbeanstalk.com/register';
+    'http://99.226.211.125:58000/login';
 
   private username: string = '';
 
@@ -126,11 +127,15 @@ export default class Register extends Vue {
   public checked: boolean = false;
 
   register() {
-    const form = new FormData();
-    form.set('username', this.username);
-    form.set('password', this.password);
+    console.log(this.checked);
+    const body = {
+      username: this.username,
+      password: this.password,
+      email: this.email,
+      dev: this.checked
+    };
     axios
-      .post(this.url, form)
+      .post(this.url, body)
       .then((response) => {
         store.commit('login', this.username);
         this.msg = 'Logged in.';

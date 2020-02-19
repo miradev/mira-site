@@ -6,10 +6,10 @@
   </div>
 </template>
 <script lang="ts">
-import Vue from 'vue';
-import Component from 'vue-class-component';
-import Navbar from '@/components/Navbar.vue'; // @ is an alias to /src
-import Footer from '@/components/FooterLarge.vue'; // @ is an alias to /src
+import Vue from "vue"
+import Component from "vue-class-component"
+import Navbar from "@/components/Navbar.vue" // @ is an alias to /src
+import Footer from "@/components/FooterLarge.vue" // @ is an alias to /src
 
 @Component({
   components: {

@@ -58,6 +58,7 @@ import Component from "vue-class-component"
 import axios from "axios"
 import router from "../router"
 import store from "../store"
+import { User } from "@/components/User"
 
 @Component
 export default class Login extends Vue {
@@ -82,7 +83,7 @@ export default class Login extends Vue {
           this.$forceUpdate()
           return
         }
-        let user: User = { username: this.username, id: response.id }
+        let user: User = response.data
         store.commit("login", user)
         this.msg = "Logged in."
         this.$forceUpdate()

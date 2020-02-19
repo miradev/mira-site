@@ -1,9 +1,19 @@
-interface Widget {
-  id: string
-  title: string
+export interface Widget {
+  _id: string
+  name: string
   author: string
-  imgUrl: string
+  images: string[]
+  filename: string[]
+  active: boolean
   description: string
 }
 
-export default Widget
+export interface WidgetsResponse {
+  success: boolean
+  widgets: [Widget]
+}
+
+export interface WidgetResponse {
+  success: boolean
+  widget: Widget
+}

@@ -12,11 +12,7 @@
               <div
                 class="tablegrid tablebrowse columns is-multiline is-mobile is-centered is-slick"
               >
-                <WidgetCard
-                  v-for="widget in widgets"
-                  :key="widget.id"
-                  :widget="widget"
-                ></WidgetCard>
+                <WidgetCard v-for="widget in widgets" :key="widget.id" :widget="widget"></WidgetCard>
               </div>
               <div class="paginationurls has-text-centered">
                 <p>
@@ -45,7 +41,7 @@ import Vue from "vue"
 import Component from "vue-class-component"
 import axios from "axios"
 import WidgetCard from "@/components/WidgetCard.vue" // @ is an alias to /src
-import Widget from "@/components/Widget"
+import { Widget } from "@/components/Widget"
 import store from "../store"
 
 @Component({

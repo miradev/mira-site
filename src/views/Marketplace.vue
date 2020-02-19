@@ -39,15 +39,15 @@
         <div class="column is-three-quarters">
           <h1 class="title">Featured Widgets</h1>
           <div class="columns">
-            <WidgetCard v-for="widget in widgets" :key="widget.id" :widget="widget"></WidgetCard>
+            <WidgetCard v-for="widget in widgets" :key="widget._id" :widget="widget"></WidgetCard>
           </div>
           <h1 class="title">Top Rated</h1>
           <div class="columns">
-            <WidgetCard v-for="widget in widgets" :key="widget.id" :widget="widget"></WidgetCard>
+            <WidgetCard v-for="widget in widgets" :key="widget._id" :widget="widget"></WidgetCard>
           </div>
           <h1 class="title">Newest</h1>
           <div class="columns">
-            <WidgetCard v-for="widget in widgets" :key="widget.id" :widget="widget"></WidgetCard>
+            <WidgetCard v-for="widget in widgets" :key="widget._id" :widget="widget"></WidgetCard>
           </div>
         </div>
       </div>
@@ -61,7 +61,7 @@ import Component from "vue-class-component"
 import axios from "axios"
 import WidgetCard from "@/components/WidgetCard.vue"
 import Navbar from "@/components/Navbar.vue"
-import Widget from "@/components/Widget"
+import { Widget, WidgetsResponse } from "@/components/Widget"
 import Footer from "@/components/FooterLarge.vue"
 import store from "../store"
 
@@ -74,31 +74,33 @@ import store from "../store"
 })
 export default class Marketplace extends Vue {
   private featured: Widget[] = []
-
   private widgets: Widget[] = []
   private isActive: boolean = true
   private url: string = process.env.VUE_APP_HAR + "widgets"
 
   mounted() {
-    //axios.get(this.url).then(response => {
-    //this.widgets = Marketplace.shuffle(response.data)
-    //this.featured = response.data.slice(0, 3)
-    //})
-    let widget = {
-      id: "0",
-      title: "Title",
-      author: "Jim",
-      imgUrl: "https://buefy.org/static/img/placeholder-1280x960.png",
-      description: "This is a sample",
-    }
-    let widget2 = {
-      id: "1",
-      title: "Widget 2",
-      author: "Jim",
-      imgUrl: "https://buefy.org/static/img/placeholder-1280x960.png",
-      description: "This is a sample",
-    }
-    this.widgets = [widget, widget2]
+    axios
+      .request<WidgetsResponse>({ url: this.url, method: "get" })
+      .then(response => {
+        const { widgets } = response.data
+        this.widgets = Marketplace.shuffle(widgets)
+        this.featured = widgets.slice(0, 3)
+      })
+    //let widget = {
+    //id: "0",
+    //title: "Title",
+    //author: "Jim",
+    //imgUrl: "https://buefy.org/static/img/placeholder-1280x960.png",
+    //description: "This is a sample",
+    //}
+    //let widget2 = {
+    //id: "1",
+    //title: "Widget 2",
+    //author: "Jim",
+    //imgUrl: "https://buefy.org/static/img/placeholder-1280x960.png",
+    //description: "This is a sample",
+    //}
+    //this.widgets = [widget, widget2]
   }
 
   static shuffle(a: any) {

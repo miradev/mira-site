@@ -97,7 +97,6 @@ export default class Register extends Vue {
     axios
       .post(this.url, body)
       .then(response => {
-        let user: User = { username: this.username, id: response.id }
         this.$forceUpdate()
         router.push("/login")
       })

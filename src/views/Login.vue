@@ -11,6 +11,7 @@
             </div>
             <div class="field has-text-centered">
               <h2 class="subtitle is-3">Log in</h2>
+              <h3 class="subtitle is-4 message">{{this.msg}}</h3>
             </div>
             <div class="field">
               <label class="label" for="username">User</label>
@@ -41,7 +42,6 @@
               <div class="level-right">
                 <div class="level-item">
                   <button class="button is-primary" @click="login()">Sign In</button>
-                  <p>{{ msg }}</p>
                 </div>
               </div>
             </div>
@@ -96,3 +96,9 @@ export default class Login extends Vue {
   }
 }
 </script>
+
+<style lang="stylus">
+.message {
+  color: red !important;
+}
+</style>

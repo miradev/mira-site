@@ -11,6 +11,7 @@
             </div>
             <div class="field has-text-centered">
               <h2 class="subtitle is-3">Create an account</h2>
+              <h3 class="subtitle is-4">{{this.msg}}</h3>
             </div>
             <div class="field">
               <label class="label" for="username">User</label>
@@ -55,7 +56,6 @@
               <div class="level-right">
                 <div class="level-item">
                   <button class="button is-primary" @click="register()">Sign In</button>
-                  <p>{{ msg }}</p>
                 </div>
               </div>
             </div>
@@ -71,7 +71,6 @@ import Vue from "vue"
 import Component from "vue-class-component"
 import axios from "axios"
 import router from "../router"
-import store from "../store"
 
 @Component
 export default class Register extends Vue {
@@ -97,11 +96,17 @@ export default class Register extends Vue {
     axios
       .post(this.url, body)
       .then(response => {
+        let description: string = response.data.description
+        if (description) {
+          this.msg = "User already exists."
+          this.$forceUpdate()
+          return
+        }
         this.$forceUpdate()
         router.push("/login")
       })
       .catch(error => {
-        this.msg = "Invalid credentials."
+        this.msg = "Something bad happened."
         this.$forceUpdate()
       })
   }
@@ -114,3 +119,9 @@ export default class Register extends Vue {
   }
 }
 </script>
+
+<style lang="stylus">
+h3 {
+  color: red !important;
+}
+</style>

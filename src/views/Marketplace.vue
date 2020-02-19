@@ -63,7 +63,6 @@ import WidgetCard from "@/components/WidgetCard.vue"
 import Navbar from "@/components/Navbar.vue"
 import { Widget, WidgetsResponse } from "@/components/Widget"
 import Footer from "@/components/FooterLarge.vue"
-import store from "../store"
 
 @Component({
   components: {

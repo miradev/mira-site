@@ -48,14 +48,17 @@ export default class Navbar extends Vue {
   public name = "navbar"
   private logoutURL = process.env.VUE_APP_HAR + "logout"
   get profile() {
+    if (!store.state.user) store.commit("logout")
     return "/profile/" + store.state.user.username
   }
 
   get authenticated() {
+    if (!store.state.user) store.commit("logout")
     return store.state.authenticated
   }
 
   get username() {
+    if (!store.state.user) store.commit("logout")
     return store.state.user.username
   }
 

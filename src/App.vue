@@ -10,6 +10,7 @@ import Vue from "vue"
 import Component from "vue-class-component"
 import Navbar from "@/components/Navbar.vue" // @ is an alias to /src
 import Footer from "@/components/FooterLarge.vue" // @ is an alias to /src
+import store from "./store"
 
 @Component({
   components: {
@@ -19,7 +20,7 @@ import Footer from "@/components/FooterLarge.vue" // @ is an alias to /src
 })
 export default class App extends Vue {}
 </script>
-<style lang='scss'>
+<style lang="scss">
 // Import Bulma's core
 @import "~bulma/sass/utilities/_all";
 $navbar-breakpoint: 768px;

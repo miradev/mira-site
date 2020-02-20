@@ -40,6 +40,11 @@ export default new Router({
       component: () => import(/* webpackChunkName: 'widget' */ "../views/Profile.vue"),
     },
     {
+      path: "/profile/:id/device/:device",
+      name: "device",
+      component: () => import(/* webpackChunkName: 'widget' */ "../views/Device.vue"),
+    },
+    {
       path: "/*",
       name: "comingsoon",
       component: () => import(/* webpackChunkName: 'comingsoon' */ "../views/ComingSoon.vue"),

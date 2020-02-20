@@ -10,7 +10,7 @@
       </div>
       <div class="column">
         <h1 class="title">My Devices</h1>
-        <button class="button">Device</button>
+        <router-link class="button" :to="deviceLink">Device</router-link>
         <h1 class="title">Saved Widgets</h1>
         <div class="columns">
           <WidgetCard v-for="widget in widgets" :key="widget._id" :widget="widget"></WidgetCard>
@@ -33,6 +33,9 @@ import router from "../router"
   },
 })
 export default class Profile extends Vue {
+  get deviceLink() {
+    return "/profile/" + store.state.user.username + "/device/1"
+  }
   get widgets() {
     return store.state.widgets
   }

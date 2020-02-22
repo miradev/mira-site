@@ -2,48 +2,38 @@
   <div class="container">
     <br />
     <br />
-    <div class="hero center is-fullheight">
-      <div class="columns is-centered">
-        <div class="column is-4">
-          <div class="box">
-            <div class="section has-text-centered">
-              <img src="@/assets/logo_square.png" width="112" height="28" />
-            </div>
-            <div class="field has-text-centered">
-              <h2 class="subtitle is-3">Log in</h2>
-              <h3 class="subtitle is-4 message">{{this.msg}}</h3>
-            </div>
-            <div class="field">
-              <label class="label" for="username">User</label>
-              <div class="control has-icons-right">
-                <input id="name" v-model="username" class="input" type="text" name="username" />
-                <span class="icon is-right">
-                  <i class="fa fa-user"></i>
-                </span>
-              </div>
-            </div>
-            <div class="field">
-              <label class="label" for="password">Password</label>
-              <div class="control has-icons-right">
-                <input
-                  id="password"
-                  v-model="password"
-                  class="input"
-                  type="password"
-                  name="password"
-                />
-                <span class="icon is-right">
-                  <i class="fa fa-key"></i>
-                </span>
-              </div>
-            </div>
-            <div class="level is-mobile">
-              <div class="level-left"></div>
-              <div class="level-right">
-                <div class="level-item">
-                  <button class="button is-primary" @click="login()">Sign In</button>
-                </div>
-              </div>
+    <div class="flex-center">
+      <div class="box is-mid-dark">
+        <div class="has-text-centered">
+          <img src="@/assets/logo_square.png" alt="Mira" width="150" />
+        </div>
+        <div class="field has-text-centered">
+          <h2 class="subtitle is-3">Log in</h2>
+          <h3 class="subtitle is-6 red-text is-mid-dark" v-show="this.msg">{{this.msg}}</h3>
+        </div>
+        <div class="field">
+          <label class="label" for="username">User</label>
+          <div class="control has-icons-right">
+            <input id="name" v-model="username" class="input" type="text" name="username" />
+            <span class="icon is-right">
+              <i class="fa fa-user"></i>
+            </span>
+          </div>
+        </div>
+        <div class="field">
+          <label class="label" for="password">Password</label>
+          <div class="control has-icons-right">
+            <input id="password" v-model="password" class="input" type="password" name="password" />
+            <span class="icon is-right">
+              <i class="fa fa-key"></i>
+            </span>
+          </div>
+        </div>
+        <div class="level is-mobile">
+          <div class="level-left"></div>
+          <div class="level-right">
+            <div class="level-item">
+              <button class="button is-primary" @click="login()">Sign In</button>
             </div>
           </div>
         </div>
@@ -97,8 +87,8 @@ export default class Login extends Vue {
 }
 </script>
 
-<style lang="stylus">
-.message {
-  color: red !important;
+<style lang="stylus" scoped>
+.box {
+  width: 450px;
 }
 </style>

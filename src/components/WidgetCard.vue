@@ -17,9 +17,6 @@
         </router-link>
       </div>
     </div>
-    <!--<footer class="card-footer">-->
-    <!--<b-rate disabled icon-pack="fas" size="is-small" class="card-footer-item"></b-rate>-->
-    <!--</footer>-->
   </div>
 </template>
 

@@ -1,5 +1,5 @@
 <template>
-  <section class="section">
+  <section class="section is-dark">
     <div class="container">
       <div class="columns">
         <div class="column is-2">
@@ -14,21 +14,17 @@
             &nbsp;&nbsp;By:{{ widget.author }}
           </h4>
           <h3 class="subtitle">{{ widget.description }}</h3>
-          <div class="columns">
-            <div class="column">
-              <button
-                class="button"
-                :class="saved ? 'is-danger' : 'is-success' "
-                @click="saveWidget()"
-                v-show="$store.state.authenticated"
-              >{{text}}</button>
-              <button
-                class="button is-success"
-                v-show="!$store.state.authenticated"
-                disabled
-              >Login to Save</button>
-            </div>
-          </div>
+          <button
+            class="button"
+            :class="saved ? 'is-danger' : 'is-success' "
+            @click="saveWidget()"
+            v-show="$store.state.authenticated"
+          >{{text}}</button>
+          <button
+            class="button is-success"
+            v-show="!$store.state.authenticated"
+            disabled
+          >Login to Save</button>
         </div>
       </div>
     </div>
@@ -107,5 +103,9 @@ export default class WidgetPage extends Vue {
 
 button.button {
   margin-right: 1rem;
+}
+
+section {
+  height: 100vh;
 }
 </style>

@@ -14,12 +14,28 @@
       </div>
       <div class="media-right">
         <div class="right-justify">
-          <button class="button right">View</button>
-          <button class="button right">Added</button>
+          <router-link :to="'/widget/' + widget._id" class="button is-info">View</router-link>
+          <button
+            class="button"
+            :class="added ? 'is-danger' : 'is-success' "
+            @click="addWidget()"
+          >{{addedText}}</button>
         </div>
-        <strong>Position</strong>
-        <ConfigInput placeholder="0 to 255" label="x:" type="num" style="width:140px"></ConfigInput>
-        <ConfigInput placeholder="0 to 255" label="y:" type="num" style="width:140px"></ConfigInput>
+        <strong class="subtitle">Position</strong>
+        <ConfigInput
+          :disabled="!added"
+          placeholder="0 to 255"
+          label="x:"
+          type="num"
+          style="width:150px"
+        ></ConfigInput>
+        <ConfigInput
+          :disabled="!added"
+          placeholder="0 to 255"
+          label="y:"
+          type="num"
+          style="width:150px"
+        ></ConfigInput>
       </div>
     </div>
     <br />
@@ -28,8 +44,8 @@
         <strong>Additional Configs</strong>
       </div>
       <strong>Coordinates</strong>
-      <ConfigInput placeholder="123" help="help" label="longitude" type="num"></ConfigInput>
-      <ConfigInput placeholder="123" help="help" label="latitude" type="num"></ConfigInput>
+      <ConfigInput :disabled="!added" placeholder="123" help="help" label="longitude" type="num"></ConfigInput>
+      <ConfigInput :disabled="!added" placeholder="123" help="help" label="latitude" type="num"></ConfigInput>
     </b-collapse>
   </div>
 </template>
@@ -50,6 +66,12 @@ import { Widget } from "@/components/Widget"
 export default class ConfigureWidget extends Vue {
   @Prop() private widget!: Widget
   public isOpen: boolean = false
+  public added: boolean = false
+  public addedText: string = "Add"
+  public addWidget() {
+    this.added = !this.added
+    this.addedText = this.added ? "Remove" : "Add"
+  }
 }
 </script>
 
@@ -66,6 +88,6 @@ export default class ConfigureWidget extends Vue {
 
 .right-justify {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
 }
 </style>

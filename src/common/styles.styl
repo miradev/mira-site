@@ -6,11 +6,28 @@ $mid-blue = #2274A5
 $cream = #E7DFC6
 $off-white = #E9F1F7
 
+body, html
+  height 100%
+  background-color $dark-gray !important
+
 .is-dark
-  background-color $dark-gray
+  background-color $dark-gray !important
 
-.text-white
-  color: white !important
+.is-mid-dark
+  background-color $mid-gray !important
 
-.bg-white
-  background-color white
+.is-white
+  background-color $off-white !important
+
+.is-white h1, .is-white p
+  color black !important
+
+.red-text 
+  color red !important
+
+.title, .subtitle, .heading, .menu-label, .menu-list a, .control-label, .label 
+  color white
+
+.flex-center
+  display flex
+  justify-content center

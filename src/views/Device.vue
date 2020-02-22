@@ -1,6 +1,6 @@
 <template>
-  <section class="section">
-    <div class="level">
+  <div class="wrapper">
+    <nav class="level">
       <div class="level-left">
         <div class="level-item has-text-centered">
           <div>
@@ -17,12 +17,14 @@
           <button class="button">Save Changes</button>
         </div>
       </div>
-    </div>
-    <h1 class="title">Saved Widgets</h1>
-    <div class="columns">
-      <ConfigureWidget v-for="widget in widgets" :key="widget._id" :widget="widget"></ConfigureWidget>
-    </div>
-  </section>
+    </nav>
+    <section class="section is-dark">
+      <h1 class="title">Saved Widgets</h1>
+      <div class="columns">
+        <ConfigureWidget v-for="widget in widgets" :key="widget._id" :widget="widget"></ConfigureWidget>
+      </div>
+    </section>
+  </div>
 </template>
 
 <script lang="ts">
@@ -47,8 +49,17 @@ export default class Profile extends Vue {
 }
 </script>
 
-<style lang="stylus">
+<style lang="stylus" scoped>
 .is-online {
   margin: 0 0 0 5px;
+}
+
+.wrapper {
+  background-color: $mid-gray;
+}
+
+.level {
+  display: flex;
+  justify-content: space-between;
 }
 </style>

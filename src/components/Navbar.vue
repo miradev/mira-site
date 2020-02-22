@@ -6,9 +6,8 @@
       </b-navbar-item>
     </template>
     <template slot="start">
-      <b-navbar-item tag="router-link" :to="{ path: '/about' }">Features</b-navbar-item>
       <b-navbar-item tag="router-link" :to="{ path: '/marketplace' }">Marketplace</b-navbar-item>
-      <b-navbar-item tag="router-link" :to="{ path: '/docs' }">Developer</b-navbar-item>
+      <b-navbar-item href="https://github.com/miradev/mira-ui-widget-template-vue">Developer</b-navbar-item>
     </template>
 
     <template slot="end">

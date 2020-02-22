@@ -1,5 +1,5 @@
 <template>
-  <section class="section">
+  <section class="section is-dark">
     <div class="columns">
       <div class="column is-one-quarter">
         <h1 class="title">Profile</h1>
@@ -44,6 +44,3 @@ export default class Profile extends Vue {
   }
 }
 </script>
-
-<style>
-</style>

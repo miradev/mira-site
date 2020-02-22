@@ -1,5 +1,5 @@
 <template>
-  <section class="section">
+  <section class="section is-dark">
     <div class="container is-fluid">
       <div class="columns">
         <div class="column is-one-quarter">

@@ -21,10 +21,10 @@ import store from "./store"
 export default class App extends Vue {}
 </script>
 <style lang="scss">
-// Import Bulma's core
+/* Import Bulma's core*/
 @import "~bulma/sass/utilities/_all";
 $navbar-breakpoint: 768px;
-// Import Bulma and Buefy styles
+/* Import Bulma and Buefy styles*/
 @import "~bulma";
 @import "~buefy/src/scss/buefy";
 </style>

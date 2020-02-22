@@ -2,10 +2,16 @@
   <div class="field is-expanded">
     <div class="field has-addons">
       <p class="control">
-        <a class="button is-static">{{label}}</a>
+        <a class="button is-static" :disabled="disabled">{{label}}</a>
       </p>
       <p class="control is-expanded">
-        <input class="input short" :style="style" :type="type" :placeholder="placeholder" />
+        <input
+          :disabled="disabled"
+          class="input short"
+          :style="style"
+          :type="type"
+          :placeholder="placeholder"
+        />
       </p>
     </div>
   </div>
@@ -24,6 +30,7 @@ export default class ConfigInput extends Vue {
   @Prop() private label!: string
   @Prop() private type!: string
   @Prop() private style!: string
+  @Prop() private disabled!: boolean
 }
 </script>
 

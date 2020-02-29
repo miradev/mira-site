@@ -34,17 +34,22 @@ import Component from "vue-class-component"
 import ConfigureWidget from "@/components/ConfigureWidget.vue"
 import store from "../store"
 import router from "../router"
+import { UserTags, IDevice } from "@/components/Types"
+
 @Component({
   components: {
     ConfigureWidget,
   },
 })
 export default class Profile extends Vue {
+  get device() {
+    return store.state.devices
+  }
   get widgets() {
     return store.state.widgets
   }
   get isDeveloper() {
-    return store.state.user.tags.includes("dev")
+    return store.state.user.tags.includes(UserTags.DEVELOPER)
   }
 }
 </script>

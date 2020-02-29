@@ -1,5 +1,5 @@
 <template>
-  <b-navbar>
+  <b-navbar class="bottom-shadow">
     <template slot="brand">
       <b-navbar-item tag="router-link" :to="{ path: '/' }">
         <LogoSmall />
@@ -15,7 +15,7 @@
       <b-navbar-item tag="div" v-show="authenticated">
         <div class="buttons">
           <router-link class="button is-primary" :to="profile">Hello {{ username }}</router-link>
-          <button class="button is-alert" @click="logout()">Log Out</button>
+          <button class="button is-danger" @click="logout()">Log Out</button>
         </div>
       </b-navbar-item>
 
@@ -62,17 +62,18 @@ export default class Navbar extends Vue {
   }
 
   logout() {
-    axios
-      .get(this.logoutURL)
-      .then(response => {
-        console.log(response)
-        store.commit("logout")
-        this.$forceUpdate()
-      })
-      .catch(error => {
-        console.log(`Error: ${error}`)
-        this.$forceUpdate()
-      })
+    store.commit("logout")
+    //axios
+    //.get(this.logoutURL)
+    //.then(response => {
+    //console.log(response)
+    //store.commit("logout")
+    //this.$forceUpdate()
+    //})
+    //.catch(error => {
+    //console.log(`Error: ${error}`)
+    //this.$forceUpdate()
+    //})
   }
 
   beforeRouteUpdate(to: any, from: any, next: any) {

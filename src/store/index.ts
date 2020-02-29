@@ -1,15 +1,14 @@
 import Vue from "vue"
 import Vuex from "vuex"
-import { User } from "@/components/User"
-import { Widget } from "@/components/Widget"
+import { IUser, IWidget } from "@/components/Types"
 import VuexPersistence from "vuex-persist"
 
 Vue.use(Vuex)
 
 export interface State {
   authenticated: boolean
-  user: User
-  widgets: Widget[]
+  user: IUser
+  widgets: IWidget[]
 }
 
 const vuexLocal = new VuexPersistence<State>({
@@ -18,29 +17,29 @@ const vuexLocal = new VuexPersistence<State>({
 
 export default new Vuex.Store<State>({
   mutations: {
-    login(state: State, user: User) {
+    login(state: State, user: IUser) {
       state.user = user
       state.authenticated = true
     },
     logout(state: State) {
       state.user = {
         username: "",
-        _id: "",
         email: "",
         tags: [],
         hash: "",
+        devices: [],
       }
       state.authenticated = false
       state.widgets = []
     },
-    saveWidget(state: State, widget: Widget) {
+    saveWidget(state: State, widget: IWidget) {
       if (!state.widgets) {
         state.widgets = [widget]
       } else {
         state.widgets.push(widget)
       }
     },
-    removeWidget(state: State, widget: Widget) {
+    removeWidget(state: State, widget: IWidget) {
       state.widgets = state.widgets.filter(w => w._id != widget._id)
     },
   },

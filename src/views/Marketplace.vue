@@ -86,18 +86,22 @@ export default class Marketplace extends Vue {
         this.featured = widgets.slice(0, 3)
       })
     //let widget = {
-    //id: "0",
-    //title: "Title",
+    //_id: "0",
+    //name: "Title",
     //author: "Jim",
-    //imgUrl: "https://buefy.org/static/img/placeholder-1280x960.png",
+    //images: ["https://buefy.org/static/img/placeholder-1280x960.png"],
     //description: "This is a sample",
+    //filename: ["Title"],
+    //active: true,
     //}
     //let widget2 = {
-    //id: "1",
-    //title: "Widget 2",
+    //_id: "1",
+    //name: "Widget 2",
     //author: "Jim",
-    //imgUrl: "https://buefy.org/static/img/placeholder-1280x960.png",
-    //description: "This is a sample",
+    //images: ["https://buefy.org/static/img/placeholder-1280x960.png"],
+    //description: " is a sample",
+    //filename: ["WIdget 2"],
+    //active: true,
     //}
     //this.widgets = [widget, widget2]
   }
@@ -113,24 +117,4 @@ export default class Marketplace extends Vue {
 }
 </script>
 
-<style lang="stylus" scoped>
-section {
-  background-color: white !important;
-}
-
-.highlight {
-  color: #AFEDFA !important;
-}
-
-.text-white {
-  color: white;
-}
-
-.is-dark {
-  background-color: #17171D;
-}
-
-.bg-white {
-  background-color: white;
-}
-</style>
+<style lang="stylus" ></style>

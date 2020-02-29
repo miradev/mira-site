@@ -1,20 +1,24 @@
 <template>
-<footer class="footer is-dark">
-  <div class="content has-text-centered">
-    <p>
-      Made by the <strong>Mira Team</strong> in Waterloo, Canada, 2020
-    </p>
-  </div>
-</footer>
+  <footer class="footer is-dark inner-shadow">
+    <div class="content has-text-centered">
+      <p>
+        Made by the
+        <strong>Mira Team</strong> in Waterloo, Canada, 2020
+      </p>
+    </div>
+  </footer>
 </template>
 
 <script>
-export default {};
+export default {}
 </script>
 
 <style lang="stylus" scoped>
-p
-  color white !important
-strong
-  color white !important
+p {
+  color: white !important;
+}
+
+strong {
+  color: white !important;
+}
 </style>

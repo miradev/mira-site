@@ -1,45 +1,47 @@
 <template>
-  <div class="container">
-    <br />
-    <br />
-    <div class="flex-center">
-      <div class="box is-mid-dark">
-        <div class="has-text-centered">
-          <img src="@/assets/logo_square.png" alt="Mira" width="150" />
-        </div>
-        <div class="field has-text-centered">
-          <h2 class="subtitle is-3">Log in</h2>
-          <h3 class="subtitle is-6 red-text is-mid-dark" v-show="this.msg">{{this.msg}}</h3>
-        </div>
-        <div class="field">
-          <label class="label" for="username">User</label>
-          <div class="control has-icons-right">
-            <input id="name" v-model="username" class="input" type="text" name="username" />
-            <span class="icon is-right">
-              <i class="fa fa-user"></i>
-            </span>
+  <section class="section">
+    <div class="container">
+      <br />
+      <br />
+      <div class="flex-center">
+        <div class="box is-mid-dark">
+          <div class="has-text-centered">
+            <img src="@/assets/logo_square.png" alt="Mira" width="150" />
           </div>
-        </div>
-        <div class="field">
-          <label class="label" for="password">Password</label>
-          <div class="control has-icons-right">
-            <input id="password" v-model="password" class="input" type="password" name="password" />
-            <span class="icon is-right">
-              <i class="fa fa-key"></i>
-            </span>
+          <div class="field has-text-centered">
+            <h2 class="subtitle is-3">Log in</h2>
+            <h3 class="subtitle is-6 red-text is-mid-dark" v-show="this.msg">{{this.msg}}</h3>
           </div>
-        </div>
-        <div class="level is-mobile">
-          <div class="level-left"></div>
-          <div class="level-right">
-            <div class="level-item">
-              <button class="button is-primary" @click="login()">Sign In</button>
+          <div class="field">
+            <label class="label" for="username">User</label>
+            <div class="control has-icons-right">
+              <input id="name" v-model="username" class="input" type="text" name="username" />
+              <span class="icon is-right">
+                <i class="fa fa-user"></i>
+              </span>
+            </div>
+          </div>
+          <div class="field">
+            <label class="label" for="password">Password</label>
+            <div class="control has-icons-right">
+              <input id="password" v-model="password" class="input" type="password" name="password" />
+              <span class="icon is-right">
+                <i class="fa fa-key"></i>
+              </span>
+            </div>
+          </div>
+          <div class="level is-mobile">
+            <div class="level-left"></div>
+            <div class="level-right">
+              <div class="level-item">
+                <button class="button is-primary" @click="login()">Sign In</button>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
+  </section>
 </template>
 
 <script lang="ts">
@@ -48,7 +50,7 @@ import Component from "vue-class-component"
 import axios from "axios"
 import router from "../router"
 import store from "../store"
-import { User } from "@/components/User"
+import { IUser } from "@/components/Types"
 
 @Component
 export default class Login extends Vue {
@@ -65,6 +67,12 @@ export default class Login extends Vue {
       username: this.username,
       password: this.password,
     }
+    //let user = { _id: "pp", username: "pp", email: "pp", tags: ["dev"], hash: "pp" }
+
+    //store.commit("login", user)
+
+    //this.$forceUpdate()
+    //router.push("/")
     axios
       .post(this.url, body)
       .then(response => {
@@ -73,7 +81,7 @@ export default class Login extends Vue {
           this.$forceUpdate()
           return
         }
-        let user: User = response.data
+        let user: IUser = response.data
         store.commit("login", user)
         this.msg = "Logged in."
         this.$forceUpdate()

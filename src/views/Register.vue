@@ -1,59 +1,61 @@
 <template>
-  <div class="container">
-    <br />
-    <br />
-    <div class="flex-center">
-      <div class="box is-mid-dark">
-        <div class="has-text-centered">
-          <img src="@/assets/logo_square.png" alt="Mira" width="150" />
-        </div>
-        <div class="field has-text-centered">
-          <h2 class="subtitle is-3">Create an account</h2>
-          <h3 class="subtitle is-6 red-text is-mid-dark">{{this.msg}}</h3>
-        </div>
-        <div class="field">
-          <label class="label" for="username">User</label>
-          <div class="control has-icons-right">
-            <input id="name" v-model="username" class="input" type="text" name="username" />
-            <span class="icon is-right">
-              <i class="fa fa-user"></i>
-            </span>
+  <section class="section">
+    <div class="container">
+      <br />
+      <br />
+      <div class="flex-center">
+        <div class="box is-mid-dark">
+          <div class="has-text-centered">
+            <img src="@/assets/logo_square.png" alt="Mira" width="150" />
           </div>
-        </div>
-        <div class="field">
-          <label class="label" for="email">Email</label>
-          <div class="control has-icons-right">
-            <input id="email" v-model="email" class="input" type="email" name="email" />
-            <span class="icon is-right">
-              <i class="fa fa-at"></i>
-            </span>
+          <div class="field has-text-centered">
+            <h2 class="subtitle is-3">Create an account</h2>
+            <h3 class="subtitle is-6 red-text is-mid-dark">{{ this.msg }}</h3>
           </div>
-        </div>
-        <div class="field">
-          <label class="label" for="password">Password</label>
-          <div class="control has-icons-right">
-            <input id="password" v-model="password" class="input" type="password" name="password" />
-            <span class="icon is-right">
-              <i class="fa fa-key"></i>
-            </span>
+          <div class="field">
+            <label class="label" for="username">User</label>
+            <div class="control has-icons-right">
+              <input id="name" v-model="username" class="input" type="text" name="username" />
+              <span class="icon is-right">
+                <i class="fa fa-user"></i>
+              </span>
+            </div>
           </div>
-        </div>
-        <div class="control field">
-          <label class="Checkbox">
-            <b-checkbox v-model="checked">I would like to be a developer: {{checked}}</b-checkbox>
-          </label>
-        </div>
-        <div class="level is-mobile">
-          <div class="level-left"></div>
-          <div class="level-right">
-            <div class="level-item">
-              <button class="button is-primary" @click="register()">Sign In</button>
+          <div class="field">
+            <label class="label" for="email">Email</label>
+            <div class="control has-icons-right">
+              <input id="email" v-model="email" class="input" type="email" name="email" />
+              <span class="icon is-right">
+                <i class="fa fa-at"></i>
+              </span>
+            </div>
+          </div>
+          <div class="field">
+            <label class="label" for="password">Password</label>
+            <div class="control has-icons-right">
+              <input id="password" v-model="password" class="input" type="password" name="password" />
+              <span class="icon is-right">
+                <i class="fa fa-key"></i>
+              </span>
+            </div>
+          </div>
+          <div class="control field">
+            <label class="Checkbox">
+              <b-checkbox v-model="checked">I would like to be a developer: {{ checked }}</b-checkbox>
+            </label>
+          </div>
+          <div class="level is-mobile">
+            <div class="level-left"></div>
+            <div class="level-right">
+              <div class="level-item">
+                <button class="button is-primary" @click="register()">Sign In</button>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
+  </section>
 </template>
 
 <script lang="ts">

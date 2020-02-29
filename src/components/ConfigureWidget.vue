@@ -43,7 +43,7 @@
       <div slot="trigger" class="panel-heading" role="button" aria-controls="contentIdForA11y2">
         <strong>Additional Configs</strong>
       </div>
-      <strong>Coordinates</strong>
+      <strong class="subtitle">Position</strong>
       <ConfigInput :disabled="!added" placeholder="123" help="help" label="longitude" type="num"></ConfigInput>
       <ConfigInput :disabled="!added" placeholder="123" help="help" label="latitude" type="num"></ConfigInput>
     </b-collapse>

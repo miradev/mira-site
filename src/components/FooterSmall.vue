@@ -1,5 +1,5 @@
 <template>
-  <footer class="footer">
+  <footer class="footer top-shadow">
     <div class="footer-foot">
       <div class="container">
         <div class="columns is-mobile">
@@ -61,6 +61,3 @@
 <script>
 export default {}
 </script>
-
-<style>
-</style>

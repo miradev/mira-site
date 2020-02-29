@@ -16,10 +16,10 @@
           <h3 class="subtitle">{{ widget.description }}</h3>
           <button
             class="button"
-            :class="saved ? 'is-danger' : 'is-success' "
+            :class="saved ? 'is-danger' : 'is-success'"
             @click="saveWidget()"
             v-show="$store.state.authenticated"
-          >{{text}}</button>
+          >{{ text }}</button>
           <button
             class="button is-success"
             v-show="!$store.state.authenticated"
@@ -72,12 +72,25 @@ export default class WidgetPage extends Vue {
 
   private mounted() {
     const id = this.$route.params.id
+    //this.widget = {
+    //_id: "0",
+    //name: "Title",
+    //author: "Jim",
+    //images: ["https://buefy.org/static/img/placeholder-1280x960.png"],
+    //description: "This is a sample",
+    //filename: ["Title"],
+    //active: true,
+    //}
+    //this.$forceUpdate()
     axios
       .request<WidgetResponse>({ url: this.url + id, method: "get" })
       .then(response => {
         const { widget } = response.data
         this.widget = widget
         this.$forceUpdate()
+      })
+      .catch(err => {
+        console.log("Bad:" + err)
       })
   }
   public saveWidget() {

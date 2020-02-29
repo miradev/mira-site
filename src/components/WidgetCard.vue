@@ -1,5 +1,5 @@
 <template>
-  <div class="card column is-one-quarter">
+  <div class="card is-mid-dark column is-one-quarter">
     <div class="card-image">
       <figure class="image is-4by3">
         <router-link :to="'/widget/' + widget._id" class>
@@ -25,16 +25,17 @@ import Vue from "vue"
 import Component from "vue-class-component"
 import { Prop } from "vue-property-decorator"
 
-import { Widget } from "@/components/Widget"
+import { IWidget } from "@/components/Types"
 
 @Component
 export default class WidgetCard extends Vue {
-  @Prop() private widget!: Widget
+  @Prop() private widget!: IWidget
 }
 </script>
 
 <style lang="stylus" scoped>
 .card {
   margin-right: 1rem;
+  border-radius: 6px;
 }
 </style>

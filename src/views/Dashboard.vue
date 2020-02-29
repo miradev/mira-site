@@ -1,9 +1,9 @@
 <template>
-  <section class="section is-dark is-fullheight top-paddingless left-paddingless">
+  <section class="section is-dev is-fullheight top-paddingless left-paddingless">
     <div class="columns is-fullheight">
       <aside class="menu column is-one-quarter is-left-menu">
         <div class="profile-header">
-          <h1 class="title">Profile</h1>
+          <h1 class="title">Developer Dashboard</h1>
           <b-button :type="editMode ? 'is-success' : 'is-warning'" @click="toggleConfig">
             {{
             editText
@@ -24,29 +24,17 @@
         <div class="level">
           <div class="level-left">
             <div class="level-item">
-              <h1 class="title">My Devices ({{devices.length}})</h1>
+              <h1 class="title">My Widgets (0)</h1>
             </div>
           </div>
           <div class="level-left">
             <div class="level-item">
-              <b-button
-                tag="router-link"
-                :to="dashboardURL"
-                v-show="isDeveloper"
-                type="is-link"
-              >Switch to Developer Dashboard View</b-button>
+              <b-button tag="router-link" :to="profileURL" type="is-link">Back to Profile View</b-button>
             </div>
           </div>
         </div>
-        <DeviceCard v-for="device in devices" :key="device._id" :device="device"></DeviceCard>
-        <router-link class="button" :to="createDeviceURL">Register New Device</router-link>
-        <br />
-        <br />
-        <br />
-        <h1 class="title">Saved Widgets ({{widgets.length}})</h1>
-        <div class="columns">
-          <WidgetCard v-for="widget in widgets" :key="widget._id" :widget="widget"></WidgetCard>
-        </div>
+        <p class="subtitle" v-show="widgets">No widgets...</p>
+        <UploadBox></UploadBox>
       </div>
     </div>
   </section>
@@ -57,61 +45,30 @@ import Vue from "vue"
 import axios from "axios"
 import Component from "vue-class-component"
 import WidgetCard from "@/components/WidgetCard.vue"
-import DeviceCard from "@/components/DeviceCard.vue"
-import { UserTags, IDevice } from "@/components/Types"
+import { UserTags } from "@/components/Types"
 import store from "../store"
 import router from "../router"
+import UploadBox from "@/components/UploadBox.vue"
+
 @Component({
   components: {
+    UploadBox,
     WidgetCard,
-    DeviceCard,
   },
 })
 export default class Profile extends Vue {
   public editMode: Boolean = false
   public editText: String = "Edit"
 
-  get dashboardURL() {
-    return "/dashboard/" + store.state.user.username
+  get profileURL() {
+    return "/profile/" + store.state.user.username
   }
-
-  get createDeviceURL() {
-    return "/registerDevice"
-  }
-
   get widgets() {
     return store.state.widgets
   }
-
-  get devices() {
-    return [
-      {
-        _id: "deviceid",
-        name: "My First Mirror",
-        config: {
-          location: "Upstairs Bathroom",
-        },
-        connection: {
-          address: "192.168.0.1",
-          authToken: "Some Token",
-        },
-        deviceWidgets: [
-          {
-            widgetId: "mira_clock",
-            config: {
-              latitude: "43.6532",
-              longitude: "79.3832",
-            },
-          },
-        ],
-      },
-    ]
-  }
-
   get isDeveloper() {
     return store.state.user.tags.includes(UserTags.DEVELOPER)
   }
-
   toggleConfig() {
     this.editMode = !this.editMode
     this.editText = this.editMode ? "Save" : "Edit"
@@ -145,5 +102,9 @@ export default class Profile extends Vue {
 
 .columns >>> .has-left-menu {
   padding-top: 30px;
+}
+
+.is-dev {
+  background-color: #132D45;
 }
 </style>

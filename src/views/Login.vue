@@ -74,7 +74,7 @@ export default class Login extends Vue {
     //this.$forceUpdate()
     //router.push("/")
     axios
-      .post(this.url, body)
+      .post(this.url, body, { withCredentials: true })
       .then(response => {
         if (response.data.redirect == "/login") {
           this.msg = "Incorrect credentials."

@@ -43,7 +43,7 @@ import { UserTags, IDevice } from "@/components/Types"
 })
 export default class Profile extends Vue {
   get device() {
-    return store.state.devices
+    return store.state.user.devices
   }
   get widgets() {
     return store.state.widgets

@@ -20,6 +20,7 @@ export interface IWidget {
 }
 
 export interface IUser {
+  _id: string
   username: string
   email: string
   tags: UserTags[]

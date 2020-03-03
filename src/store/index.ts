@@ -23,6 +23,7 @@ export default new Vuex.Store<State>({
     },
     logout(state: State) {
       state.user = {
+        _id: "",
         username: "",
         email: "",
         tags: [],

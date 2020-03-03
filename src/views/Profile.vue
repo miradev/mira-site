@@ -4,7 +4,11 @@
       <aside class="menu column is-one-quarter is-left-menu">
         <div class="profile-header">
           <h1 class="title">Profile</h1>
-          <b-button :type="editMode ? 'is-success' : 'is-warning'" @click="toggleConfig">
+          <b-button
+            :type="editMode ? 'is-success' : 'is-warning'"
+            @click="toggleConfig"
+            icon-left="edit"
+          >
             {{
             editText
             }}
@@ -18,7 +22,7 @@
         </b-field>
         <br />
         <br />
-        <b-button type="is-danger">Log Out</b-button>
+        <b-button type="is-danger" icon-left="sign-out-alt">Log Out</b-button>
       </aside>
       <div class="column has-left-menu">
         <div class="level">
@@ -84,28 +88,29 @@ export default class Profile extends Vue {
   }
 
   get devices() {
-    return [
-      {
-        _id: "deviceid",
-        name: "My First Mirror",
-        config: {
-          location: "Upstairs Bathroom",
-        },
-        connection: {
-          address: "192.168.0.1",
-          authToken: "Some Token",
-        },
-        deviceWidgets: [
-          {
-            widgetId: "mira_clock",
-            config: {
-              latitude: "43.6532",
-              longitude: "79.3832",
-            },
-          },
-        ],
-      },
-    ]
+    return store.state.user.devices ?? []
+    //return [
+    //{
+    //_id: "deviceid",
+    //name: "My First Mirror",
+    //config: {
+    //location: "Upstairs Bathroom",
+    //},
+    //connection: {
+    //address: "192.168.0.1",
+    //authToken: "Some Token",
+    //},
+    //deviceWidgets: [
+    //{
+    //widgetId: "mira_clock",
+    //config: {
+    //latitude: "43.6532",
+    //longitude: "79.3832",
+    //},
+    //},
+    //],
+    //},
+    //]
   }
 
   get isDeveloper() {

@@ -1,55 +1,110 @@
 <template>
-  <section class="section is-dark is-fullheight top-paddingless left-paddingless">
-    <div class="columns is-fullheight">
-      <aside class="menu column is-one-quarter is-left-menu">
-        <div class="profile-header">
-          <h1 class="title">Profile</h1>
-          <b-button
-            :type="editMode ? 'is-success' : 'is-warning'"
-            @click="toggleConfig"
-            icon-left="edit"
-          >
-            {{
-            editText
-            }}
-          </b-button>
+  <section class="section">
+    <div class="container">
+      <div class="columns">
+        <!--Side Bar-->
+        <div class="column is-3">
+          <aside class="menu is-hidden-mobile">
+            <p class="menu-label">General</p>
+            <ul class="menu-list">
+              <li>
+                <a :class="getClass(0)" @click="currentPage = 0">Profile</a>
+              </li>
+              <li>
+                <a :class="getClass(1)" @click="currentPage = 1">My Devices</a>
+              </li>
+              <li>
+                <a :class="getClass(2)" @click="currentPage = 2">Register New Device</a>
+              </li>
+              <li>
+                <a :class="getClass(3)" @click="currentPage = 3">Favourite Widgets</a>
+              </li>
+              <li>
+                <a :class="getClass(4)" @click="currentPage = 4">Settings</a>
+              </li>
+            </ul>
+            <p class="menu-label">Developer</p>
+            <ul class="menu-list">
+              <li>
+                <a :class="getClass(5)" @click="currentPage = 5">Dashboard</a>
+              </li>
+              <li>
+                <a :class="getClass(6)" @click="currentPage = 6">My Widgets</a>
+              </li>
+              <li>
+                <a :class="getClass(7)" @click="currentPage = 7">Upload New Widget</a>
+              </li>
+            </ul>
+          </aside>
         </div>
-        <b-field label="Username">
-          <b-input type="text" :value="$store.state.user.username" :disabled="!editMode"></b-input>
-        </b-field>
-        <b-field label="Email">
-          <b-input type="email" :value="$store.state.user.email" :disabled="!editMode"></b-input>
-        </b-field>
-        <br />
-        <br />
-        <b-button type="is-danger" icon-left="sign-out-alt">Log Out</b-button>
-      </aside>
-      <div class="column has-left-menu">
-        <div class="level">
-          <div class="level-left">
-            <div class="level-item">
-              <h1 class="title">My Devices ({{devices.length}})</h1>
+        <!-- Content -->
+
+        <MyDevices v-if="isActive(1)"></MyDevices>
+        <RegisterDevice v-else-if="isActive(2)"></RegisterDevice>
+        <FavouriteWidgets v-else-if="isActive(3)"></FavouriteWidgets>
+
+        <div v-else class="column is-9">
+          <section class="hero is-info welcome is-small">
+            <div class="hero-body">
+              <div class="container">
+                <h1 class="title">Hello, {{$store.state.user.username}}</h1>
+                <h2 class="subtitle">I hope you are having a great day!</h2>
+              </div>
             </div>
-          </div>
-          <div class="level-left">
-            <div class="level-item">
-              <b-button
-                tag="router-link"
-                :to="dashboardURL"
-                v-show="isDeveloper"
-                type="is-link"
-              >Switch to Developer Dashboard View</b-button>
+          </section>
+          <br />
+
+          <h1 class="title">Device Status</h1>
+          <h2 v-if="$store.state.user.devices.length == 0">
+            Oops. It looks like you have no devices registered. Register one
+            <router-link to="/registerDevice">here</router-link>.
+          </h2>
+          <section v-else class="info-tiles">
+            <div class="tile is-ancestor has-text-centered">
+              <router-link
+                :to="'/device/' + device"
+                class="tile is-parent"
+                v-for="device in $store.state.user.devices.slice(0, 3)"
+                :key="device"
+              >
+                <article class="tile is-child box">
+                  <p class="title">{{device}}</p>
+                  <p class="subtitle">Online</p>
+                </article>
+              </router-link>
+              <a @click="currentPage = 1" class="tile is-parent">
+                <article class="tile is-child box">
+                  <p class="title is-link">See All Devices</p>
+                </article>
+              </a>
             </div>
-          </div>
-        </div>
-        <DeviceCard v-for="device in devices" :key="device._id" :device="device"></DeviceCard>
-        <router-link class="button" :to="createDeviceURL">Register New Device</router-link>
-        <br />
-        <br />
-        <br />
-        <h1 class="title">Saved Widgets ({{widgets.length}})</h1>
-        <div class="columns">
-          <WidgetCard v-for="widget in widgets" :key="widget._id" :widget="widget"></WidgetCard>
+          </section>
+          <br />
+
+          <h1 class="title">Widgets you may like</h1>
+          <section class="info-tiles">
+            <div class="tile is-ancestor has-text-centered">
+              <div class="tile is-parent">
+                <article class="tile is-child box">
+                  <p class="title">439k</p>
+                  <p class="subtitle">Users</p>
+                </article>
+              </div>
+              <div class="tile is-parent">
+                <article class="tile is-child box">
+                  <p class="title">3.4k</p>
+                  <p class="subtitle">Open Orders</p>
+                </article>
+              </div>
+              <div class="tile is-parent">
+                <article class="tile is-child box">
+                  <p class="title">19</p>
+                  <p class="subtitle">Exceptions</p>
+                </article>
+              </div>
+            </div>
+          </section>
+          <br />
         </div>
       </div>
     </div>
@@ -62,18 +117,25 @@ import axios from "axios"
 import Component from "vue-class-component"
 import WidgetCard from "@/components/WidgetCard.vue"
 import DeviceCard from "@/components/DeviceCard.vue"
-import { UserTags, IDevice } from "@/components/Types"
+import MyDevices from "@/views/ProfileViews/MyDevices.vue"
+import RegisterDevice from "@/views/ProfileViews/RegisterDevice.vue"
+import FavouriteWidgets from "@/views/ProfileViews/FavoriteWidgets.vue"
+import { UserTags, IDevice } from "@/common/Types"
 import store from "../store"
 import router from "../router"
 @Component({
   components: {
     WidgetCard,
     DeviceCard,
+    MyDevices,
+    RegisterDevice,
+    FavouriteWidgets,
   },
 })
 export default class Profile extends Vue {
   public editMode: Boolean = false
   public editText: String = "Edit"
+  public currentPage: Number = 0
 
   get dashboardURL() {
     return "/dashboard/" + store.state.user.username
@@ -122,33 +184,18 @@ export default class Profile extends Vue {
     this.editText = this.editMode ? "Save" : "Edit"
   }
 
+  getClass(page: Number) {
+    return this.isActive(page) ? "is-active" : ""
+  }
+
+  isActive(page: Number) {
+    return page == this.currentPage
+  }
+
   logout() {
     store.commit("logout")
   }
 }
 </script>
 
-<style lang="stylus" scoped>
-.column >>> .profile-header {
-  margin-bottom: 20px;
-  display: flex;
-  justify-content: space-between;
-}
-
-.field >>> input {
-  background-color: $mid-gray;
-  color: white;
-}
-
-.columns >>> .is-left-menu {
-  margin-right: 40px;
-  padding-left: 40px;
-  padding-right: 20px;
-  padding-top: 30px;
-  background-color: $mid-gray;
-}
-
-.columns >>> .has-left-menu {
-  padding-top: 30px;
-}
-</style>
+<style lang="stylus" scoped></style>

@@ -34,7 +34,7 @@ import Component from "vue-class-component"
 import ConfigureWidget from "@/components/ConfigureWidget.vue"
 import store from "../store"
 import router from "../router"
-import { UserTags, IDevice } from "@/components/Types"
+import { UserTags, IDevice } from "@/common/Types"
 
 @Component({
   components: {

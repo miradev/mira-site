@@ -1,5 +1,5 @@
 <template>
-  <section class="section is-dark">
+  <section class="section">
     <div class="container">
       <div class="columns">
         <div class="column is-2">
@@ -35,22 +35,12 @@
 import Vue from "vue"
 import axios from "axios"
 import Component from "vue-class-component"
-import Footer from "@/components/FooterSmall.vue"
-import Navbar from "@/components/Navbar.vue"
 import store from "../store"
-import { Widget, WidgetResponse } from "@/components/Widget"
-import WidgetCard from "@/components/WidgetCard.vue" // @ is an alias to /src
+import { IWidget } from "@/common/Types"
 
-@Component({
-  components: {
-    Footer,
-    Navbar,
-    WidgetCard,
-  },
-})
+@Component
 export default class WidgetPage extends Vue {
-  private url = process.env.VUE_APP_HAR + "widgets/"
-  public widget?: Widget
+  public widget?: IWidget
 
   get saved() {
     if (this.widget) {
@@ -83,7 +73,7 @@ export default class WidgetPage extends Vue {
     //}
     //this.$forceUpdate()
     axios
-      .request<WidgetResponse>({ url: this.url + id, method: "get" })
+      .get(this.url + id)
       .then(response => {
         const { widget } = response.data
         this.widget = widget

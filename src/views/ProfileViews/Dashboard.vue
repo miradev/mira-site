@@ -45,9 +45,9 @@ import Vue from "vue"
 import axios from "axios"
 import Component from "vue-class-component"
 import WidgetCard from "@/components/WidgetCard.vue"
-import { UserTags } from "@/components/Types"
-import store from "../store"
-import router from "../router"
+import { UserTags } from "@/common/Types"
+import store from "@/store"
+import router from "@/router"
 import UploadBox from "@/components/UploadBox.vue"
 
 @Component({

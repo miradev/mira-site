@@ -1,57 +1,60 @@
 <template>
-  <section class="section">
-    <div class="container">
-      <br />
-      <br />
-      <div class="flex-center">
-        <div class="box is-mid-dark">
-          <div class="has-text-centered">
-            <img src="@/assets/logo_square.png" alt="Mira" width="150" />
-          </div>
-          <div class="field has-text-centered">
-            <h2 class="subtitle is-3">Create an account</h2>
-            <h3 class="subtitle is-6 red-text is-mid-dark">{{ this.msg }}</h3>
-          </div>
-          <div class="field">
-            <label class="label" for="username">User</label>
-            <div class="control has-icons-right">
-              <input id="name" v-model="username" class="input" type="text" name="username" />
-              <span class="icon is-right">
-                <i class="fa fa-user"></i>
-              </span>
-            </div>
-          </div>
-          <div class="field">
-            <label class="label" for="email">Email</label>
-            <div class="control has-icons-right">
-              <input id="email" v-model="email" class="input" type="email" name="email" />
-              <span class="icon is-right">
-                <i class="fa fa-at"></i>
-              </span>
-            </div>
-          </div>
-          <div class="field">
-            <label class="label" for="password">Password</label>
-            <div class="control has-icons-right">
-              <input id="password" v-model="password" class="input" type="password" name="password" />
-              <span class="icon is-right">
-                <i class="fa fa-key"></i>
-              </span>
-            </div>
-          </div>
-          <div class="control field">
-            <label class="Checkbox">
-              <b-checkbox v-model="checked">I would like to be a developer: {{ checked }}</b-checkbox>
-            </label>
-          </div>
-          <div class="level is-mobile">
-            <div class="level-left"></div>
-            <div class="level-right">
-              <div class="level-item">
-                <button class="button is-primary" @click="register()">Sign In</button>
+  <section class="section hero">
+    <div class="hero-body login-page">
+      <div class="container has-text-centered">
+        <div class="column is-4 is-offset-4">
+          <h3 class="title has-text-black">Register</h3>
+          <hr class="login-hr" />
+          <p class="subtitle has-text-black">Create a new account</p>
+          <div class="box">
+            <figure class="avatar">
+              <img src="@/assets/logo_square.png" alt="Mira" />
+            </figure>
+            <form>
+              <h3 class="subtitle is-6 red-text" v-show="this.msg">{{this.msg}}</h3>
+              <div class="field">
+                <div class="control">
+                  <input
+                    class="input is-large"
+                    type="email"
+                    placeholder="Email"
+                    autofocus
+                    v-model="email"
+                  />
+                </div>
               </div>
-            </div>
+              <div class="field">
+                <div class="control">
+                  <input
+                    class="input is-large"
+                    type="text"
+                    placeholder="Username"
+                    v-model="username"
+                  />
+                </div>
+              </div>
+              <div class="field">
+                <div class="control">
+                  <input
+                    class="input is-large"
+                    type="password"
+                    placeholder="Password"
+                    v-model="password"
+                  />
+                </div>
+              </div>
+              <b-button
+                type="is-primary"
+                icon-right="sign-out-alt"
+                expanded
+                @click="register()"
+              >Create Account</b-button>
+            </form>
           </div>
+          <p class="has-text-grey">
+            <router-link to="/login">Already have an account?</router-link>&nbsp;·&nbsp;
+            <a href="../">Need Help?</a>
+          </p>
         </div>
       </div>
     </div>
@@ -112,8 +115,48 @@ export default class Register extends Vue {
 }
 </script>
 
-<style lang="stylus" scoped>
+<style scoped>
+.hero >>> .login-page {
+  font-family: "Questrial", sans-serif;
+  font-size: 14px;
+  font-weight: 300;
+}
+
 .box {
-  width: 450px;
+  margin-top: 5rem;
+}
+
+.avatar {
+  margin-top: -70px;
+  padding-bottom: 20px;
+}
+
+.avatar img {
+  padding: 5px;
+  background: #fff;
+  border-radius: 50%;
+  -webkit-box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1), 0 0 0 1px rgba(10, 10, 10, 0.1);
+  box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1), 0 0 0 1px rgba(10, 10, 10, 0.1);
+  width: 150px;
+}
+
+.login-page >>> input {
+  font-weight: 300;
+}
+
+.login-hr {
+  border-bottom: 1px solid black;
+}
+
+.has-text-black {
+  color: black;
+}
+
+.field {
+  padding-bottom: 10px;
+}
+
+.fa {
+  margin-left: 5px;
 }
 </style>

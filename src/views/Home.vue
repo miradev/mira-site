@@ -94,15 +94,7 @@ export default class Home extends Vue {}
   }
 }
 
-body {
-  background-color: #17171D;
-}
-
 .highlight {
   color: #AFEDFA !important;
-}
-
-.is-dark {
-  background-color: #17171D;
 }
 </style>

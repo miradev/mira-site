@@ -1,5 +1,5 @@
 <template>
-  <section class="section is-dark">
+  <section class="section">
     <div class="container is-fluid">
       <div class="columns">
         <div class="column is-one-quarter">
@@ -36,17 +36,17 @@
             </ul>
           </aside>
         </div>
-        <div class="column is-three-quarters">
+        <div class="tile is-ancestor is-vertical">
           <h1 class="title">Featured Widgets</h1>
-          <div class="columns">
+          <div class="tile is-parent">
             <WidgetCard v-for="widget in widgets" :key="widget._id" :widget="widget"></WidgetCard>
           </div>
           <h1 class="title">Top Rated</h1>
-          <div class="columns">
+          <div class="tile is-parent">
             <WidgetCard v-for="widget in widgets" :key="widget._id" :widget="widget"></WidgetCard>
           </div>
           <h1 class="title">Newest</h1>
-          <div class="columns">
+          <div class="tile is-parent">
             <WidgetCard v-for="widget in widgets" :key="widget._id" :widget="widget"></WidgetCard>
           </div>
         </div>
@@ -61,7 +61,7 @@ import Component from "vue-class-component"
 import axios from "axios"
 import WidgetCard from "@/components/WidgetCard.vue"
 import Navbar from "@/components/Navbar.vue"
-import { Widget, WidgetsResponse } from "@/components/Widget"
+import { Widget } from "@/common/Types"
 import Footer from "@/components/FooterLarge.vue"
 
 @Component({
@@ -78,13 +78,11 @@ export default class Marketplace extends Vue {
   private url: string = process.env.VUE_APP_HAR + "widgets"
 
   mounted() {
-    axios
-      .request<WidgetsResponse>({ url: this.url, method: "get" })
-      .then(response => {
-        const { widgets } = response.data
-        this.widgets = Marketplace.shuffle(widgets)
-        this.featured = widgets.slice(0, 3)
-      })
+    axios.get(this.url).then(response => {
+      const { widgets } = response.data
+      this.widgets = Marketplace.shuffle(widgets)
+      this.featured = widgets.slice(0, 3)
+    })
     //let widget = {
     //_id: "0",
     //name: "Title",

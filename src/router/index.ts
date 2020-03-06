@@ -1,9 +1,20 @@
 import Vue from "vue"
 import Router from "vue-router"
 import Home from "../views/Home.vue"
+import store from "../store"
 
 Vue.use(Router)
 
+function requireAuth(to, from, next) {
+  if (!store.state.authenticated) {
+    next({
+      path: "/login",
+      query: { redirect: to.fullPath },
+    })
+  } else {
+    next()
+  }
+}
 export default new Router({
   routes: [
     {
@@ -38,26 +49,19 @@ export default new Router({
       path: "/profile/:id",
       name: "profile",
       component: () => import(/* webpackChunkName: 'widget' */ "../views/Profile.vue"),
-    },
-    {
-      path: "/dashboard/:id",
-      name: "dashboard",
-      component: () => import(/* webpackChunkName: 'widget' */ "../views/Dashboard.vue"),
+      beforeEnter: requireAuth,
     },
     {
       path: "/device/:device",
       name: "device",
       component: () => import(/* webpackChunkName: 'widget' */ "../views/Device.vue"),
-    },
-    {
-      path: "/registerDevice",
-      name: "registerDevice",
-      component: () => import(/* webpackChunkName: 'widget' */ "../views/RegisterDevice.vue"),
+      beforeEnter: requireAuth,
     },
     {
       path: "/*",
       name: "comingsoon",
       component: () => import(/* webpackChunkName: 'comingsoon' */ "../views/ComingSoon.vue"),
+      beforeEnter: requireAuth,
     },
   ],
 })

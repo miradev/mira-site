@@ -61,7 +61,7 @@ import Component from "vue-class-component"
 import axios from "axios"
 import WidgetCard from "@/components/WidgetCard.vue"
 import Navbar from "@/components/Navbar.vue"
-import { Widget } from "@/common/Types"
+import { IWidget } from "@/common/Types"
 import Footer from "@/components/FooterLarge.vue"
 
 @Component({
@@ -72,8 +72,8 @@ import Footer from "@/components/FooterLarge.vue"
   },
 })
 export default class Marketplace extends Vue {
-  private featured: Widget[] = []
-  private widgets: Widget[] = []
+  private featured: IWidget[] = []
+  private widgets: IWidget[] = []
   private isActive: boolean = true
   private url: string = process.env.VUE_APP_HAR + "widgets"
 

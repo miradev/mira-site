@@ -14,16 +14,16 @@
       <router-link to="/registerDevice">here</router-link>.
     </h2>
     <section class="info-tiles">
-      <div class="tile is-ancestor has-text-centered">
+      <div class="tile is-ancestor has-text-centered wrap">
         <router-link
           :to="'/device/' + device"
-          class="tile is-parent"
+          class="tile is-parent is-3"
           v-for="device in $store.state.user.devices"
           :key="device"
         >
           <article class="tile is-child box">
-            <p class="title">{{device}}</p>
-            <p class="subtitle">Online</p>
+            <p class="title is-4">{{device}}</p>
+            <p class="subtitle is-6">Online</p>
           </article>
         </router-link>
       </div>
@@ -53,4 +53,8 @@ export default class MyDevices extends Vue {
 }
 </script>
 
-<style lang="stylus" scoped></style>
+<style lang="stylus" scoped>
+.info-tiles >>> .wrap {
+  flex-wrap: wrap;
+}
+</style>

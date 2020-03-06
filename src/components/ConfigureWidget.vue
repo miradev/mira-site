@@ -56,7 +56,7 @@ import Component from "vue-class-component"
 import ConfigInput from "@/components/ConfigInput.vue"
 import { Prop } from "vue-property-decorator"
 
-import { Widget } from "@/components/Widget"
+import { IWidget } from "@/common/Types"
 
 @Component({
   components: {
@@ -64,7 +64,7 @@ import { Widget } from "@/components/Widget"
   },
 })
 export default class ConfigureWidget extends Vue {
-  @Prop() private widget!: Widget
+  @Prop() private widget!: IWidget
   public isOpen: boolean = false
   public added: boolean = false
   public addedText: string = "Add"

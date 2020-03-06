@@ -63,6 +63,7 @@ export default class Navbar extends Vue {
 
   logout() {
     store.commit("logout")
+    router.push("/")
     //axios
     //.get(this.logoutURL)
     //.then(response => {

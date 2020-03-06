@@ -41,7 +41,7 @@ import Vue from "vue"
 import Component from "vue-class-component"
 import axios from "axios"
 import WidgetCard from "@/components/WidgetCard.vue" // @ is an alias to /src
-import { Widget } from "@/components/Widget"
+import { IWidget } from "@/common/Types"
 import store from "../store"
 
 @Component({
@@ -50,7 +50,7 @@ import store from "../store"
   },
 })
 export default class ExploreWidgets extends Vue {
-  private widgets: Widget[] = []
+  private widgets: IWidget[] = []
 
   mounted() {
     axios.get("http://99.226.211.125:58000/Widgets").then(response => {

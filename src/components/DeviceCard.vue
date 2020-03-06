@@ -14,7 +14,7 @@ import Vue from "vue"
 import Component from "vue-class-component"
 import { Prop } from "vue-property-decorator"
 
-import { IDevice } from "@/components/Types"
+import { IDevice } from "@/common/Types"
 
 @Component
 export default class DeviceCard extends Vue {

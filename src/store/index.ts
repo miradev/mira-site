@@ -1,6 +1,6 @@
 import Vue from "vue"
 import Vuex from "vuex"
-import { IUser, IWidget } from "@/components/Types"
+import { IUser, IWidget } from "@/common/Types"
 import VuexPersistence from "vuex-persist"
 
 Vue.use(Vuex)
@@ -23,12 +23,12 @@ export default new Vuex.Store<State>({
     },
     logout(state: State) {
       state.user = {
-        _id: "",
         username: "",
         email: "",
         tags: [],
         hash: "",
         devices: [],
+        favorites: [],
       }
       state.authenticated = false
       state.widgets = []

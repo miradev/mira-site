@@ -13,7 +13,10 @@
         <b-steps v-model="activeStep" :hasNavigation="false">
           <b-step-item label="Identifier" clickable>
             <h2 class="subtitle is-4">Enter your device identifer</h2>
-            <h2 class="subtitle is-6">This is the 10-digit number found on your mirror</h2>
+            <h2 class="subtitle is-6">
+              This is the 00:00:00:00:00:00-100000000unknown
+              number found on your mirror
+            </h2>
             <input
               class="input"
               type="text"
@@ -26,11 +29,18 @@
             <br />
             <b-button
               outlined
+              @click="connect()"
+              type="is-success"
+              icon-pack="fas"
+              icon-right="forward"
+            >Connect</b-button>
+            <b-button
+              outlined
               @click="activeStep++"
               type="is-success"
               icon-pack="fas"
               icon-right="forward"
-              v-show="identifer.length == 10"
+              v-show="identifer.length > 0"
             >Next</b-button>
           </b-step-item>
           <b-step-item label="Name">
@@ -114,21 +124,14 @@ export default class CreateDevice extends Vue {
   private msg: string = ""
   private activeStep: Number = 0
 
-  submit() {
+  connect() {
     let body = {
       _id: this.identifer,
-      name: this.name,
     }
     axios
-      .post(this.url, body, { withCredentials: true })
-      .then(response => {
-        let description: string = response.data.description
-        if (description) {
-          this.msg = description
-          this.$forceUpdate()
-          return
-        }
-        this.$forceUpdate()
+      .post(this.url + "/" + this.identifer + "/connect", body, { withCredentials: true })
+      .then(r => {
+        console.log(r)
         this.$buefy.snackbar.open({
           message: "Successfully Saved! Click OK to refresh.",
           indefinite: true,
@@ -146,6 +149,29 @@ export default class CreateDevice extends Vue {
               })
           },
         })
+      })
+      .catch(err => {
+        this.msg = "Something bad happened."
+        this.$forceUpdate()
+      })
+  }
+
+  submit() {
+    let body = {
+      _id: this.identifer,
+      name: this.name,
+    }
+    axios
+      .post(this.url, body, { withCredentials: true })
+      .then(response => {
+        let description: string = response.data.description
+        if (description) {
+          this.msg = description
+          this.$forceUpdate()
+          return
+        }
+        this.$forceUpdate()
+        this.connect()
       })
       .catch(error => {
         this.msg = "Something bad happened."

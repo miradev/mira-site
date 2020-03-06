@@ -3,6 +3,7 @@ export enum Collections {
   WIDGETS = "widgets",
   USERS = "users",
   DEVICES = "devices",
+  CONNECTIONS = "connections",
 }
 
 export enum UserTags {
@@ -17,36 +18,31 @@ export interface IWidget {
   authorId: string
   filename: string
   images: string[]
+  manifest: object
 }
 
 export interface IUser {
-  _id: string
   username: string
   email: string
   tags: UserTags[]
   hash: string
   devices: string[]
+  favorites: string[]
 }
 
 export interface IDevice {
   _id: string
   name: string
   config: object
-  connection?: DeviceConnection
   deviceWidgets: DeviceWidget[]
 }
 
-export interface DeviceConnection {
-  address: string
-  authToken: string
+export interface IDeviceConnection {
+  deviceId: string
+  hash: string
 }
 
 export interface DeviceWidget {
   widgetId: string
   config: object
-}
-
-export interface Credentials {
-  username: string
-  password: string
 }

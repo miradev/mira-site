@@ -23,8 +23,8 @@
                 <a :class="getClass(4)" @click="currentPage = 4">Settings</a>
               </li>
             </ul>
-            <p class="menu-label">Developer</p>
-            <ul class="menu-list">
+            <p v-if="isDeveloper" class="menu-label">Developer</p>
+            <ul v-if="isDeveloper" class="menu-list">
               <li>
                 <a :class="getClass(5)" @click="currentPage = 5">Dashboard</a>
               </li>
@@ -42,6 +42,10 @@
         <MyDevices v-if="isActive(1)"></MyDevices>
         <RegisterDevice v-else-if="isActive(2)"></RegisterDevice>
         <FavouriteWidgets v-else-if="isActive(3)"></FavouriteWidgets>
+        <Settings v-else-if="isActive(4)"></Settings>
+        <Dashboard v-else-if="isActive(5)"></Dashboard>
+        <MyWidgets v-else-if="isActive(6)"></MyWidgets>
+        <UploadWidget v-else-if="isActive(7)"></UploadWidget>
 
         <div v-else class="column is-9">
           <section class="hero is-info welcome is-small">
@@ -54,7 +58,14 @@
           </section>
           <br />
 
-          <h1 class="title">Device Status</h1>
+          <div class="columns">
+            <div class="column">
+              <h1 class="title">Device Status</h1>
+            </div>
+            <div class="column flex-right">
+              <a @click="currentPage = 1" class="title is-6 is-blue">See all devices</a>
+            </div>
+          </div>
           <h2 v-if="$store.state.user.devices.length == 0">
             Oops. It looks like you have no devices registered. Register one
             <router-link to="/registerDevice">here</router-link>.
@@ -68,20 +79,22 @@
                 :key="device"
               >
                 <article class="tile is-child box">
-                  <p class="title">{{device}}</p>
-                  <p class="subtitle">Online</p>
+                  <p class="title is-4">{{device}}</p>
+                  <p class="subtitle is-6">Online</p>
                 </article>
               </router-link>
-              <a @click="currentPage = 1" class="tile is-parent">
-                <article class="tile is-child box">
-                  <p class="title is-link">See All Devices</p>
-                </article>
-              </a>
             </div>
           </section>
           <br />
 
-          <h1 class="title">Widgets you may like</h1>
+          <div class="columns">
+            <div class="column">
+              <h1 class="title">Widgets you may like</h1>
+            </div>
+            <div class="column flex-right">
+              <router-link to="/marketplace" class="title is-6 is-blue">Browse widgets</router-link>
+            </div>
+          </div>
           <section class="info-tiles">
             <div class="tile is-ancestor has-text-centered">
               <div class="tile is-parent">
@@ -117,9 +130,15 @@ import axios from "axios"
 import Component from "vue-class-component"
 import WidgetCard from "@/components/WidgetCard.vue"
 import DeviceCard from "@/components/DeviceCard.vue"
+// Pages
 import MyDevices from "@/views/ProfileViews/MyDevices.vue"
 import RegisterDevice from "@/views/ProfileViews/RegisterDevice.vue"
 import FavouriteWidgets from "@/views/ProfileViews/FavoriteWidgets.vue"
+import Settings from "@/views/ProfileViews/Settings.vue"
+import Dashboard from "@/views/ProfileViews/Dashboard.vue"
+import UploadWidget from "@/views/ProfileViews/UploadWidget.vue"
+import MyWidgets from "@/views/ProfileViews/MyWidgets.vue"
+
 import { UserTags, IDevice } from "@/common/Types"
 import store from "../store"
 import router from "../router"
@@ -130,12 +149,16 @@ import router from "../router"
     MyDevices,
     RegisterDevice,
     FavouriteWidgets,
+    Dashboard,
+    UploadWidget,
+    MyWidgets,
+    Settings,
   },
 })
 export default class Profile extends Vue {
-  public editMode: Boolean = false
-  public editText: String = "Edit"
-  public currentPage: Number = 0
+  public editMode: boolean = false
+  public editText: string = "Edit"
+  public currentPage: number = 0
 
   get dashboardURL() {
     return "/dashboard/" + store.state.user.username
@@ -179,11 +202,6 @@ export default class Profile extends Vue {
     return store.state.user.tags.includes(UserTags.DEVELOPER)
   }
 
-  toggleConfig() {
-    this.editMode = !this.editMode
-    this.editText = this.editMode ? "Save" : "Edit"
-  }
-
   getClass(page: Number) {
     return this.isActive(page) ? "is-active" : ""
   }
@@ -194,8 +212,13 @@ export default class Profile extends Vue {
 
   logout() {
     store.commit("logout")
+    router.push("/")
   }
 }
 </script>
 
-<style lang="stylus" scoped></style>
+<style lang="stylus" scoped>
+div >>> .is-blue {
+  color: #276cda;
+}
+</style>

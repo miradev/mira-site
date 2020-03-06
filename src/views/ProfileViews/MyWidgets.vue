@@ -3,7 +3,7 @@
     <section class="hero is-info welcome is-small">
       <div class="hero-body">
         <div class="container">
-          <h1 class="title">Developer Dashboard</h1>
+          <h1 class="title">My Widgets</h1>
         </div>
       </div>
     </section>
@@ -37,26 +37,29 @@ import Vue from "vue"
 import axios from "axios"
 import Component from "vue-class-component"
 import WidgetCard from "@/components/WidgetCard.vue"
-import { UserTags } from "@/common/Types"
+import { IWidget, UserTags } from "@/common/Types"
 import store from "@/store"
 import router from "@/router"
-import UploadBox from "@/components/UploadBox.vue"
 
 @Component({
   components: {
-    UploadBox,
     WidgetCard,
   },
 })
-export default class Dashboard extends Vue {
+export default class MyWidgets extends Vue {
   public editMode: Boolean = false
   public editText: String = "Edit"
+  private url: string = process.env.VUE_APP_HAR + "widgets?" + store.state.user._id
+  private widgets: IWidget = []
 
   get profileURL() {
     return "/profile/" + store.state.user.username
   }
-  get widgets() {
-    return store.state.widgets
+  mounted() {
+    axios.get(this.url).then(response => {
+      const { widgets } = response.data
+      this.widgets = widgets
+    })
   }
   get isDeveloper() {
     return store.state.user.tags.includes(UserTags.DEVELOPER)

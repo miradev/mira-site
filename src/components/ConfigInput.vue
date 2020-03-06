@@ -22,8 +22,6 @@ import Vue from "vue"
 import Component from "vue-class-component"
 import { Prop } from "vue-property-decorator"
 
-import { Widget } from "@/components/Widget"
-
 @Component
 export default class ConfigInput extends Vue {
   @Prop() private placeholder!: string

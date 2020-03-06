@@ -40,6 +40,7 @@ import { IWidget } from "@/common/Types"
 
 @Component
 export default class WidgetPage extends Vue {
+  private url = process.env.VUE_APP_HAR + "widgets/"
   public widget?: IWidget
 
   get saved() {

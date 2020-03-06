@@ -71,21 +71,15 @@ export default class Login extends Vue {
       username: this.username,
       password: this.password,
     }
-    //let user = { _id: "pp", username: "pp", email: "pp", tags: ["dev"], hash: "pp" }
-
-    //store.commit("login", user)
-
-    //this.$forceUpdate()
-    //router.push("/")
     axios
       .post(this.url, body, { withCredentials: true })
       .then(response => {
-        if (response.data.redirect == "/login") {
+        if (response.data.redirect == "/login" || response.data.success == false) {
           this.msg = "Incorrect credentials."
           this.$forceUpdate()
           return
         }
-        let user: IUser = response.data
+        let user: IUser = response.data.user
         store.commit("login", user)
         this.msg = "Logged in."
         this.$forceUpdate()

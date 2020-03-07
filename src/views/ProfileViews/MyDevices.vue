@@ -3,7 +3,14 @@
     <section class="hero is-info welcome is-small">
       <div class="hero-body">
         <div class="container">
-          <h1 class="title">My Devices</h1>
+          <div class="columns">
+            <div class="column">
+              <h1 class="title">My Devices</h1>
+            </div>
+            <button class="button is-warning" @click="refresh()">
+              <b-icon icon="sync-alt"></b-icon>
+            </button>
+          </div>
         </div>
       </div>
     </section>
@@ -11,7 +18,9 @@
 
     <h2 v-show="$store.state.user.devices.length == 0">
       Oops. It looks like you have no devices registered. Register one
-      <router-link to="/registerDevice">here</router-link>.
+      <a
+        @click="$parent.currentPage = 2"
+      >here</a>.
     </h2>
     <section class="info-tiles">
       <div class="tile is-ancestor has-text-centered wrap">
@@ -47,14 +56,23 @@ import router from "@/router"
   },
 })
 export default class MyDevices extends Vue {
+  private currentUserURL = process.env.VUE_APP_HAR + "currentUser"
   get devices() {
     return store.state.user.devices
+  }
+  refresh() {
+    axios
+      .get(this.currentUserURL, { withCredentials: true })
+      .then(response => {
+        let user: IUser = response.data.user
+        store.commit("login", user)
+        this.$forceUpdate()
+      })
+      .catch(error => {
+        this.$forceUpdate()
+      })
   }
 }
 </script>
 
-<style lang="stylus" scoped>
-.info-tiles >>> .wrap {
-  flex-wrap: wrap;
-}
-</style>
+<style lang="stylus" scoped></style>

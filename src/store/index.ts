@@ -34,13 +34,16 @@ export default new Vuex.Store<State>({
       state.widgets = []
     },
     saveWidget(state: State, widget: IWidget) {
-      if (!state.widgets) {
+      if (!state.user.favorites) {
+        state.user.favorites = [widget._id]
         state.widgets = [widget]
       } else {
+        state.user.favorites.push(widget._id)
         state.widgets.push(widget)
       }
     },
     removeWidget(state: State, widget: IWidget) {
+      state.user.favorites = state.user.favorites.filter(w => w != widget._id)
       state.widgets = state.widgets.filter(w => w._id != widget._id)
     },
   },

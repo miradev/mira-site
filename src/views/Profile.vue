@@ -51,8 +51,15 @@
           <section class="hero is-info welcome is-small">
             <div class="hero-body">
               <div class="container">
-                <h1 class="title">Hello, {{$store.state.user.username}}</h1>
-                <h2 class="subtitle">I hope you are having a great day!</h2>
+                <div class="columns">
+                  <div class="column">
+                    <h1 class="title">Hello, {{$store.state.user.username}}</h1>
+                    <h2 class="subtitle">I hope you are having a great day!</h2>
+                  </div>
+                  <button class="button is-warning" @click="refresh()">
+                    <b-icon icon="sync-alt"></b-icon>
+                  </button>
+                </div>
               </div>
             </div>
           </section>
@@ -68,7 +75,9 @@
           </div>
           <h2 v-if="$store.state.user.devices.length == 0">
             Oops. It looks like you have no devices registered. Register one
-            <router-link to="/registerDevice">here</router-link>.
+            <a
+              @click="currentPage = 2"
+            >here</a>.
           </h2>
           <section v-else class="info-tiles">
             <div class="tile is-ancestor has-text-centered">
@@ -85,39 +94,6 @@
               </router-link>
             </div>
           </section>
-          <br />
-
-          <div class="columns">
-            <div class="column">
-              <h1 class="title">Widgets you may like</h1>
-            </div>
-            <div class="column flex-right">
-              <router-link to="/marketplace" class="title is-6 is-blue">Browse widgets</router-link>
-            </div>
-          </div>
-          <section class="info-tiles">
-            <div class="tile is-ancestor has-text-centered">
-              <div class="tile is-parent">
-                <article class="tile is-child box">
-                  <p class="title">439k</p>
-                  <p class="subtitle">Users</p>
-                </article>
-              </div>
-              <div class="tile is-parent">
-                <article class="tile is-child box">
-                  <p class="title">3.4k</p>
-                  <p class="subtitle">Open Orders</p>
-                </article>
-              </div>
-              <div class="tile is-parent">
-                <article class="tile is-child box">
-                  <p class="title">19</p>
-                  <p class="subtitle">Exceptions</p>
-                </article>
-              </div>
-            </div>
-          </section>
-          <br />
         </div>
       </div>
     </div>
@@ -159,6 +135,7 @@ export default class Profile extends Vue {
   public editMode: boolean = false
   public editText: string = "Edit"
   public currentPage: number = 0
+  private currentUserURL = process.env.VUE_APP_HAR + "currentUser"
 
   get dashboardURL() {
     return "/dashboard/" + store.state.user.username
@@ -208,6 +185,19 @@ export default class Profile extends Vue {
 
   isActive(page: Number) {
     return page == this.currentPage
+  }
+
+  refresh() {
+    axios
+      .get(this.currentUserURL, { withCredentials: true })
+      .then(response => {
+        let user: IUser = response.data.user
+        store.commit("login", user)
+        this.$forceUpdate()
+      })
+      .catch(error => {
+        this.$forceUpdate()
+      })
   }
 
   logout() {

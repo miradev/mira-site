@@ -1,9 +1,9 @@
 <template>
   <div class="column is-9">
-    <section class="hero is-info welcome is-small">
+    <section class="hero developer is-small">
       <div class="hero-body">
         <div class="container">
-          <h1 class="title">Upload New Widget</h1>
+          <h1 class="title white-text">Upload New Widget</h1>
         </div>
       </div>
     </section>
@@ -54,24 +54,30 @@
           <br />
           <br />
           <br />
-          <b-button
-            outlined
-            @click="activeStep--"
-            type="is-danger"
-            icon-pack="fas"
-            icon-left="backward"
-          >Previous</b-button>
-          <b-button
-            v-show="validate"
-            @click="submit()"
-            outlined
-            type="is-success"
-            icon-pack="fas"
-            icon-right="forward"
-          >Submit</b-button>
+          <div class="buttons">
+            <b-button
+              outlined
+              @click="activeStep--"
+              type="is-danger"
+              icon-pack="fas"
+              icon-left="backward"
+            >Previous</b-button>
+            <b-button
+              v-show="validate"
+              @click="submit()"
+              outlined
+              type="is-success"
+              icon-pack="fas"
+              icon-right="forward"
+            >Submit</b-button>
+          </div>
         </b-step-item>
         <b-step-item label="Complete">
-          <h1 class="title">Done</h1>
+          <h1 class="title">Widget completed successfully.</h1>
+          <h1 class="subtitle is-5">
+            Find it under
+            <a @click="$parent.currentPage = 6">My Widgets</a>
+          </h1>
         </b-step-item>
       </b-steps>
     </div>
@@ -168,6 +174,7 @@ export default class UploadWidget extends Vue {
       active: false,
       filename: this.filename,
       images: [this.imageURL],
+      manifest: this.manifest,
     }
     axios
       .post(this.url, body, { withCredentials: true })

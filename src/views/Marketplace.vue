@@ -39,15 +39,30 @@
         <div class="tile is-ancestor is-vertical">
           <h1 class="title">Featured Widgets</h1>
           <div class="tile is-parent">
-            <WidgetCard v-for="widget in widgets" :key="widget._id" :widget="widget"></WidgetCard>
+            <WidgetCard
+              v-for="widget in widgets"
+              :key="widget._id"
+              :widget="widget"
+              :canSave="true"
+            ></WidgetCard>
           </div>
           <h1 class="title">Top Rated</h1>
           <div class="tile is-parent">
-            <WidgetCard v-for="widget in widgets" :key="widget._id" :widget="widget"></WidgetCard>
+            <WidgetCard
+              v-for="widget in widgets"
+              :key="widget._id"
+              :widget="widget"
+              :canSave="true"
+            ></WidgetCard>
           </div>
           <h1 class="title">Newest</h1>
           <div class="tile is-parent">
-            <WidgetCard v-for="widget in widgets" :key="widget._id" :widget="widget"></WidgetCard>
+            <WidgetCard
+              v-for="widget in widgets"
+              :key="widget._id"
+              :widget="widget"
+              :canSave="true"
+            ></WidgetCard>
           </div>
         </div>
       </div>

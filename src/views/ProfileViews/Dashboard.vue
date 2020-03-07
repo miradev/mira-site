@@ -1,13 +1,21 @@
 <template>
   <div class="column is-9">
-    <section class="hero is-info welcome is-small">
+    <section class="hero developer is-small">
       <div class="hero-body">
         <div class="container">
-          <h1 class="title">Developer Dashboard</h1>
+          <div class="columns">
+            <div class="column">
+              <h1 class="title white-text">Developer Dashboard</h1>
+            </div>
+            <button class="button is-warning" @click="refresh()">
+              <b-icon icon="sync-alt"></b-icon>
+            </button>
+          </div>
         </div>
       </div>
     </section>
     <br />
+    <h1 class="title">My Widgets</h1>
     <h2 v-show="widgets.length == 0">
       Oops. It looks like you haven't uploaded any widgets. Get started
       <a
@@ -16,17 +24,7 @@
     </h2>
     <section class="info-tiles">
       <div class="tile is-ancestor has-text-centered">
-        <router-link
-          :to="'/widget/' + widget._id"
-          class="tile is-parent"
-          v-for="widget in widgets"
-          :key="widget._id"
-        >
-          <article class="tile is-child box">
-            <p class="title">{{widget.name}}</p>
-            <p class="subtitle">Online</p>
-          </article>
-        </router-link>
+        <WidgetCard v-for="widget in widgets" :key="widget._id" :widget="widget" :canSave="false"></WidgetCard>
       </div>
     </section>
   </div>
@@ -40,30 +38,41 @@ import WidgetCard from "@/components/WidgetCard.vue"
 import { UserTags } from "@/common/Types"
 import store from "@/store"
 import router from "@/router"
-import UploadBox from "@/components/UploadBox.vue"
 
 @Component({
   components: {
-    UploadBox,
     WidgetCard,
   },
 })
 export default class Dashboard extends Vue {
-  public editMode: Boolean = false
-  public editText: String = "Edit"
+  private url: string = process.env.VUE_APP_HAR + "widgets?" + store.state.user._id
+  private currentUserURL = process.env.VUE_APP_HAR + "currentUser"
+  private widgets: IWidget = []
+
+  mounted() {
+    axios.get(this.url).then(response => {
+      const { widgets } = response.data
+      this.widgets = widgets
+    })
+  }
 
   get profileURL() {
     return "/profile/" + store.state.user.username
   }
-  get widgets() {
-    return store.state.widgets
-  }
   get isDeveloper() {
     return store.state.user.tags.includes(UserTags.DEVELOPER)
   }
-  toggleConfig() {
-    this.editMode = !this.editMode
-    this.editText = this.editMode ? "Save" : "Edit"
+  refresh() {
+    axios
+      .get(this.currentUserURL, { withCredentials: true })
+      .then(response => {
+        let user: IUser = response.data.user
+        store.commit("login", user)
+        this.$forceUpdate()
+      })
+      .catch(error => {
+        this.$forceUpdate()
+      })
   }
 
   logout() {

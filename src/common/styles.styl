@@ -7,11 +7,22 @@ $mid-blue = #2274A5
 $cream = #E7DFC6
 $off-white = #E9F1F7
 
-html, body 
+html
   font-family  -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif 
   font-size  16px 
   line-height  1.5 
-  background  #ECF0F3 
+  background-color #ECF0F3 
+
+body
+  background-color #ECF0F3 
+
+div#app
+  min-height 100%
+  display flex
+  flex-direction column
+
+#router
+  flex 1
  
 .menu-label  
   color  #8F99A3 
@@ -51,6 +62,10 @@ html, body
   background  #36D1DC 
   background  -webkit-linear-gradient(to right, #5B86E5, #36D1DC) 
   background  linear-gradient(to right, #5B86E5, #36D1DC) 
+
+.hero.developer
+  background linear-gradient(to top right, #524ad0 10%, #D099FA)
+  color white
  
 .hero.welcome .title, .hero.welcome .subtitle  
   color  hsl(192, 17%, 99%) 
@@ -95,6 +110,9 @@ html, body
 .is-fw
   width 100%
 
+.wrap
+  flex-wrap wrap
+
 .flex-center
   display flex
   justify-content center
@@ -109,12 +127,3 @@ html, body
 
 .top-paddingless
   padding-top 0
-
-.bottom-shadow
-  box-shadow 0 2px 1px rgba(20, 20, 20, 1)
-
-.inner-shadow
-  box-shadow 0 -2px 2px rgba(20, 20, 20, 1)
-  position relative
-  z-index 1
-

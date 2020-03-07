@@ -1,7 +1,7 @@
 <template>
-  <div id="app">
+  <div id="app" class="wrapper" style="min-height: 100vh;">
     <Navbar></Navbar>
-    <router-view />
+    <router-view class="router" />
     <Footer></Footer>
   </div>
 </template>
@@ -27,4 +27,12 @@ $navbar-breakpoint: 768px;
 /* Import Bulma and Buefy styles*/
 @import "~bulma";
 @import "~buefy/src/scss/buefy";
+div.wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.router {
+  flex: 1;
+}
 </style>

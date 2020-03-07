@@ -1,32 +1,30 @@
 <template>
-  <div class="card column is-one-quarter hover">
+  <div class="card column hover" :class="width == 4 ? 'is-one-quarter' : 'is-one-fifth'">
     <button
-      class="corner button"
-      :class="saved ? 'is-danger' : 'is-success'"
+      class="corner button outlined is-small"
+      :class="saved ? 'is-light' : 'is-success'"
       @click="saveWidget()"
-      v-show="$store.state.authenticated"
+      v-show="canSave && $store.state.authenticated"
     >{{ text }}</button>
     <button
       class="corner button is-success"
-      v-show="!$store.state.authenticated"
+      v-show="canSave && !$store.state.authenticated"
       disabled
     >Login to Save</button>
-    <div class="card-image">
-      <figure class="image is-square">
+    <div class="card-image flex-center">
+      <figure class="image">
         <router-link :to="'/widget/' + widget._id" class>
           <img :src="widget.images[0]" :alt="widget.title" />
         </router-link>
       </figure>
     </div>
-    <div class="card-content">
-      <div class="content">
-        <router-link :to="'/widget/' + widget._id" class>
-          <p class="title is-6">{{ widget.name }}</p>
-        </router-link>
-        <router-link :to="'/widget/' + widget._id" class="subtitle is-7">
-          <p>By: {{ widget.author }}</p>
-        </router-link>
-      </div>
+    <div class="card-content widget-content">
+      <router-link :to="'/widget/' + widget._id" class>
+        <p class="title is-6">{{ widget.name }}</p>
+      </router-link>
+      <router-link :to="'/widget/' + widget._id" class="subtitle is-7">
+        <p class="subtitle is-7">By: {{ widget.authorId }}</p>
+      </router-link>
     </div>
   </div>
 </template>
@@ -41,6 +39,8 @@ import store from "@/store"
 @Component
 export default class WidgetCard extends Vue {
   @Prop() private widget!: IWidget
+  @Prop() private canSave!: boolean
+  @Prop() private width!: number
   get saved() {
     if (this.widget) {
       let widgets = store.state.widgets
@@ -56,7 +56,7 @@ export default class WidgetCard extends Vue {
   }
 
   get text() {
-    return this.saved ? "Unsave" : "Save"
+    return this.saved ? "Favourited" : "Favourite"
   }
   public saveWidget() {
     if (this.saved) {
@@ -76,8 +76,14 @@ export default class WidgetCard extends Vue {
   border-radius: 6px;
 }
 
-.is-square >>> img {
+.card >>> .widget-content {
+  padding: 18px;
+}
+
+.image >>> img {
   object-fit: cover;
+  width: 128px;
+  height: 128px;
 }
 
 .corner {
@@ -86,7 +92,7 @@ export default class WidgetCard extends Vue {
   right: 0;
   z-index: 10;
   border-radius: 0;
-  border-top-left-radius: 15px;
+  border-top-left-radius: 15px !important;
 }
 
 .hover {

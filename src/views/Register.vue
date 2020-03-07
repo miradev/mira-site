@@ -43,6 +43,16 @@
                   />
                 </div>
               </div>
+              <div class="field">
+                <div class="control">
+                  <input
+                    class="input is-large"
+                    type="password"
+                    placeholder="Repeat Password"
+                    v-model="password2"
+                  />
+                </div>
+              </div>
               <b-button
                 type="is-primary"
                 icon-right="sign-out-alt"
@@ -70,18 +80,18 @@ import router from "../router"
 @Component
 export default class Register extends Vue {
   private url = process.env.VUE_APP_HAR + "signup"
-
   private username: string = ""
-
   private email: string = ""
-
   private password: string = ""
-
+  private password2: string = ""
   private msg: string = ""
-
   public checked: boolean = false
 
   register() {
+    if (this.password2 != this.password) {
+      this.msg = "Passwords don't match!"
+      return
+    }
     let body = {
       username: this.username,
       password: this.password,

@@ -1,5 +1,5 @@
 <template>
-  <footer class="footer top-shadow">
+  <footer class="footer">
     <div class="footer-foot">
       <div class="container">
         <div class="columns is-mobile">

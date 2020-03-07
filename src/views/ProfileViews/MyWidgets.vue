@@ -1,9 +1,16 @@
 <template>
   <div class="column is-9">
-    <section class="hero is-info welcome is-small">
+    <section class="hero developer is-small">
       <div class="hero-body">
         <div class="container">
-          <h1 class="title">My Widgets</h1>
+          <div class="columns">
+            <div class="column">
+              <h1 class="title white-text">My Widgets</h1>
+            </div>
+            <button class="button is-warning" @click="refresh()">
+              <b-icon icon="sync-alt"></b-icon>
+            </button>
+          </div>
         </div>
       </div>
     </section>
@@ -15,18 +22,8 @@
       >here</a>.
     </h2>
     <section class="info-tiles">
-      <div class="tile is-ancestor has-text-centered">
-        <router-link
-          :to="'/widget/' + widget._id"
-          class="tile is-parent"
-          v-for="widget in widgets"
-          :key="widget._id"
-        >
-          <article class="tile is-child box">
-            <p class="title">{{widget.name}}</p>
-            <p class="subtitle">Online</p>
-          </article>
-        </router-link>
+      <div class="tile is-ancestor has-text-centered wrap">
+        <WidgetCard v-for="widget in widgets" :key="widget._id" :widget="widget" :canSave="false"></WidgetCard>
       </div>
     </section>
   </div>
@@ -47,9 +44,8 @@ import router from "@/router"
   },
 })
 export default class MyWidgets extends Vue {
-  public editMode: Boolean = false
-  public editText: String = "Edit"
   private url: string = process.env.VUE_APP_HAR + "widgets?" + store.state.user._id
+  private currentUserURL = process.env.VUE_APP_HAR + "currentUser"
   private widgets: IWidget = []
 
   get profileURL() {
@@ -64,9 +60,18 @@ export default class MyWidgets extends Vue {
   get isDeveloper() {
     return store.state.user.tags.includes(UserTags.DEVELOPER)
   }
-  toggleConfig() {
-    this.editMode = !this.editMode
-    this.editText = this.editMode ? "Save" : "Edit"
+
+  refresh() {
+    axios
+      .get(this.currentUserURL, { withCredentials: true })
+      .then(response => {
+        let user: IUser = response.data.user
+        store.commit("login", user)
+        this.$forceUpdate()
+      })
+      .catch(error => {
+        this.$forceUpdate()
+      })
   }
 
   logout() {

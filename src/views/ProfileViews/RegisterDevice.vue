@@ -66,7 +66,7 @@
             >Next</b-button>
           </b-step-item>
           <b-step-item label="Details">
-            <h2 class="subtitle is-4">Any additional comments you would like to leave?</h2>
+            <h2 class="subtitle is-4">Leave a description here. (e.g. Bedroom washroom)</h2>
             <input
               class="input"
               type="text"
@@ -98,6 +98,13 @@
             <h2 class="subtitle is-6">Name: {{name}}</h2>
             <h2 class="subtitle is-6">Description: {{description}}</h2>
             <h2 class="subtitle is-6">{{msg}}</h2>
+            <br />
+            <b-progress
+              :value="progress"
+              v-show="connected || connecting || failed"
+              :type="progressType"
+              size="is-medium"
+            ></b-progress>
             <button class="button" @click="submit()">Submit</button>
           </b-step-item>
         </b-steps>
@@ -124,7 +131,16 @@ export default class CreateDevice extends Vue {
   private msg: string = ""
   private activeStep: Number = 0
 
+  public connecting: boolean = false
+  public failed: boolean = false
+  public connected: boolean = false
+  public progress: number = null
+  public progressType: string = "is-primary"
+
   connect() {
+    this.connecting = true
+    this.failed = false
+    this.connected = false
     let body = {
       _id: this.identifer,
     }
@@ -141,17 +157,32 @@ export default class CreateDevice extends Vue {
               .then(response => {
                 let user: IUser = response.data.user
                 store.commit("login", user)
-                router.go(0)
+                this.connecting = false
+                this.connected = true
+                this.failed = false
+                this.progress = 100
+                this.progressType = "is-success"
+                this.msg = "Connected!"
               })
               .catch(error => {
-                this.msg = "Something bad happened."
+                this.msg = error
+                this.connecting = false
+                this.failed = true
+                this.connected = false
+                this.progress = 100
+                this.progressType = "is-danger"
                 this.$forceUpdate()
               })
           },
         })
       })
       .catch(err => {
-        this.msg = "Something bad happened."
+        this.connecting = false
+        this.connected = false
+        this.failed = true
+        this.progress = 100
+        this.progressType = "is-danger"
+        this.msg = err
         this.$forceUpdate()
       })
   }
@@ -167,14 +198,27 @@ export default class CreateDevice extends Vue {
         let description: string = response.data.description
         if (description) {
           this.msg = description
+          this.connecting = false
+          this.connected = false
+          this.failed = true
+          this.progress = 100
+          this.progressType = "is-danger"
           this.$forceUpdate()
           return
         }
+        let user = store.state.user
+        user.devices.push(this.identifer)
+        store.commit("login", user)
         this.$forceUpdate()
         this.connect()
       })
       .catch(error => {
-        this.msg = "Something bad happened."
+        this.connecting = false
+        this.connected = false
+        this.failed = true
+        this.progress = 100
+        this.progressType = "is-danger"
+        this.msg = error
         this.$forceUpdate()
       })
   }

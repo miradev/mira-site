@@ -3,7 +3,14 @@
     <section class="hero is-info welcome is-small">
       <div class="hero-body">
         <div class="container">
-          <h1 class="title">Favourite Widgets</h1>
+          <div class="columns">
+            <div class="column">
+              <h1 class="title">Favourite Widgets</h1>
+            </div>
+            <button class="button is-warning" @click="refresh()">
+              <b-icon icon="sync-alt"></b-icon>
+            </button>
+          </div>
         </div>
       </div>
     </section>
@@ -14,18 +21,8 @@
       <router-link to="/marketplace">here</router-link>.
     </h2>
     <section class="info-tiles">
-      <div class="tile is-ancestor has-text-centered">
-        <router-link
-          :to="'/widget/' + widget._id"
-          class="tile is-parent"
-          v-for="widget in widgets"
-          :key="widget._id"
-        >
-          <article class="tile is-child box">
-            <p class="title">{{widget.name}}</p>
-            <p class="subtitle">Online</p>
-          </article>
-        </router-link>
+      <div class="tile is-ancestor has-text-centered wrap">
+        <WidgetCard v-for="widget in widgets" :key="widget._id" :widget="widget" :canSave="true"></WidgetCard>
       </div>
     </section>
   </div>
@@ -47,6 +44,19 @@ import router from "@/router"
   },
 })
 export default class MyDevices extends Vue {
+  private currentUserURL = process.env.VUE_APP_HAR + "currentUser"
+  refresh() {
+    axios
+      .get(this.currentUserURL, { withCredentials: true })
+      .then(response => {
+        let user: IUser = response.data.user
+        store.commit("login", user)
+        this.$forceUpdate()
+      })
+      .catch(error => {
+        this.$forceUpdate()
+      })
+  }
   get widgets() {
     return store.state.widgets
   }

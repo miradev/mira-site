@@ -8,6 +8,7 @@
               <h1 class="title">{{device.name}}</h1>
             </div>
             <button class="button is-warning" @click="save()">Save</button>
+            <button class="button is-warning" @click="update()">Update</button>
           </div>
         </div>
       </div>
@@ -15,9 +16,15 @@
 
     <section class="section">
       <div class="container">
-        <h1 class="title">Saved Widgets</h1>
+        <h1 class="title">Favorited Widgets</h1>
         <div class="columns">
-          <ConfigureWidget v-for="widget in widgets" :key="widget._id" :widget="widget"></ConfigureWidget>
+          <ConfigureWidget
+            @added="added"
+            @removed="removed"
+            v-for="widget in widgets"
+            :key="widget._id"
+            :widget="widget"
+          ></ConfigureWidget>
         </div>
       </div>
     </section>
@@ -31,7 +38,7 @@ import Component from "vue-class-component"
 import ConfigureWidget from "@/components/ConfigureWidget.vue"
 import store from "../store"
 import router from "../router"
-import { UserTags, IDevice } from "@/common/Types"
+import { UserTags, IDevice, IWidget, DeviceWidget } from "@/common/Types"
 
 @Component({
   components: {
@@ -59,10 +66,51 @@ export default class Profile extends Vue {
   get widgets() {
     return store.state.widgets
   }
-  get isDeveloper() {
-    return store.state.user.tags.includes(UserTags.DEVELOPER)
+
+  added(deviceWidget: DeviceWidget) {
+    this.device.deviceWidgets.push(deviceWidget)
+    console.log(this.device)
   }
-  save() {}
+  removed(deviceWidget: DeviceWidget) {
+    this.device.deviceWidgets = this.device.deviceWidgets.filter(
+      w => w.widgetId != deviceWidget.widgetId,
+    )
+    console.log(this.device)
+  }
+
+  save() {
+    const id = this.$route.params.id
+    let body = {
+      name: this.device.name,
+      config: this.device.config,
+      deviceWidgets: this.device.deviceWidgets,
+    }
+    axios
+      .put(this.url + id, body, { withCredentials: true })
+      .then(response => {
+        console.log(response)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+  }
+
+  update() {
+    const id = this.$route.params.id
+    let body = {
+      name: this.device.name,
+      config: this.device.config,
+      deviceWidgets: this.device.deviceWidgets,
+    }
+    axios
+      .post(this.url + id + "/update", body, { withCredentials: true })
+      .then(response => {
+        console.log(response)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+  }
 }
 </script>
 

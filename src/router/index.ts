@@ -52,7 +52,7 @@ export default new Router({
       beforeEnter: requireAuth,
     },
     {
-      path: "/device/:device",
+      path: "/device/:id",
       name: "device",
       component: () => import(/* webpackChunkName: 'widget' */ "../views/Device.vue"),
       beforeEnter: requireAuth,

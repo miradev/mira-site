@@ -1,27 +1,24 @@
 <template>
-  <div class="wrapper">
-    <nav class="level">
-      <div class="level-left">
-        <div class="level-item has-text-centered">
-          <div>
-            <p class="title">Mira Alpha</p>
+  <div>
+    <section class="hero welcome is-info">
+      <div class="hero-body">
+        <div class="container content">
+          <div class="columns">
+            <div class="column">
+              <h1 class="title">{{device.name}}</h1>
+            </div>
+            <button class="button is-warning" @click="save()">Save</button>
           </div>
         </div>
-        <div class="level-item">
-          <b-icon pack="fas" icon="circle" size="is-small" type="is-success"></b-icon>
-          <p class="heading is-success is-online">Online</p>
-        </div>
       </div>
-      <div class="level-right">
-        <div class="level-item">
-          <button class="button">Save Changes</button>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <h1 class="title">Saved Widgets</h1>
+        <div class="columns">
+          <ConfigureWidget v-for="widget in widgets" :key="widget._id" :widget="widget"></ConfigureWidget>
         </div>
-      </div>
-    </nav>
-    <section class="section is-dark">
-      <h1 class="title">Saved Widgets</h1>
-      <div class="columns">
-        <ConfigureWidget v-for="widget in widgets" :key="widget._id" :widget="widget"></ConfigureWidget>
       </div>
     </section>
   </div>
@@ -42,8 +39,22 @@ import { UserTags, IDevice } from "@/common/Types"
   },
 })
 export default class Profile extends Vue {
-  get device() {
-    return store.state.user.devices
+  private url = process.env.VUE_APP_HAR + "users/" + store.state.user._id + "/devices/"
+  private device: IDevice
+
+  private mounted() {
+    const id = this.$route.params.id
+    axios
+      .get(this.url + id, { withCredentials: true })
+      .then(response => {
+        const { device } = response.data
+        this.device = device
+        this.$forceUpdate()
+      })
+      .catch(err => {
+        console.log("Bad:" + err)
+        this.failed = true
+      })
   }
   get widgets() {
     return store.state.widgets
@@ -51,16 +62,13 @@ export default class Profile extends Vue {
   get isDeveloper() {
     return store.state.user.tags.includes(UserTags.DEVELOPER)
   }
+  save() {}
 }
 </script>
 
 <style lang="stylus" scoped>
 .is-online {
   margin: 0 0 0 5px;
-}
-
-.wrapper {
-  background-color: $mid-gray;
 }
 
 .level {

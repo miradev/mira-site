@@ -43,9 +43,14 @@
       <div slot="trigger" class="panel-heading" role="button" aria-controls="contentIdForA11y2">
         <strong>Additional Configs</strong>
       </div>
-      <strong class="subtitle">Position</strong>
-      <ConfigInput :disabled="!added" placeholder="123" help="help" label="longitude" type="num"></ConfigInput>
-      <ConfigInput :disabled="!added" placeholder="123" help="help" label="latitude" type="num"></ConfigInput>
+      <div class="box">
+        <b-field label="Manifest.json">
+          <pre><code class="language-javascript">{{widget.manifest}}</code></pre>
+        </b-field>
+        <b-field label="Configs">
+          <b-input maxlength="999" type="textarea" autofocus v-model="configs" />
+        </b-field>
+      </div>
     </b-collapse>
   </div>
 </template>
@@ -68,6 +73,7 @@ export default class ConfigureWidget extends Vue {
   public isOpen: boolean = false
   public added: boolean = false
   public addedText: string = "Add"
+  public configs: string = ""
   public addWidget() {
     this.added = !this.added
     this.addedText = this.added ? "Remove" : "Add"

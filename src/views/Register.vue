@@ -53,6 +53,13 @@
                   />
                 </div>
               </div>
+              <div class="field">
+                <div class="control">
+                  <b-switch
+                    v-model="checked"
+                  >{{ checked ? "I want to be a developer" : "I do not want to be a developer" }}</b-switch>
+                </div>
+              </div>
               <b-button
                 type="is-primary"
                 icon-right="sign-out-alt"

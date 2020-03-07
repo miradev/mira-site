@@ -9,7 +9,7 @@
               <img class="widget-image" :src="widget.images[0]" alt />
             </figure>
           </div>
-          <div class="column is-12" v-if="widget != null">
+          <div class="column" v-if="widget != null">
             <div class="container content">
               <h1 class="title">{{widget.name}}</h1>
               <h3 class="subtitle">{{widget.description}}</h3>

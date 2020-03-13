@@ -1,5 +1,5 @@
 <template>
-  <div class="column is-6">
+  <div class="column">
     <div class="media">
       <figure class="media-left">
         <p class="image">
@@ -16,41 +16,77 @@
         <div class="right-justify">
           <div class="buttons">
             <router-link :to="'/widget/' + widget._id" class="button is-info">View</router-link>
-            <button
-              class="button"
-              :class="added ? 'is-danger' : 'is-success' "
-              @click="addWidget()"
-            >{{addedText}}</button>
           </div>
         </div>
-        <!--<strong class="subtitle">Position</strong>-->
-        <!--<ConfigInput-->
-        <!--:disabled="!added"-->
-        <!--placeholder="0 to 255"-->
-        <!--label="x:"-->
-        <!--type="num"-->
-        <!--style="width:150px"-->
-        <!--</ConfigInput>-->
-        <!--<ConfigInput-->
-        <!--:disabled="!added"-->
-        <!--placeholder="0 to 255"-->
-        <!--label="y:"-->
-        <!--type="num"-->
-        <!--style="width:150px"-->
-        <!--</ConfigInput>-->
       </div>
     </div>
     <br />
     <b-collapse aria-id="contentIdForA11y2" class="panel" :open.sync="isOpen">
-      <div slot="trigger" class="panel-heading" role="button" aria-controls="contentIdForA11y2">
-        <strong>Additional Configs</strong>
+      <div
+        slot="trigger"
+        class="panel-heading ends"
+        role="button"
+        aria-controls="contentIdForA11y2"
+      >
+        <div class="ends">
+          <strong>Configuration</strong>
+          <b-icon :icon="isOpen ? 'caret-up' : 'caret-down'"></b-icon>
+        </div>
       </div>
       <div class="box">
         <b-field label="Manifest.json">
           <pre><code class="language-javascript">{{widget.manifest}}</code></pre>
         </b-field>
-        <b-field label="Configs">
-          <b-input maxlength="999" type="textarea" autofocus v-model="configs" />
+        <b-field label="Configurations">
+          <b-field grouped>
+            <b-input placeholder="i.e. timezone" v-model="configProperty" />
+            <b-input placeholder="i.e. PDT" v-model="configValue" />
+            <b-button @click="addConfig()">Add</b-button>
+          </b-field>
+        </b-field>
+        <b-field>
+          <b-table :data="configData">
+            <template slot-scope="props">
+              <b-table-column field="property" label="Property">{{ props.row.property }}</b-table-column>
+
+              <b-table-column field="value" label="Value">{{ props.row.value }}</b-table-column>
+              <b-table-column label=" " width="40">
+                <div class="flex-right">
+                  <b-button
+                    type="is-danger"
+                    icon-right="trash"
+                    @click="removeConfig(props.row.property)"
+                  />
+                </div>
+              </b-table-column>
+            </template>
+          </b-table>
+        </b-field>
+
+        <b-field label="Styling">
+          <b-field grouped>
+            <b-input placeholder="i.e. margin" v-model="cssProperty" />
+            <b-input placeholder="i.e. 2rem" v-model="cssValue" />
+            <b-button @click="addCSS()">Add</b-button>
+          </b-field>
+        </b-field>
+        <b-field>
+          <b-table :data="styleData">
+            <template slot-scope="props">
+              <b-table-column field="property" label="Property">{{ props.row.property }}</b-table-column>
+
+              <b-table-column field="value" label="Value">{{ props.row.value }}</b-table-column>
+              <b-table-column label=" " width="40">
+                <div class="flex-right">
+                  <b-button
+                    type="is-danger"
+                    icon-right="trash"
+                    @click="removeCSS(props.row.property)"
+                  />
+                </div>
+              </b-table-column>
+            </template>
+          </b-table>
         </b-field>
       </div>
     </b-collapse>
@@ -63,6 +99,7 @@ import Component from "vue-class-component"
 import ConfigInput from "@/components/ConfigInput.vue"
 import { Prop } from "vue-property-decorator"
 import { IWidget } from "@/common/Types"
+import cssSet from "@/common/CSS"
 
 @Component({
   components: {
@@ -70,24 +107,87 @@ import { IWidget } from "@/common/Types"
   },
 })
 export default class ConfigureWidget extends Vue {
-  @Prop() private widget!: IWidget
-  public isOpen: boolean = false
-  public added: boolean = false
-  public addedText: string = "Add"
-  public configs: string = "{\n  key:value,\n}"
-  public addWidget() {
-    this.added = !this.added
-    this.addedText = this.added ? "Remove" : "Add"
-    if (this.added) {
-      this.$emit("added", { widgetId: this.widget._id, config: this.configs })
-    } else {
-      this.$emit("removed", { widgetId: this.widget._id, config: this.configs })
+  @Prop() public widget!: IWidget
+  @Prop() public device!: IDevice
+  public isOpen: boolean = true
+  public page: int = 0
+  public styleData = []
+  public configData = []
+  public configProperty: string = ""
+  public configValue: string = ""
+  public cssProperty: string = ""
+  public cssValue: string = ""
+
+  mounted() {
+    if (this.device && this.device.widgets && this.device.widgets[this.widget._id]) {
+      this.configData = this.convertToTable(this.device.widgets[this.widget._id].config)
+      this.styleData = this.convertToTable(this.device.widgets[this.widget._id].style)
+    }
+  }
+
+  public addConfig() {
+    let config = { property: this.configProperty, value: this.configValue }
+    this.configData.push(config)
+    this.configProperty = ""
+    this.configValue = ""
+    this.$emit("updateConfig", this.convertToEmit(this.configData))
+  }
+
+  public removeConfig(property: string) {
+    this.configData = this.configData.filter(field => field.property != property)
+    this.$emit("updateConfig", this.convertToEmit(this.configData))
+  }
+
+  public addCSS() {
+    let css = { property: this.cssProperty, value: this.cssValue }
+    this.styleData.push(css)
+    this.cssProperty = ""
+    this.cssValue = ""
+    this.$emit("updateCSS", this.convertToEmit(this.styleData))
+  }
+
+  public removeCSS(property: string) {
+    this.styleData = this.styleData.filter(css => css.property != property)
+    this.$emit("updateCSS", this.convertToEmit(this.styleData))
+  }
+
+  private convertToEmit(data) {
+    // Prep data for emit
+    let full = {}
+    for (let c in data) {
+      full[data[c].property] = data[c].value
+    }
+    return full
+  }
+
+  private convertToTable(data) {
+    if (!data) return []
+    // Prep data for emit
+    let keys = Object.keys(data)
+    let table = []
+    for (let i = 0; i < keys.length; ++i) {
+      table.push({ property: keys[i], value: data[keys[i]] })
+    }
+    return table
+  }
+
+  private validateConfig() {
+    try {
+      let configsJSON = JSON.parse(this.configs)
+      return configsJSON
+    } catch (err) {
+      return null
     }
   }
 }
 </script>
 
 <style lang="stylus" scoped>
+.ends {
+  display: flex;
+  align-items: space-between;
+}
+
 .card {
   margin-right: 1rem;
 }
@@ -101,5 +201,9 @@ export default class ConfigureWidget extends Vue {
 .right-justify {
   display: flex;
   justify-content: space-between;
+}
+
+.is-danger >>> textarea {
+  border-color: #f14668;
 }
 </style>

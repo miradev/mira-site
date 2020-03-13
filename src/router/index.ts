@@ -52,10 +52,21 @@ export default new Router({
       beforeEnter: requireAuth,
     },
     {
+      path: "/profile/:id/:page",
+      name: "profileWithPage",
+      component: () => import(/* webpackChunkName: 'widget' */ "../views/Profile.vue"),
+      beforeEnter: requireAuth,
+    },
+    {
       path: "/device/:id",
       name: "device",
       component: () => import(/* webpackChunkName: 'widget' */ "../views/Device.vue"),
       beforeEnter: requireAuth,
+    },
+    {
+      path: "/qr/:id",
+      name: "qr",
+      component: () => import(/* webpackChunkName: 'widget' */ "../views/QR.vue"),
     },
     {
       path: "/*",

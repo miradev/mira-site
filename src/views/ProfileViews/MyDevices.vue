@@ -32,7 +32,9 @@
         >
           <article class="tile is-child box">
             <p class="title is-4">{{device}}</p>
-            <p class="subtitle is-6">Online</p>
+            <p
+              class="subtitle is-6"
+            >{{deviceStatuses.status == 1 ? "Online" : deviceStatuses.status == 2 ? "Offline" : "Uninitialized"}}</p>
           </article>
         </router-link>
       </div>
@@ -59,6 +61,9 @@ export default class MyDevices extends Vue {
   private currentUserURL = process.env.VUE_APP_HAR + "currentUser"
   get devices() {
     return store.state.user.devices
+  }
+  get deviceStatuses() {
+    return store.state.deviceStatuses ?? []
   }
   refresh() {
     axios

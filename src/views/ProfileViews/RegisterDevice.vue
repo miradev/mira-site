@@ -29,13 +29,6 @@
             <br />
             <b-button
               outlined
-              @click="connect()"
-              type="is-success"
-              icon-pack="fas"
-              icon-right="forward"
-            >Connect</b-button>
-            <b-button
-              outlined
               @click="activeStep++"
               type="is-success"
               icon-pack="fas"
@@ -116,6 +109,7 @@
 <script lang="ts">
 import Vue from "vue"
 import Component from "vue-class-component"
+import { Prop } from "vue-property-decorator"
 import axios from "axios"
 import router from "@/router"
 import store from "@/store"
@@ -123,9 +117,9 @@ import { IUser } from "@/common/Types"
 
 @Component
 export default class CreateDevice extends Vue {
+  @Prop() public identifer!: string
   private url = process.env.VUE_APP_HAR + "users/" + store.state.user._id + "/devices"
   private currentUserURL = process.env.VUE_APP_HAR + "currentUser"
-  private identifer: string = ""
   private name: string = ""
   private description: string = ""
   private msg: string = ""
@@ -147,7 +141,12 @@ export default class CreateDevice extends Vue {
     axios
       .post(this.url + "/" + this.identifer + "/connect", body, { withCredentials: true })
       .then(r => {
-        console.log(r)
+        this.connecting = false
+        this.connected = true
+        this.failed = false
+        this.progress = 100
+        this.progressType = "is-success"
+        this.msg = "Connected!"
         this.$buefy.snackbar.open({
           message: "Successfully Saved! Click OK to refresh.",
           indefinite: true,
@@ -157,20 +156,9 @@ export default class CreateDevice extends Vue {
               .then(response => {
                 let user: IUser = response.data.user
                 store.commit("login", user)
-                this.connecting = false
-                this.connected = true
-                this.failed = false
-                this.progress = 100
-                this.progressType = "is-success"
-                this.msg = "Connected!"
+                this.$forceUpdate()
               })
               .catch(error => {
-                this.msg = error
-                this.connecting = false
-                this.failed = true
-                this.connected = false
-                this.progress = 100
-                this.progressType = "is-danger"
                 this.$forceUpdate()
               })
           },
@@ -196,6 +184,7 @@ export default class CreateDevice extends Vue {
       .post(this.url, body, { withCredentials: true })
       .then(response => {
         let description: string = response.data.description
+        store.commit("setQR", "")
         if (description) {
           this.msg = description
           this.connecting = false

@@ -6,26 +6,76 @@
           <div class="columns">
             <div class="column">
               <h1 class="title">{{device.name}}</h1>
+              <h2
+                class="heading is-3"
+              >{{deviceStatuses.status == 1 ? "Online" : deviceStatuses.status == 2 ? "Offline" : "Uninitialized...please connect to initialize"}}</h2>
             </div>
-            <button class="button is-warning" @click="save()">Save</button>
-            <button class="button is-warning" @click="update()">Update</button>
+            <div class="buttons">
+              <button class="button is-warning" @click="connect()" :loading="loading">Connect</button>
+              <button class="button is-warning" @click="save()">Save</button>
+              <button class="button" @click="update()">Sync</button>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
     <section class="section">
-      <div class="container">
-        <h1 class="title">Favorited Widgets</h1>
-        <div class="columns">
+      <div class="columns">
+        <div class="column is-3">
+          <b-table
+            :checked-rows.sync="checkedRows"
+            :data="tableData"
+            checkable
+            :selected.sync="selectedWidget"
+          >
+            <template slot-scope="props">
+              <b-table-column field="name" label="All Widgets">
+                <template slot="header" slot-scope="{ column }">
+                  <b-tooltip :label="column.label" dashed>
+                    <b>{{ column.label }}</b>
+                  </b-tooltip>
+                </template>
+                {{ props.row.widget.name }}
+              </b-table-column>
+
+              <b-table-column field="name" label="Page">
+                <template slot="header" slot-scope="{ column }">
+                  <b-tooltip :label="column.label" dashed>
+                    <b>{{ column.label }}</b>
+                  </b-tooltip>
+                </template>
+                <b-field>
+                  <b-select v-model="pages[props.row.widget._id]">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                  </b-select>
+                </b-field>
+              </b-table-column>
+            </template>
+            <template slot="empty">
+              <section class="section">
+                <div class="content has-text-grey has-text-centered">
+                  <p>No Favourited Widgets. Visit the marketplace</p>
+                </div>
+              </section>
+            </template>
+          </b-table>
+        </div>
+
+        <div v-if="selectedWidget != null && device != null" class="column">
           <ConfigureWidget
-            @added="added"
-            @removed="removed"
-            v-for="widget in widgets"
-            :key="widget._id"
-            :widget="widget"
+            @updateCSS="updateCSS"
+            @updateConfig="updateConfig"
+            :key="selectedWidget._id"
+            :widget="selectedWidget.widget"
+            :device="device"
           ></ConfigureWidget>
         </div>
+        <div v-else class="column">nothing here</div>
       </div>
     </section>
   </div>
@@ -38,7 +88,7 @@ import Component from "vue-class-component"
 import ConfigureWidget from "@/components/ConfigureWidget.vue"
 import store from "../store"
 import router from "../router"
-import { UserTags, IDevice, IWidget, DeviceWidget } from "@/common/Types"
+import { UserTags, IDevice, IWidget, WidgetSetting } from "@/common/Types"
 
 @Component({
   components: {
@@ -47,7 +97,15 @@ import { UserTags, IDevice, IWidget, DeviceWidget } from "@/common/Types"
 })
 export default class Profile extends Vue {
   private url = process.env.VUE_APP_HAR + "users/" + store.state.user._id + "/devices/"
-  private device: IDevice
+  private currentUserURL = process.env.VUE_APP_HAR + "currentUser"
+  public draggingRow = null
+  public draggingRowIndex = null
+  public isOpen: boolean = true
+  public device: IDevice = {}
+  public selectedWidget: object = {}
+  public checkedRows = []
+  public loading: boolean = false
+  public pages = {}
 
   private mounted() {
     const id = this.$route.params.id
@@ -56,6 +114,12 @@ export default class Profile extends Vue {
       .then(response => {
         const { device } = response.data
         this.device = device
+        for (let w in this.device.widgets) {
+          let widget = this.widgets.find(el => el._id == w)
+          this.checkedRows.push(widget)
+          this.pages[w] = this.device.widgets[w].page
+        }
+        this.selectedWidget = { widget: this.widgets[0], page: this.pages[this.widgets[0]._id] }
         this.$forceUpdate()
       })
       .catch(err => {
@@ -63,35 +127,137 @@ export default class Profile extends Vue {
         this.failed = true
       })
   }
-  get widgets() {
-    return store.state.widgets
+
+  get deviceStatuses() {
+    return store.state.deviceStatuses ?? []
   }
 
-  added(deviceWidget: DeviceWidget) {
-    this.device.deviceWidgets.push(deviceWidget)
-    console.log(this.device)
+  get widgets() {
+    return store.state.widgets ?? []
   }
-  removed(deviceWidget: DeviceWidget) {
-    this.device.deviceWidgets = this.device.deviceWidgets.filter(
-      w => w.widgetId != deviceWidget.widgetId,
-    )
-    console.log(this.device)
+
+  get tableData() {
+    return this.widgets.map(e => {
+      return { widget: e, page: this.pages[e._id] }
+    })
+  }
+
+  private initObjects() {
+    if (this.selectedWidget == null) return
+    if (!this.device.widgets) {
+      this.device.widgets = {}
+    }
+    if (!this.device.widgets[this.selectedWidget._id]) {
+      this.device.widgets[this.selectedWidget._id] = {
+        page: this.pages[this.device.widgets[this.selectedWidget._id]],
+      }
+    }
+  }
+
+  private updateConfig(config) {
+    this.initObjects()
+    this.device.widgets[this.selectedWidget._id].config = config
+  }
+
+  private updateCSS(style) {
+    this.initObjects()
+    this.device.widgets[this.selectedWidget._id].style = style
+  }
+
+  connect() {
+    this.loading = true
+    let identifer = this.device._id
+    let body = {
+      _id: identifer,
+    }
+    axios
+      .post(this.url + identifer + "/connect", body, { withCredentials: true })
+      .then(r => {
+        this.loading = false
+        axios
+          .get(this.currentUserURL, { withCredentials: true })
+          .then(response => {
+            let user: IUser = response.data.user
+            store.commit("login", user)
+            this.$buefy.toast.open({
+              message: "Connected!",
+              type: "is-success",
+            })
+            this.getStatus()
+          })
+          .catch(error => {
+            console.log(error)
+            this.$buefy.toast.open({
+              message: error,
+              type: "is-danger",
+            })
+          })
+      })
+      .catch(err => {
+        console.log(error)
+        this.loading = false
+        this.$buefy.toast.open({
+          message: error,
+          type: "is-danger",
+        })
+      })
+  }
+
+  getStatus() {
+    let deviceStatusURL =
+      process.env.VUE_APP_HAR + "users/" + store.state.user.username + "/devices"
+    axios
+      .get(this.deviceStatusURL, { withCredentials: true })
+      .then(response => {
+        let deviceStatuses = response.data.devices
+        for (let device of this.devices) {
+          if (device in deviceStatuses) {
+          } else {
+            store.commit("updateDeviceStatus", { id: device, status: 3 })
+          }
+        }
+        this.$forceUpdate()
+      })
+      .catch(error => {
+        this.$forceUpdate()
+      })
   }
 
   save() {
     const id = this.$route.params.id
-    let body = {
-      name: this.device.name,
-      config: this.device.config,
-      deviceWidgets: this.device.deviceWidgets,
+    let widgets = {}
+    if (!this.device.widgets) {
+      this.device.widgets = {}
     }
+    for (let row in this.checkedRows) {
+      let w = this.checkedRows[row]
+      if (w._id in this.device.widgets) {
+        widgets[w._id] = { page: parseInt(this.pages[w._id]) }
+      }
+    }
+
+    let body: IDevice = {
+      name: this.device.name,
+      config: {},
+      widgets: widgets,
+    }
+    console.log(body)
+    console.log(this.pages)
     axios
       .put(this.url + id, body, { withCredentials: true })
       .then(response => {
         console.log(response)
+        this.$buefy.toast.open({
+          message: "Saved!",
+          type: "is-success",
+        })
       })
-      .catch(error => {
-        console.log(error)
+      .catch(err => {
+        this.$buefy.toast.open({
+          message: err,
+          type: "is-warning",
+        })
+        console.log(err)
       })
   }
 
@@ -107,9 +273,33 @@ export default class Profile extends Vue {
       .then(response => {
         console.log(response)
       })
-      .catch(error => {
-        console.log(error)
+      .catch(err => {
+        console.log(err)
       })
+  }
+
+  //Dragging
+  dragstart(payload) {
+    this.draggingRow = payload.row
+    this.draggingRowIndex = payload.index
+    payload.event.dataTransfer.effectAllowed = "copy"
+  }
+  dragover(payload) {
+    payload.event.dataTransfer.dropEffect = "copy"
+    payload.event.target.closest("tr").classList.add("is-selected")
+    payload.event.preventDefault()
+  }
+  dragleave(payload) {
+    payload.event.target.closest("tr").classList.remove("is-selected")
+    payload.event.preventDefault()
+  }
+  drop(payload) {
+    payload.event.target.closest("tr").classList.remove("is-selected")
+    const droppedOnRowIndex = payload.index
+    this.$buefy.toast.open(
+      `Moved ${this.draggingRow.name} from row ${this.draggingRowIndex + 1} to ${droppedOnRowIndex +
+        1}`,
+    )
   }
 }
 </script>
@@ -122,5 +312,10 @@ export default class Profile extends Vue {
 .level {
   display: flex;
   justify-content: space-between;
+}
+
+.heading {
+  color: white;
+  font-size: 12pt;
 }
 </style>

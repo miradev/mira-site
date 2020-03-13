@@ -9,6 +9,19 @@ export interface State {
   authenticated: boolean
   user: IUser
   widgets: IWidget[]
+  deviceStatuses: {}
+  qr: string
+}
+
+export enum ConnectionStatus {
+  Connected = 1,
+  Disconnected,
+  Uninitialized,
+}
+
+export interface DeviceStatus {
+  id: string
+  status: ConnectionStatus
 }
 
 const vuexLocal = new VuexPersistence<State>({
@@ -17,9 +30,15 @@ const vuexLocal = new VuexPersistence<State>({
 
 export default new Vuex.Store<State>({
   mutations: {
+    updateDeviceStatus(state: State, deviceStatus: DeviceStatus) {
+      state.deviceStatuses[deviceStatus.id] = deviceStatus
+    },
     login(state: State, user: IUser) {
       state.user = user
       state.authenticated = true
+    },
+    setQR(state: State, qr: string) {
+      state.qr = qr
     },
     logout(state: State) {
       state.user = {
@@ -32,6 +51,8 @@ export default new Vuex.Store<State>({
       }
       state.authenticated = false
       state.widgets = []
+      state.deviceStatuses = {}
+      state.qr = ""
     },
     saveWidget(state: State, widget: IWidget) {
       if (!state.user.favorites) {

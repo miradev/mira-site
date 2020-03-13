@@ -30,19 +30,39 @@ export interface IUser {
   favorites: string[]
 }
 
-export interface IDevice {
-  _id: string
-  name: string
-  config: object
-  deviceWidgets: DeviceWidget[]
-}
-
 export interface IDeviceConnection {
   deviceId: string
   hash: string
 }
 
-export interface DeviceWidget {
-  widgetId: string
+export interface IDevice {
+  _id: string
+  name: string
   config: object
+  widgets?: {
+    [id: string]: WidgetSetting
+  }
 }
+
+export interface WidgetSetting {
+  style?: {
+    [key: string]: string
+  }
+  config?: {
+    [configKey: string]: string | number | boolean | null
+  }
+  page: number
+}
+
+//************* DEPRECATED
+// export interface DeviceWidget {
+//   widgetId: string
+//   config: object
+// }
+// export interface IDevice {
+//   _id: string
+//   name: string
+//   config: object
+//   deviceWidgets: DeviceWidget[]
+// }
+//************* DEPRECATED

@@ -160,10 +160,10 @@ export default class UploadWidget extends Vue {
     this.showNext = true
     this.filename = response.filename
     this.manifest = response.manifest
-    this.name = this.manifest.name ?? ""
-    this.identifer = this.manifest.id ?? ""
-    this.description = this.manifest.description ?? ""
-    this.version = this.manifest.version ?? ""
+    this.name = this.manifest["name"] ?? ""
+    this.identifer = this.manifest["id"] ?? ""
+    this.description = this.manifest["description"] ?? ""
+    this.version = this.manifest["version"] ?? ""
   }
 
   submit() {

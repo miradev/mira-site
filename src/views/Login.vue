@@ -83,7 +83,11 @@ export default class Login extends Vue {
         store.commit("login", user)
         this.msg = "Logged in."
         this.$forceUpdate()
-        router.push("/")
+        if (store.state.qr) {
+          router.push("/profile/" + user.username + "/2")
+        } else {
+          router.push("/")
+        }
       })
       .catch(error => {
         this.msg = "Incorrect credentials."

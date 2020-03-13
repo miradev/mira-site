@@ -45,7 +45,7 @@ import router from "@/router"
   },
 })
 export default class Dashboard extends Vue {
-  private url: string = process.env.VUE_APP_HAR + "widgets?" + store.state.user._id
+  private url: string = process.env.VUE_APP_HAR + "widgets?userId=" + store.state.user._id
   private currentUserURL = process.env.VUE_APP_HAR + "currentUser"
   private widgets: IWidget = []
 

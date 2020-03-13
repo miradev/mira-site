@@ -40,7 +40,7 @@
         <!-- Content -->
 
         <MyDevices v-if="isActive(1)"></MyDevices>
-        <RegisterDevice v-else-if="isActive(2)"></RegisterDevice>
+        <RegisterDevice v-else-if="isActive(2)" :identifer="qr"></RegisterDevice>
         <FavouriteWidgets v-else-if="isActive(3)"></FavouriteWidgets>
         <Settings v-else-if="isActive(4)"></Settings>
         <Dashboard v-else-if="isActive(5)"></Dashboard>
@@ -89,7 +89,9 @@
               >
                 <article class="tile is-child box">
                   <p class="title is-4">{{device}}</p>
-                  <p class="subtitle is-6">Online</p>
+                  <p
+                    class="subtitle is-6"
+                  >{{deviceStatuses.status == 1 ? "Online" : deviceStatuses.status == 2 ? "Offline" : "Uninitialized"}}</p>
                 </article>
               </router-link>
             </div>
@@ -115,7 +117,7 @@ import Dashboard from "@/views/ProfileViews/Dashboard.vue"
 import UploadWidget from "@/views/ProfileViews/UploadWidget.vue"
 import MyWidgets from "@/views/ProfileViews/MyWidgets.vue"
 
-import { UserTags, IDevice } from "@/common/Types"
+import { IUser, UserTags, IDevice } from "@/common/Types"
 import store from "../store"
 import router from "../router"
 @Component({
@@ -136,6 +138,13 @@ export default class Profile extends Vue {
   public editText: string = "Edit"
   public currentPage: number = 0
   private currentUserURL = process.env.VUE_APP_HAR + "currentUser"
+  private deviceStatusURL =
+    process.env.VUE_APP_HAR + "users/" + store.state.user.username + "/devices"
+
+  mounted() {
+    this.getStatus()
+    this.currentPage = this.$route.params.page
+  }
 
   get dashboardURL() {
     return "/dashboard/" + store.state.user.username
@@ -145,34 +154,20 @@ export default class Profile extends Vue {
     return "/registerDevice"
   }
 
+  get qr() {
+    return store.state.qr ?? ""
+  }
+
   get widgets() {
     return store.state.widgets
   }
 
   get devices() {
     return store.state.user.devices ?? []
-    //return [
-    //{
-    //_id: "deviceid",
-    //name: "My First Mirror",
-    //config: {
-    //location: "Upstairs Bathroom",
-    //},
-    //connection: {
-    //address: "192.168.0.1",
-    //authToken: "Some Token",
-    //},
-    //deviceWidgets: [
-    //{
-    //widgetId: "mira_clock",
-    //config: {
-    //latitude: "43.6532",
-    //longitude: "79.3832",
-    //},
-    //},
-    //],
-    //},
-    //]
+  }
+
+  get deviceStatuses() {
+    return store.state.deviceStatuses ?? []
   }
 
   get isDeveloper() {
@@ -193,6 +188,24 @@ export default class Profile extends Vue {
       .then(response => {
         let user: IUser = response.data.user
         store.commit("login", user)
+        this.$forceUpdate()
+      })
+      .catch(error => {
+        this.$forceUpdate()
+      })
+  }
+
+  getStatus() {
+    axios
+      .get(this.deviceStatusURL, { withCredentials: true })
+      .then(response => {
+        let deviceStatuses = response.data.devices
+        for (let device of this.devices) {
+          if (device in deviceStatuses) {
+          } else {
+            store.commit("updateDeviceStatus", { id: device, status: 3 })
+          }
+        }
         this.$forceUpdate()
       })
       .catch(error => {

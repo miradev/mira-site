@@ -58,7 +58,7 @@ export default class MyDevices extends Vue {
       })
   }
   get widgets() {
-    return store.state.user.favorites
+    return store.state.widgets
   }
 }
 </script>

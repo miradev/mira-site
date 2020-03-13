@@ -133,7 +133,7 @@ export default class Profile extends Vue {
   }
 
   get widgets() {
-    return store.state.user.favorites ?? []
+    return store.state.widgets ?? []
   }
 
   get tableData() {

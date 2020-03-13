@@ -42,12 +42,11 @@ export default class WidgetCard extends Vue {
   @Prop() private widget!: IWidget
   @Prop() private canSave!: boolean
   @Prop() private width!: number
+
   get saved() {
     if (this.widget) {
-      let widgets = store.state.user.favorites
+      let widgets = store.state.widgets
       for (let i in widgets) {
-        console.log(widgets[i]._id)
-        console.log(this.widget._id)
         if (widgets[i]._id == this.widget._id) {
           return true
         }
@@ -69,7 +68,7 @@ export default class WidgetCard extends Vue {
     }
     let currentUserURL = process.env.VUE_APP_HAR + "currentUser"
     let body: IUser = store.state.user
-    body.favorites = store.state.widgets
+    body.favorites = store.state.widgets.map(e => e._id)
     axios
       .put(currentUserURL, body, { withCredentials: true })
       .then(response => {

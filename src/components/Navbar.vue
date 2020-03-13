@@ -89,6 +89,10 @@ nav {
   background-color: $dark-gray !important;
 }
 
+nav >>> .navbar-menu {
+  background-color: $dark-gray !important;
+}
+
 .is-active {
   background-color: $dark-gray;
 }

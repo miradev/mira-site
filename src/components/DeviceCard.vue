@@ -20,8 +20,8 @@ import * as Utility from "@/common/utility"
 
 @Component
 export default class DeviceCard extends Vue {
-  @Prop() private device!: IDevice
-  public deviceURL: String = "/device/" + this.device._id
+  @Prop() private device!: string
+  public deviceURL: String = "/device/" + this.device
 
   get deviceName() {
     return Utility.getDeviceName(this.device)

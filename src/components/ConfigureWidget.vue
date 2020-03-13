@@ -1,6 +1,6 @@
 <template>
   <div class="column">
-    <div class="media">
+    <div class="media is-hidden-mobile">
       <figure class="media-left">
         <p class="image">
           <img :src="widget.images[0]" :alt="widget.title" class="widget-image" />
@@ -18,6 +18,16 @@
             <router-link :to="'/widget/' + widget._id" class="button is-info">View</router-link>
           </div>
         </div>
+      </div>
+    </div>
+    <div class="content is-hidden-tablet">
+      <p class="image flex-center">
+        <img :src="widget.images[0]" :alt="widget.title" class="widget-image" />
+      </p>
+      <p class="title is-4">{{widget.name}}</p>
+      <p class="subtitle is-6">{{widget.description}}</p>
+      <div class="buttons flex-center">
+        <router-link :to="'/widget/' + widget._id" class="button is-info">View</router-link>
       </div>
     </div>
     <br />
@@ -43,7 +53,7 @@
           </b-field>
         </b-field>
         <b-field label="Configurations">
-          <b-field grouped>
+          <b-field grouped group-multiline>
             <b-input placeholder="i.e. timezone" v-model="configProperty" />
             <b-input placeholder="i.e. PDT" v-model="configValue" />
             <b-button @click="addConfig()">Add</b-button>
@@ -69,7 +79,7 @@
         </b-field>
 
         <b-field label="Styling">
-          <b-field grouped>
+          <b-field grouped group-multiline>
             <b-input placeholder="i.e. margin" v-model="cssProperty" />
             <b-input placeholder="i.e. 2rem" v-model="cssValue" />
             <b-button @click="addCSS()">Add</b-button>

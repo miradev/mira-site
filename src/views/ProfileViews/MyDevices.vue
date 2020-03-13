@@ -24,7 +24,7 @@
       >here</a>.
     </h2>
     <section class="info-tiles">
-      <div class="tile is-ancestor has-text-centered wrap">
+      <div class="tile has-text-centered wrap">
         <DeviceCard
           v-for="device in $store.state.user.devices.slice(0, 3)"
           :key="device"

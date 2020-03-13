@@ -4,38 +4,53 @@
       <div class="columns">
         <!--Side Bar-->
         <div class="column is-3">
-          <aside class="menu is-hidden-mobile">
-            <p class="menu-label">General</p>
-            <ul class="menu-list">
-              <li>
-                <a :class="getClass(0)" @click="currentPage = 0">Profile</a>
-              </li>
-              <li>
-                <a :class="getClass(1)" @click="currentPage = 1">My Devices</a>
-              </li>
-              <li>
-                <a :class="getClass(2)" @click="currentPage = 2">Register New Device</a>
-              </li>
-              <li>
-                <a :class="getClass(3)" @click="currentPage = 3">Favourite Widgets</a>
-              </li>
-              <li>
-                <a :class="getClass(4)" @click="currentPage = 4">Settings</a>
-              </li>
-            </ul>
-            <p v-if="isDeveloper" class="menu-label">Developer</p>
-            <ul v-if="isDeveloper" class="menu-list">
-              <li>
-                <a :class="getClass(5)" @click="currentPage = 5">Dashboard</a>
-              </li>
-              <li>
-                <a :class="getClass(6)" @click="currentPage = 6">My Widgets</a>
-              </li>
-              <li>
-                <a :class="getClass(7)" @click="currentPage = 7">Upload New Widget</a>
-              </li>
-            </ul>
-          </aside>
+          <b-collapse
+            aria-id="contentIdForA11y2"
+            class="panel"
+            animation="slide"
+            :open.sync="isOpen"
+          >
+            <div
+              slot="trigger"
+              class="is-hidden-tablet is-trigger flex-center"
+              role="button"
+              aria-controls="contentIdForA11y2"
+            >
+              <b-icon :icon="isOpen ? 'caret-up' : 'caret-down'"></b-icon>
+            </div>
+            <aside class="menu">
+              <p class="menu-label">General</p>
+              <ul class="menu-list">
+                <li>
+                  <a :class="getClass(0)" @click="currentPage = 0">Profile</a>
+                </li>
+                <li>
+                  <a :class="getClass(1)" @click="currentPage = 1">My Devices</a>
+                </li>
+                <li>
+                  <a :class="getClass(2)" @click="currentPage = 2">Register New Device</a>
+                </li>
+                <li>
+                  <a :class="getClass(3)" @click="currentPage = 3">Favourite Widgets</a>
+                </li>
+                <li>
+                  <a :class="getClass(4)" @click="currentPage = 4">Settings</a>
+                </li>
+              </ul>
+              <p v-if="isDeveloper" class="menu-label">Developer</p>
+              <ul v-if="isDeveloper" class="menu-list">
+                <li>
+                  <a :class="getClass(5)" @click="currentPage = 5">Dashboard</a>
+                </li>
+                <li>
+                  <a :class="getClass(6)" @click="currentPage = 6">My Widgets</a>
+                </li>
+                <li>
+                  <a :class="getClass(7)" @click="currentPage = 7">Upload New Widget</a>
+                </li>
+              </ul>
+            </aside>
+          </b-collapse>
         </div>
         <!-- Content -->
 
@@ -65,29 +80,31 @@
           </section>
           <br />
 
-          <div class="columns">
-            <div class="column">
-              <h1 class="title">My Devices</h1>
+          <div class="container">
+            <div class="columns">
+              <div class="column">
+                <h1 class="title">My Devices</h1>
+              </div>
+              <div class="column flex-right">
+                <a @click="currentPage = 1" class="title is-6 is-blue">See all devices</a>
+              </div>
             </div>
-            <div class="column flex-right">
-              <a @click="currentPage = 1" class="title is-6 is-blue">See all devices</a>
-            </div>
+            <h2 v-if="$store.state.user.devices.length == 0">
+              Oops. It looks like you have no devices registered. Register one
+              <a
+                @click="currentPage = 2"
+              >here</a>.
+            </h2>
+            <section v-else class="info-tiles">
+              <div class="tile has-text-centered">
+                <DeviceCard
+                  v-for="device in $store.state.user.devices.slice(0, 3)"
+                  :key="device"
+                  :device="device"
+                ></DeviceCard>
+              </div>
+            </section>
           </div>
-          <h2 v-if="$store.state.user.devices.length == 0">
-            Oops. It looks like you have no devices registered. Register one
-            <a
-              @click="currentPage = 2"
-            >here</a>.
-          </h2>
-          <section v-else class="info-tiles">
-            <div class="tile is-ancestor has-text-centered">
-              <DeviceCard
-                v-for="device in $store.state.user.devices.slice(0, 3)"
-                :key="device"
-                :device="device"
-              ></DeviceCard>
-            </div>
-          </section>
         </div>
       </div>
     </div>
@@ -130,6 +147,7 @@ import * as Utility from "@/common/utility"
 export default class Profile extends Vue {
   public editMode: boolean = false
   public editText: string = "Edit"
+  public isOpen: boolean = false
   public currentPage: number = 0
   private currentUserURL = process.env.VUE_APP_HAR + "currentUser"
 
@@ -204,5 +222,10 @@ export default class Profile extends Vue {
 <style lang="stylus" scoped>
 div >>> .is-blue {
   color: #276cda;
+}
+
+.panel >>> .is-trigger {
+  background-color: #eee;
+  border: 1px solid #bbb;
 }
 </style>

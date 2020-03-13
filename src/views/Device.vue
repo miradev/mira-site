@@ -12,7 +12,7 @@
             </div>
             <div class="buttons">
               <button class="button is-warning" @click="connect()" :loading="loading">Connect</button>
-              <button class="button is-warning" @click="save()">Save</button>
+              <button class="button is-warning" @click="save()">{{saveButtonText}}</button>
               <button class="button" @click="update()">Sync</button>
             </div>
           </div>
@@ -21,63 +21,56 @@
     </section>
 
     <section class="section">
-      <div class="columns">
-        <div class="column is-3">
-          <b-table
-            :checked-rows.sync="checkedRows"
-            :data="tableData"
-            checkable
-            :selected.sync="selectedWidget"
-          >
-            <template slot-scope="props">
-              <b-table-column field="name" label="All Widgets">
-                <template slot="header" slot-scope="{ column }">
-                  <b-tooltip :label="column.label" dashed>
-                    <b>{{ column.label }}</b>
-                  </b-tooltip>
-                </template>
-                {{ props.row.name }}
-              </b-table-column>
+      <div class="container content">
+        <div class="columns box">
+          <div class="column is-3">
+            <b-table
+              :checked-rows.sync="checkedRows"
+              :data="tableData"
+              checkable
+              :selected.sync="selectedWidget"
+            >
+              <template slot-scope="props">
+                <b-table-column field="name" label="All Widgets" sortable>
+                  <template slot="header" slot-scope="{ column }">
+                    <b-tooltip :label="column.label" dashed>
+                      <b>{{ column.label }}</b>
+                    </b-tooltip>
+                  </template>
+                  {{ props.row.name }}
+                </b-table-column>
+                <b-table-column field="page" label="Page">
+                  <template slot="header" slot-scope="{ column }">
+                    <b-tooltip :label="column.label" dashed>
+                      <b>{{ column.label }}</b>
+                    </b-tooltip>
+                  </template>
+                  {{ pages[props.row._id] }}
+                </b-table-column>
+              </template>
+              <template slot="empty">
+                <section class="section">
+                  <div class="content has-text-grey has-text-centered">
+                    <p>No Favourited Widgets. Visit the marketplace</p>
+                  </div>
+                </section>
+              </template>
+            </b-table>
+          </div>
 
-              <!-- <b-table-column field="name" label="Page"> -->
-              <!--   <template slot="header" slot-scope="{ column }"> -->
-              <!--     <b-tooltip :label="column.label" dashed> -->
-              <!--       <b>{{ column.label }}</b> -->
-              <!--     </b-tooltip> -->
-              <!--   </template> -->
-              <!--   <!-1- <b-field> -1-> -->
-              <!--   <!-1-   <b-select v-model="pages[props.row.widget._id]"> -1-> -->
-              <!--   <!-1-     <option value="1">1</option> -1-> -->
-              <!--   <!-1-     <option value="2">2</option> -1-> -->
-              <!--   <!-1-     <option value="3">3</option> -1-> -->
-              <!--   <!-1-     <option value="4">4</option> -1-> -->
-              <!--   <!-1-     <option value="5">5</option> -1-> -->
-              <!--   <!-1-   </b-select> -1-> -->
-              <!--   <!-1- </b-field> -1-> -->
-              <!-- </b-table-column> -->
-            </template>
-            <template slot="empty">
-              <section class="section">
-                <div class="content has-text-grey has-text-centered">
-                  <p>No Favourited Widgets. Visit the marketplace</p>
-                </div>
-              </section>
-            </template>
-          </b-table>
+          <div v-if="selectedWidget != null && device != null" class="column">
+            <ConfigureWidget
+              @updateCSS="updateCSS"
+              @updateConfig="updateConfig"
+              @updatePage="updatePage"
+              :key="selectedWidget._id"
+              :widget="selectedWidget"
+              :device="device"
+              :page="pages[selectedWidget._id]"
+            ></ConfigureWidget>
+          </div>
+          <div v-else class="column">nothing here</div>
         </div>
-
-        <div v-if="selectedWidget != null && device != null" class="column">
-          <ConfigureWidget
-            @updateCSS="updateCSS"
-            @updateConfig="updateConfig"
-            @updatePage="updatePage"
-            :key="selectedWidget._id"
-            :widget="selectedWidget"
-            :device="device"
-            :page="pages[selectedWidget._id]"
-          ></ConfigureWidget>
-        </div>
-        <div v-else class="column">nothing here</div>
       </div>
     </section>
   </div>
@@ -100,14 +93,13 @@ import { UserTags, IDevice, IWidget, WidgetSetting } from "@/common/Types"
 export default class Profile extends Vue {
   private url = process.env.VUE_APP_HAR + "users/" + store.state.user._id + "/devices/"
   private currentUserURL = process.env.VUE_APP_HAR + "currentUser"
-  public draggingRow = null
-  public draggingRowIndex = null
-  public isOpen: boolean = true
-  public device: IDevice = {}
-  public selectedWidget: object = {}
-  public checkedRows = []
-  public loading: boolean = false
-  public pages = {}
+  private isOpen: boolean = true
+  private saveButtonText: string = "Save"
+  private device: IDevice = {}
+  private selectedWidget: object = {}
+  private checkedRows = []
+  private loading: boolean = false
+  private pages = {}
 
   private mounted() {
     const id = this.$route.params.id
@@ -116,7 +108,6 @@ export default class Profile extends Vue {
       .then(response => {
         const { device } = response.data
         this.device = device
-        console.log(this.device)
         for (let w of this.widgets) {
           this.pages[w._id] = 1
         }
@@ -125,12 +116,9 @@ export default class Profile extends Vue {
           let found = this.widgets.filter(e => e._id == key)
           this.pages[key] = this.device?.widgets[key]?.page ?? 1
           if (found.length == 1) {
-            console.log(found[0])
             this.checkedRows.push(found[0])
           }
         }
-        console.log(this.widgets)
-        console.log(this.pages)
         this.selectedWidget = this.widgets[0]
         this.$forceUpdate()
       })
@@ -167,16 +155,20 @@ export default class Profile extends Vue {
   private updateConfig(config) {
     this.initObjects()
     this.device.widgets[this.selectedWidget._id].config = config
+    this.saveButtonText = "Save*"
   }
 
   private updateCSS(style) {
     this.initObjects()
     this.device.widgets[this.selectedWidget._id].style = style
+    this.saveButtonText = "Save*"
   }
 
   private updatePage(page) {
     this.initObjects()
     this.pages[this.selectedWidget._id] = page
+    this.saveButtonText = "Save*"
+    this.$forceUpdate()
   }
 
   connect() {
@@ -241,8 +233,6 @@ export default class Profile extends Vue {
   save() {
     const id = this.$route.params.id
     let widgets = {}
-    console.log(this.checkedRows)
-    console.log(this.pages)
     for (let widget of this.widgets) {
       if (this.checkedRows.some(e => e._id == widget._id)) {
         widgets[widget._id] = { page: parseInt(this.pages[widget._id]) }
@@ -271,6 +261,7 @@ export default class Profile extends Vue {
           message: "Saved!",
           type: "is-success",
         })
+        this.saveButtonText = "Save"
       })
       .catch(err => {
         this.$buefy.toast.open({
@@ -293,43 +284,10 @@ export default class Profile extends Vue {
         console.log(err)
       })
   }
-
-  //Dragging
-  dragstart(payload) {
-    this.draggingRow = payload.row
-    this.draggingRowIndex = payload.index
-    payload.event.dataTransfer.effectAllowed = "copy"
-  }
-  dragover(payload) {
-    payload.event.dataTransfer.dropEffect = "copy"
-    payload.event.target.closest("tr").classList.add("is-selected")
-    payload.event.preventDefault()
-  }
-  dragleave(payload) {
-    payload.event.target.closest("tr").classList.remove("is-selected")
-    payload.event.preventDefault()
-  }
-  drop(payload) {
-    payload.event.target.closest("tr").classList.remove("is-selected")
-    const droppedOnRowIndex = payload.index
-    this.$buefy.toast.open(
-      `Moved ${this.draggingRow.name} from row ${this.draggingRowIndex + 1} to ${droppedOnRowIndex +
-        1}`,
-    )
-  }
 }
 </script>
 
 <style lang="stylus" scoped>
-.is-online {
-  margin: 0 0 0 5px;
-}
-
-.level {
-  display: flex;
-  justify-content: space-between;
-}
-
 .heading {
   color: white;
   font-size: 12pt;

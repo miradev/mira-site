@@ -14,7 +14,7 @@
               extensible.
             </p>
             <br />
-            <button class="button">Learn More</button>
+            <router-link to="/developer" class="button">Learn More</router-link>
           </div>
           <div class="column">
             <img class="is-hidden-mobile" src="../assets/miraos.svg" alt="Mira OS" />
@@ -37,7 +37,7 @@
               necessary for developers to leverage all of the mirror’s features.
             </p>
             <br />
-            <button class="button">Developer Portal</button>
+            <router-link to="/developer" class="button">Developer Portal</router-link>
           </div>
         </div>
       </div>
@@ -54,7 +54,7 @@
               their own mirrors.
             </p>
             <br />
-            <button class="button">View Marketplace</button>
+            <router-link to="/marketplace" class="button">View Marketplace</router-link>
           </div>
           <div class="column">
             <img class="is-hidden-mobile" src="../assets/marketplace.svg" alt="Marketplace" />

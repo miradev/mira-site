@@ -65,17 +65,6 @@ export default class Navbar extends Vue {
   logout() {
     store.commit("logout")
     router.push("/")
-    //axios
-    //.get(this.logoutURL)
-    //.then(response => {
-    //console.log(response)
-    //store.commit("logout")
-    //this.$forceUpdate()
-    //})
-    //.catch(error => {
-    //console.log(`Error: ${error}`)
-    //this.$forceUpdate()
-    //})
   }
 
   beforeRouteUpdate(to: any, from: any, next: any) {

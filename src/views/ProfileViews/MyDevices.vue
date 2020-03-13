@@ -16,6 +16,7 @@
     </section>
     <br />
 
+    <h1 class="title">All Devices</h1>
     <h2 v-show="$store.state.user.devices.length == 0">
       Oops. It looks like you have no devices registered. Register one
       <a
@@ -24,19 +25,11 @@
     </h2>
     <section class="info-tiles">
       <div class="tile is-ancestor has-text-centered wrap">
-        <router-link
-          :to="'/device/' + device"
-          class="tile is-parent is-3"
-          v-for="device in $store.state.user.devices"
+        <DeviceCard
+          v-for="device in $store.state.user.devices.slice(0, 3)"
           :key="device"
-        >
-          <article class="tile is-child box">
-            <p class="title is-4">{{device}}</p>
-            <p
-              class="subtitle is-6"
-            >{{deviceStatuses.status == 1 ? "Online" : deviceStatuses.status == 2 ? "Offline" : "Uninitialized"}}</p>
-          </article>
-        </router-link>
+          :device="device"
+        ></DeviceCard>
       </div>
     </section>
   </div>
@@ -79,5 +72,3 @@ export default class MyDevices extends Vue {
   }
 }
 </script>
-
-<style lang="stylus" scoped></style>

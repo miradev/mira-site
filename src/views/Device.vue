@@ -36,25 +36,25 @@
                     <b>{{ column.label }}</b>
                   </b-tooltip>
                 </template>
-                {{ props.row.widget.name }}
+                {{ props.row.name }}
               </b-table-column>
 
-              <b-table-column field="name" label="Page">
-                <template slot="header" slot-scope="{ column }">
-                  <b-tooltip :label="column.label" dashed>
-                    <b>{{ column.label }}</b>
-                  </b-tooltip>
-                </template>
-                <b-field>
-                  <b-select v-model="pages[props.row.widget._id]">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                  </b-select>
-                </b-field>
-              </b-table-column>
+              <!-- <b-table-column field="name" label="Page"> -->
+              <!--   <template slot="header" slot-scope="{ column }"> -->
+              <!--     <b-tooltip :label="column.label" dashed> -->
+              <!--       <b>{{ column.label }}</b> -->
+              <!--     </b-tooltip> -->
+              <!--   </template> -->
+              <!--   <!-1- <b-field> -1-> -->
+              <!--   <!-1-   <b-select v-model="pages[props.row.widget._id]"> -1-> -->
+              <!--   <!-1-     <option value="1">1</option> -1-> -->
+              <!--   <!-1-     <option value="2">2</option> -1-> -->
+              <!--   <!-1-     <option value="3">3</option> -1-> -->
+              <!--   <!-1-     <option value="4">4</option> -1-> -->
+              <!--   <!-1-     <option value="5">5</option> -1-> -->
+              <!--   <!-1-   </b-select> -1-> -->
+              <!--   <!-1- </b-field> -1-> -->
+              <!-- </b-table-column> -->
             </template>
             <template slot="empty">
               <section class="section">
@@ -70,9 +70,11 @@
           <ConfigureWidget
             @updateCSS="updateCSS"
             @updateConfig="updateConfig"
+            @updatePage="updatePage"
             :key="selectedWidget._id"
-            :widget="selectedWidget.widget"
+            :widget="selectedWidget"
             :device="device"
+            :page="pages[selectedWidget._id]"
           ></ConfigureWidget>
         </div>
         <div v-else class="column">nothing here</div>
@@ -114,12 +116,22 @@ export default class Profile extends Vue {
       .then(response => {
         const { device } = response.data
         this.device = device
-        for (let w in this.device.widgets) {
-          let widget = this.widgets.find(el => el._id == w)
-          this.checkedRows.push(widget)
-          this.pages[w] = this.device.widgets[w].page
+        console.log(this.device)
+        for (let w of this.widgets) {
+          this.pages[w._id] = 1
         }
-        this.selectedWidget = { widget: this.widgets[0], page: this.pages[this.widgets[0]._id] }
+
+        for (let [key, val] of Object.entries(this.device.widgets)) {
+          let found = this.widgets.filter(e => e._id == key)
+          this.pages[key] = this.device?.widgets[key]?.page ?? 1
+          if (found.length == 1) {
+            console.log(found[0])
+            this.checkedRows.push(found[0])
+          }
+        }
+        console.log(this.widgets)
+        console.log(this.pages)
+        this.selectedWidget = this.widgets[0]
         this.$forceUpdate()
       })
       .catch(err => {
@@ -137,9 +149,7 @@ export default class Profile extends Vue {
   }
 
   get tableData() {
-    return this.widgets.map(e => {
-      return { widget: e, page: this.pages[e._id] }
-    })
+    return this.widgets
   }
 
   private initObjects() {
@@ -149,7 +159,7 @@ export default class Profile extends Vue {
     }
     if (!this.device.widgets[this.selectedWidget._id]) {
       this.device.widgets[this.selectedWidget._id] = {
-        page: this.pages[this.device.widgets[this.selectedWidget._id]],
+        page: this.pages[this.selectedWidget._id],
       }
     }
   }
@@ -162,6 +172,11 @@ export default class Profile extends Vue {
   private updateCSS(style) {
     this.initObjects()
     this.device.widgets[this.selectedWidget._id].style = style
+  }
+
+  private updatePage(page) {
+    this.initObjects()
+    this.pages[this.selectedWidget._id] = page
   }
 
   connect() {
@@ -226,13 +241,19 @@ export default class Profile extends Vue {
   save() {
     const id = this.$route.params.id
     let widgets = {}
-    if (!this.device.widgets) {
-      this.device.widgets = {}
-    }
-    for (let row in this.checkedRows) {
-      let w = this.checkedRows[row]
-      if (w._id in this.device.widgets) {
-        widgets[w._id] = { page: parseInt(this.pages[w._id]) }
+    console.log(this.checkedRows)
+    console.log(this.pages)
+    for (let widget of this.widgets) {
+      if (this.checkedRows.some(e => e._id == widget._id)) {
+        widgets[widget._id] = { page: parseInt(this.pages[widget._id]) }
+        let config = this.device?.widgets[widget._id]?.config
+        let style = this.device?.widgets[widget._id]?.style
+        if (config) {
+          widgets[widget._id].config = config
+        }
+        if (style) {
+          widgets[widget._id].style = style
+        }
       }
     }
 
@@ -242,7 +263,6 @@ export default class Profile extends Vue {
       widgets: widgets,
     }
     console.log(body)
-    console.log(this.pages)
     axios
       .put(this.url + id, body, { withCredentials: true })
       .then(response => {
@@ -263,11 +283,7 @@ export default class Profile extends Vue {
 
   update() {
     const id = this.$route.params.id
-    let body = {
-      name: this.device.name,
-      config: this.device.config,
-      deviceWidgets: this.device.deviceWidgets,
-    }
+    let body = {}
     axios
       .post(this.url + id + "/update", body, { withCredentials: true })
       .then(response => {

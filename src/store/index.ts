@@ -1,6 +1,6 @@
 import Vue from "vue"
 import Vuex from "vuex"
-import { IUser, IWidget } from "@/common/Types"
+import { IUser, IWidget, IDevice } from "@/common/Types"
 import VuexPersistence from "vuex-persist"
 
 Vue.use(Vuex)
@@ -9,6 +9,7 @@ export interface State {
   authenticated: boolean
   user: IUser
   widgets: IWidget[]
+  devices: DeviceMap
   deviceStatuses: {}
   qr: string
 }
@@ -24,13 +25,23 @@ export interface DeviceStatus {
   status: ConnectionStatus
 }
 
+export interface DeviceMap {
+  [key: string]: IDevice
+}
+
 const vuexLocal = new VuexPersistence<State>({
   storage: window.localStorage,
 })
 
 export default new Vuex.Store<State>({
   mutations: {
-    updateDeviceStatus(state: State, deviceStatus: DeviceStatus) {
+    setDevice(state: State, device: IDevice) {
+      if (!state.devices) {
+        state.devices = {}
+      }
+      state.devices[device._id] = device
+    },
+    setDeviceStatus(state: State, deviceStatus: DeviceStatus) {
       state.deviceStatuses[deviceStatus.id] = deviceStatus
     },
     login(state: State, user: IUser) {
@@ -53,6 +64,7 @@ export default new Vuex.Store<State>({
       state.widgets = []
       state.deviceStatuses = {}
       state.qr = ""
+      state.devices = {}
     },
     saveWidget(state: State, widget: IWidget) {
       if (!state.user.favorites) {

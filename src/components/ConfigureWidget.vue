@@ -37,6 +37,11 @@
         <b-field label="Manifest.json">
           <pre><code class="language-javascript">{{widget.manifest}}</code></pre>
         </b-field>
+        <b-field label="Page">
+          <b-field grouped>
+            <b-input placeholder="i.e. 0, 1, 2..." v-model="pageValue" @input="changedPage" />
+          </b-field>
+        </b-field>
         <b-field label="Configurations">
           <b-field grouped>
             <b-input placeholder="i.e. timezone" v-model="configProperty" />
@@ -109,20 +114,27 @@ import cssSet from "@/common/CSS"
 export default class ConfigureWidget extends Vue {
   @Prop() public widget!: IWidget
   @Prop() public device!: IDevice
+  @Prop() public page!: number
   public isOpen: boolean = true
-  public page: int = 0
   public styleData = []
   public configData = []
+  public pageValue = 0
   public configProperty: string = ""
   public configValue: string = ""
   public cssProperty: string = ""
   public cssValue: string = ""
 
   mounted() {
+    this.pageValue = this.page
     if (this.device && this.device.widgets && this.device.widgets[this.widget._id]) {
       this.configData = this.convertToTable(this.device.widgets[this.widget._id].config)
       this.styleData = this.convertToTable(this.device.widgets[this.widget._id].style)
     }
+  }
+
+  public changedPage() {
+    console.log(this.pageValue)
+    this.$emit("updatePage", this.pageValue)
   }
 
   public addConfig() {

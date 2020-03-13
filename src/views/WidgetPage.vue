@@ -1,7 +1,6 @@
 <template>
   <div>
     <section class="hero welcome is-info">
-      <b-loading v-show="widget==null && !failed" :is-full-page="true" :active.sync="loading"></b-loading>
       <div class="hero-body">
         <div class="columns">
           <div class="column is-2">
@@ -13,9 +12,24 @@
             <div class="container content">
               <h1 class="title">{{widget.name}}</h1>
               <h3 class="subtitle">{{widget.description}}</h3>
+
+              <b-field>
+                <b-taginput
+                  type="is-info"
+                  v-model="tags"
+                  :data="filteredTags"
+                  autocomplete
+                  :allow-new="allowNew"
+                  :open-on-focus="openOnFocus"
+                  icon="tag"
+                  placeholder="Tags"
+                  @typing="getFilteredTags"
+                  :disabled="!editMode"
+                ></b-taginput>
+              </b-field>
               <b-button
                 :type="saved ? 'is-light' : 'is-success'"
-                @click="saveWidget()"
+                @click="favouriteWidget()"
                 v-show="$store.state.authenticated"
                 size="is-large"
               >{{ text }}</b-button>
@@ -25,6 +39,12 @@
                 size="large"
                 disabled
               >Login to Save</b-button>
+              <b-button
+                :type="editMode ? 'is-success' : 'is-light'"
+                @click="save()"
+                v-show="isDeveloper"
+                size="is-large"
+              >{{editMode ? "Save Changes" : "Edit"}}</b-button>
             </div>
           </div>
         </div>
@@ -82,14 +102,32 @@ import Vue from "vue"
 import axios from "axios"
 import Component from "vue-class-component"
 import store from "../store"
-import { IWidget } from "@/common/Types"
+import { IWidget, WidgetTags } from "@/common/Types"
 
 @Component
 export default class WidgetPage extends Vue {
   private url = process.env.VUE_APP_HAR + "widgets/"
   public widget: IWidget = null
-  private failed: boolean = false
-  private loading: boolean = true
+  private isDeveloper: bool = false
+  private editMode: bool = false
+  private tags: string[] = []
+
+  private allowNew: boolean = false
+  private openOnFocus: boolean = true
+  private validTags: string[] = [
+    WidgetTags.ACCESSORY,
+    WidgetTags.GAME,
+    WidgetTags.NEWS,
+    WidgetTags.SOCIAL,
+    WidgetTags.UTILITY,
+  ]
+  private filteredTags: string[] = [
+    WidgetTags.ACCESSORY,
+    WidgetTags.GAME,
+    WidgetTags.NEWS,
+    WidgetTags.SOCIAL,
+    WidgetTags.UTILITY,
+  ]
 
   get saved() {
     if (this.widget) {
@@ -117,23 +155,35 @@ export default class WidgetPage extends Vue {
     return "No manifest file found... This widget must be a demo widget."
   }
 
-  private mounted() {
+  getFilteredTags(text: string) {
+    this.filteredTags = this.validTags.filter(option => {
+      return option.toLowerCase().indexOf(text.toLowerCase()) >= 0
+    })
+  }
+
+  mounted() {
     const id = this.$route.params.id
+    let myWidgetsURL: string = process.env.VUE_APP_HAR + "widgets?userId=" + store.state.user._id
     axios
       .get(this.url + id)
       .then(response => {
         const { widget } = response.data
         this.widget = widget
-        this.loading = false
-        this.failed = false
+        this.tags = widget.tags
         this.$forceUpdate()
+        axios.get(myWidgetsURL).then(response => {
+          const { widgets } = response.data
+          if (widgets.some(e => e._id == this.widget._id)) {
+            this.isDeveloper = true
+          }
+        })
       })
       .catch(err => {
         console.log("Bad:" + err)
         this.failed = true
       })
   }
-  public saveWidget() {
+  favouriteWidget() {
     if (this.saved) {
       store.commit("removeWidget", this.widget)
     } else {
@@ -141,6 +191,30 @@ export default class WidgetPage extends Vue {
         store.commit("saveWidget", this.widget)
       }
     }
+  }
+
+  save() {
+    let url: string = process.env.VUE_APP_HAR + "widgets/" + this.widget._id
+    this.editMode = !this.editMode
+    let body: IWidget = {
+      _id: this.widget._id,
+      name: this.widget.name,
+      description: this.widget.description,
+      active: this.widget.active,
+      authorId: this.widget.authorId,
+      filename: this.widget.filename,
+      images: this.widget.images,
+      manifest: this.widget.manifest,
+      tags: this.tags,
+    }
+    axios
+      .put(url, body, { withCredentials: true })
+      .then(response => {
+        console.log(response)
+      })
+      .catch(err => {
+        console.log("Bad:" + err)
+      })
   }
 }
 </script>

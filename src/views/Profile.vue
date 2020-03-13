@@ -67,7 +67,7 @@
 
           <div class="columns">
             <div class="column">
-              <h1 class="title">Device Status</h1>
+              <h1 class="title">My Devices</h1>
             </div>
             <div class="column flex-right">
               <a @click="currentPage = 1" class="title is-6 is-blue">See all devices</a>
@@ -81,19 +81,11 @@
           </h2>
           <section v-else class="info-tiles">
             <div class="tile is-ancestor has-text-centered">
-              <router-link
-                :to="'/device/' + device"
-                class="tile is-parent"
+              <DeviceCard
                 v-for="device in $store.state.user.devices.slice(0, 3)"
                 :key="device"
-              >
-                <article class="tile is-child box">
-                  <p class="title is-4">{{device}}</p>
-                  <p
-                    class="subtitle is-6"
-                  >{{deviceStatuses.status == 1 ? "Online" : deviceStatuses.status == 2 ? "Offline" : "Uninitialized"}}</p>
-                </article>
-              </router-link>
+                :device="device"
+              ></DeviceCard>
             </div>
           </section>
         </div>
@@ -120,6 +112,8 @@ import MyWidgets from "@/views/ProfileViews/MyWidgets.vue"
 import { IUser, UserTags, IDevice } from "@/common/Types"
 import store from "../store"
 import router from "../router"
+import * as Utility from "@/common/utility"
+
 @Component({
   components: {
     WidgetCard,
@@ -138,12 +132,17 @@ export default class Profile extends Vue {
   public editText: string = "Edit"
   public currentPage: number = 0
   private currentUserURL = process.env.VUE_APP_HAR + "currentUser"
-  private deviceStatusURL =
-    process.env.VUE_APP_HAR + "users/" + store.state.user.username + "/devices"
 
   mounted() {
-    this.getStatus()
-    this.currentPage = this.$route.params.page
+    try {
+      Utility.getStatus()
+      for (let deviceId of this.devices) {
+        Utility.getDevice(deviceId)
+      }
+      this.currentPage = parseInt(this.$route.params.page)
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   get dashboardURL() {
@@ -174,11 +173,11 @@ export default class Profile extends Vue {
     return store.state.user.tags.includes(UserTags.DEVELOPER)
   }
 
-  getClass(page: Number) {
+  getClass(page: number) {
     return this.isActive(page) ? "is-active" : ""
   }
 
-  isActive(page: Number) {
+  isActive(page: number) {
     return page == this.currentPage
   }
 
@@ -188,24 +187,6 @@ export default class Profile extends Vue {
       .then(response => {
         let user: IUser = response.data.user
         store.commit("login", user)
-        this.$forceUpdate()
-      })
-      .catch(error => {
-        this.$forceUpdate()
-      })
-  }
-
-  getStatus() {
-    axios
-      .get(this.deviceStatusURL, { withCredentials: true })
-      .then(response => {
-        let deviceStatuses = response.data.devices
-        for (let device of this.devices) {
-          if (device in deviceStatuses) {
-          } else {
-            store.commit("updateDeviceStatus", { id: device, status: 3 })
-          }
-        }
         this.$forceUpdate()
       })
       .catch(error => {

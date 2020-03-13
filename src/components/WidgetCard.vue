@@ -22,9 +22,6 @@
       <router-link :to="'/widget/' + widget._id" class>
         <p class="title is-6">{{ widget.name }}</p>
       </router-link>
-      <router-link :to="'/widget/' + widget._id" class="subtitle is-7">
-        <p class="subtitle is-7">By: {{ widget.authorId }}</p>
-      </router-link>
     </div>
   </div>
 </template>

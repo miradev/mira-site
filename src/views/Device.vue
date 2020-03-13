@@ -6,9 +6,9 @@
           <div class="columns">
             <div class="column">
               <h1 class="title">{{device.name}}</h1>
-              <h2
-                class="heading is-3"
-              >{{deviceStatuses.status == 1 ? "Online" : deviceStatuses.status == 2 ? "Offline" : "Uninitialized...please connect to initialize"}}</h2>
+              <!-- <h2 -->
+              <!--   class="heading is-3" -->
+              <!-- >{{deviceStatuses.status == 1 ? "Online" : deviceStatuses.status == 2 ? "Offline" : "Uninitialized...please connect to initialize"}}</h2> -->
             </div>
             <div class="buttons">
               <button class="button is-warning" @click="connect()" :loading="loading">Connect</button>

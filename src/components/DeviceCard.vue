@@ -2,9 +2,9 @@
   <router-link :to="deviceURL" class="tile is-parent box is-4">
     <article class="tile is-child">
       <p class="title is-4">{{deviceName}}</p>
-      <p
-        class="subtitle is-6"
-      >{{deviceStatuses.status == 1 ? "Online" : deviceStatuses.status == 2 ? "Offline" : "Uninitialized"}}</p>
+      <!-- <p -->
+      <!--   class="subtitle is-6" -->
+      <!-- >{{deviceStatuses.status == 1 ? "Online" : deviceStatuses.status == 2 ? "Offline" : "Uninitialized"}}</p> -->
     </article>
   </router-link>
 </template>

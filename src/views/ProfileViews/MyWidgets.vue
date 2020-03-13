@@ -35,7 +35,7 @@ import Vue from "vue"
 import axios from "axios"
 import Component from "vue-class-component"
 import WidgetCard from "@/components/WidgetCard.vue"
-import { IWidget, UserTags } from "@/common/Types"
+import { IWidget, UserTags, IUser } from "@/common/Types"
 import store from "@/store"
 import router from "@/router"
 
@@ -45,9 +45,9 @@ import router from "@/router"
   },
 })
 export default class MyWidgets extends Vue {
-  private url: string = process.env.VUE_APP_HAR + "widgets?userId=" + store.state.user._id
+  private url: string = process.env.VUE_APP_HAR + "widgets?userId=" + store.state.user.username
   private currentUserURL = process.env.VUE_APP_HAR + "currentUser"
-  private widgets: IWidget = []
+  private widgets: IWidget[] = []
 
   get profileURL() {
     return "/profile/" + store.state.user.username

@@ -248,6 +248,7 @@ export default class Profile extends Vue {
     }
 
     let body: IDevice = {
+      _id: this.device._id,
       name: this.device.name,
       config: {},
       widgets: widgets,

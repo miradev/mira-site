@@ -3,7 +3,7 @@
     <div class="media is-hidden-mobile">
       <figure class="media-left">
         <p class="image">
-          <img :src="widget.images[0]" :alt="widget.title" class="widget-image" />
+          <img :src="imageURL" :alt="widget.title" class="widget-image" />
         </p>
       </figure>
       <div class="media-content">
@@ -22,7 +22,7 @@
     </div>
     <div class="content is-hidden-tablet box">
       <p class="image flex-center">
-        <img :src="widget.images[0]" :alt="widget.title" class="widget-image" />
+        <img :src="imageURL" :alt="widget.title" class="widget-image" />
       </p>
       <div class="flex-center">
         <p class="title is-4">{{widget.name}}</p>
@@ -115,7 +115,7 @@ import Vue from "vue"
 import Component from "vue-class-component"
 import ConfigInput from "@/components/ConfigInput.vue"
 import { Prop } from "vue-property-decorator"
-import { IWidget } from "@/common/Types"
+import { IDevice, IWidget } from "@/common/Types"
 import cssSet from "@/common/CSS"
 
 @Component({
@@ -133,6 +133,7 @@ export default class ConfigureWidget extends Vue {
   public pageValue = 0
   public configProperty: string = ""
   public configValue: string = ""
+  public configKeys = {}
   public cssProperty: string = ""
   public cssValue: string = ""
 
@@ -142,6 +143,16 @@ export default class ConfigureWidget extends Vue {
       this.configData = this.convertToTable(this.device.widgets[this.widget._id].config)
       this.styleData = this.convertToTable(this.device.widgets[this.widget._id].style)
     }
+    if ("manifest" in this.widget && "configKeys" in this.widget.manifest) {
+      this.configKeys = this.widget.manifest.configKeys
+    }
+  }
+
+  get imageURL() {
+    if ("images" in this.widget) {
+      return this.widget.images[0]
+    }
+    return ""
   }
 
   public changedPage() {

@@ -107,10 +107,20 @@ import { IWidget, WidgetTags } from "@/common/Types"
 @Component
 export default class WidgetPage extends Vue {
   private url = process.env.VUE_APP_HAR + "widgets/"
-  public widget: IWidget = null
-  private isDeveloper: bool = false
-  private editMode: bool = false
-  private tags: string[] = []
+  private widget: IWidget = {
+    _id: "",
+    name: "",
+    description: "",
+    active: false,
+    authorId: "",
+    filename: "",
+    tags: [],
+    images: [],
+    manifest: {},
+  }
+  private isDeveloper: boolean = false
+  private editMode: boolean = false
+  private tags: WidgetTags[] = []
 
   private allowNew: boolean = false
   private openOnFocus: boolean = true
@@ -163,7 +173,8 @@ export default class WidgetPage extends Vue {
 
   mounted() {
     const id = this.$route.params.id
-    let myWidgetsURL: string = process.env.VUE_APP_HAR + "widgets?userId=" + store.state.user._id
+    let myWidgetsURL: string =
+      process.env.VUE_APP_HAR + "widgets?userId=" + store.state.user.username
     axios
       .get(this.url + id)
       .then(response => {
@@ -180,7 +191,6 @@ export default class WidgetPage extends Vue {
       })
       .catch(err => {
         console.log("Bad:" + err)
-        this.failed = true
       })
   }
   favouriteWidget() {

@@ -34,7 +34,7 @@ import axios from "axios"
 import Component from "vue-class-component"
 import WidgetCard from "@/components/WidgetCard.vue"
 import DeviceCard from "@/components/DeviceCard.vue"
-import { UserTags, IDevice } from "@/common/Types"
+import { IUser, UserTags, IDevice } from "@/common/Types"
 import store from "@/store"
 import router from "@/router"
 @Component({

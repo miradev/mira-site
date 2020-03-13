@@ -30,7 +30,7 @@ import axios from "axios"
 import Component from "vue-class-component"
 import WidgetCard from "@/components/WidgetCard.vue"
 import DeviceCard from "@/components/DeviceCard.vue"
-import { UserTags, IDevice } from "@/common/Types"
+import { UserTags, IDevice, IUser } from "@/common/Types"
 import store from "@/store"
 import router from "@/router"
 import { ToastProgrammatic as Toast } from "buefy"
@@ -51,12 +51,12 @@ export default class MyDevices extends Vue {
   }
 
   submit() {
-    let body = {
-      _id: store.state.user._id,
+    let body: IUser = {
       username: this.username,
       email: this.email,
-      tags: this.isDev ? ["dev"] : [],
+      tags: this.isDev ? [UserTags.DEVELOPER] : [],
       devices: store.state.user.devices,
+      hash: store.state.user.hash,
       favorites: store.state.user.favorites,
     }
     axios

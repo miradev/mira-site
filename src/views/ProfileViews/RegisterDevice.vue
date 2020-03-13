@@ -115,7 +115,7 @@ import { IUser } from "@/common/Types"
 @Component
 export default class CreateDevice extends Vue {
   @Prop() public identifer!: string
-  private url = process.env.VUE_APP_HAR + "users/" + store.state.user._id + "/devices"
+  private url = process.env.VUE_APP_HAR + "users/" + store.state.user.username + "/devices"
   private currentUserURL = process.env.VUE_APP_HAR + "currentUser"
   private name: string = ""
   private description: string = ""
@@ -126,7 +126,7 @@ export default class CreateDevice extends Vue {
   public connecting: boolean = false
   public failed: boolean = false
   public connected: boolean = false
-  public progress: number = null
+  public progress: number = 0
   public progressType: string = "is-primary"
 
   mounted() {

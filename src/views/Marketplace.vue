@@ -18,7 +18,7 @@
             <b-field>
               <b-input placeholder="Search..." type="search" icon="search" v-model="query"></b-input>
               <p class="control">
-                <button class="button is-primary" @click="search()">Search</button>
+                <button class="button is-primary" @click="search('')">Search</button>
               </p>
             </b-field>
           </div>
@@ -78,8 +78,8 @@ export default class Marketplace extends Vue {
     })
   }
 
-  search(query: string?) {
-    if(query){
+  search(query: string) {
+    if (query) {
       this.query = query
     }
     if (!this.query) {

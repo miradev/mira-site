@@ -131,7 +131,7 @@ export default class WidgetPage extends Vue {
 
   get saved() {
     if (this.widget) {
-      let widgets = store.state.widgets
+      let widgets = store.state.user.favorites
       for (let i in widgets) {
         if (widgets[i]._id == this.widget._id) {
           return true

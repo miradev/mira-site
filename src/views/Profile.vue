@@ -147,8 +147,9 @@ import * as Utility from "@/common/utility"
 export default class Profile extends Vue {
   public editMode: boolean = false
   public editText: string = "Edit"
-  public isOpen: boolean = false
+  public isOpen: boolean = true
   public currentPage: number = 0
+  public windowWidth: number = window.innerWidth
   private currentUserURL = process.env.VUE_APP_HAR + "currentUser"
 
   mounted() {
@@ -161,6 +162,17 @@ export default class Profile extends Vue {
     } catch (error) {
       console.log(error)
     }
+    window.addEventListener("resize", this.handleResize)
+  }
+
+  public handleResize() {
+    if (window.innerWidth > 768) {
+      this.isOpen = true
+    }
+  }
+
+  public beforeDestroy() {
+    window.removeEventListener("resize", this.handleResize)
   }
 
   get dashboardURL() {

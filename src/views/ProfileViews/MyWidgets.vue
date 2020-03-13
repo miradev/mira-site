@@ -15,6 +15,7 @@
       </div>
     </section>
     <br />
+    <h1 class="title">All My Widgets</h1>
     <h2 v-show="widgets.length == 0">
       Oops. It looks like you haven't uploaded any widgets. Get started
       <a
@@ -22,7 +23,7 @@
       >here</a>.
     </h2>
     <section class="info-tiles">
-      <div class="tile is-ancestor has-text-centered wrap">
+      <div class="tile has-text-centered wrap">
         <WidgetCard v-for="widget in widgets" :key="widget._id" :widget="widget" :canSave="false"></WidgetCard>
       </div>
     </section>

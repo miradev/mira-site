@@ -7,12 +7,12 @@
             <p class="menu-label">Categories</p>
             <ul class="menu-list">
               <li v-for="tag in tags" :key="tag">
-                <a @click="search(tag)">{{tag}}</a>
+                <a @click="search(tag)">{{tag.charAt(0).toUpperCase() + tag.slice(1)}}</a>
               </li>
             </ul>
           </aside>
         </div>
-        <div class="tile is-ancestor is-vertical">
+        <div class="tile is-vertical">
           <div class="flex-space-between">
             <h1 class="title">{{title}}</h1>
             <b-field>

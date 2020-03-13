@@ -21,7 +21,7 @@
       <router-link to="/marketplace">here</router-link>.
     </h2>
     <section class="info-tiles">
-      <div class="tile is-ancestor has-text-centered wrap">
+      <div class="tile has-text-centered wrap">
         <WidgetCard v-for="widget in widgets" :key="widget._id" :widget="widget" :canSave="true"></WidgetCard>
       </div>
     </section>
@@ -58,7 +58,7 @@ export default class MyDevices extends Vue {
       })
   }
   get widgets() {
-    return store.state.widgets
+    return store.state.user.favorites
   }
 }
 </script>

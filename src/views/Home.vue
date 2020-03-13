@@ -8,7 +8,7 @@
         <div class="columns">
           <div class="column">
             <h1 class="title">Mira OS</h1>
-            <p class>
+            <p class="subtitle">
               Mira OS is a dedicated operating system made with smart mirrors in mind.
               Comes built-in with common smart mirror functionality and is fully
               extensible.
@@ -30,7 +30,7 @@
           </div>
           <div class="column">
             <h1 class="title">Rich Widget Support</h1>
-            <p class>
+            <p class="subtitle">
               Mira OS is built with customizability and extensibility in mind.
               Developers can write custom widgets using familier languages
               and run them directly on the mirror. Mira OS provides the APIs
@@ -47,7 +47,7 @@
         <div class="columns">
           <div class="column">
             <h1 class="title">Mira Marketplace</h1>
-            <p class>
+            <p class="subtitle">
               The Mira Marketplace is a place for developers to share their
               customizations and widgets with the community. Users can use
               the marketplace to quickly and easily add user creations to
@@ -76,10 +76,14 @@ import ExploreWidgets from "@/components/ExploreWidgets.vue" // @ is an alias to
     ExploreWidgets,
   },
 })
-export default class Home extends Vue {}
+export default class Home extends Vue {
+  mounted() {
+    this.$forceUpdate()
+  }
+}
 </script>
 
-<style lang="stylus" >
+<style lang="stylus" scoped >
 .benefits svg.fa {
   fill: url('#primarygrad');
 }

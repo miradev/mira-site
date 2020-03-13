@@ -35,6 +35,7 @@ import Component from "vue-class-component"
 import { Prop } from "vue-property-decorator"
 import { IWidget } from "@/common/Types"
 import store from "@/store"
+import axios from "axios"
 
 @Component
 export default class WidgetCard extends Vue {
@@ -43,7 +44,7 @@ export default class WidgetCard extends Vue {
   @Prop() private width!: number
   get saved() {
     if (this.widget) {
-      let widgets = store.state.widgets
+      let widgets = store.state.user.favorites
       for (let i in widgets) {
         console.log(widgets[i]._id)
         console.log(this.widget._id)
@@ -66,6 +67,17 @@ export default class WidgetCard extends Vue {
         store.commit("saveWidget", this.widget)
       }
     }
+    let currentUserURL = process.env.VUE_APP_HAR + "currentUser"
+    let body: IUser = store.state.user
+    body.favorites = store.state.widgets
+    axios
+      .put(currentUserURL, body, { withCredentials: true })
+      .then(response => {
+        this.$forceUpdate()
+      })
+      .catch(error => {
+        this.$forceUpdate()
+      })
   }
 }
 </script>

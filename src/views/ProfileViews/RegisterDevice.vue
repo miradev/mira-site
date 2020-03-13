@@ -13,16 +13,13 @@
         <b-steps v-model="activeStep" :hasNavigation="false">
           <b-step-item label="Identifier" clickable>
             <h2 class="subtitle is-4">Enter your device identifer</h2>
-            <h2 class="subtitle is-6">
-              This is the 00:00:00:00:00:00-100000000unknown
-              number found on your mirror
-            </h2>
+            <h2 class="subtitle is-6">This is the long number found on your mirror</h2>
             <input
               class="input"
               type="text"
               placeholder="Device Identifier"
               autofocus
-              v-model="identifer"
+              v-model="identiferValue"
             />
             <br />
             <br />
@@ -33,7 +30,7 @@
               type="is-success"
               icon-pack="fas"
               icon-right="forward"
-              v-show="identifer.length > 0"
+              v-show="identiferValue.length > 0"
             >Next</b-button>
           </b-step-item>
           <b-step-item label="Name">
@@ -87,7 +84,7 @@
           </b-step-item>
           <b-step-item label="Confirm">
             <h2 class="subtitle is-4">Confirm registration</h2>
-            <h2 class="subtitle is-6">ID: {{identifer}}</h2>
+            <h2 class="subtitle is-6">ID: {{identiferValue}}</h2>
             <h2 class="subtitle is-6">Name: {{name}}</h2>
             <h2 class="subtitle is-6">Description: {{description}}</h2>
             <h2 class="subtitle is-6">{{msg}}</h2>
@@ -123,7 +120,8 @@ export default class CreateDevice extends Vue {
   private name: string = ""
   private description: string = ""
   private msg: string = ""
-  private activeStep: Number = 0
+  private activeStep: number = 0
+  private identiferValue: string = ""
 
   public connecting: boolean = false
   public failed: boolean = false
@@ -131,15 +129,19 @@ export default class CreateDevice extends Vue {
   public progress: number = null
   public progressType: string = "is-primary"
 
+  mounted() {
+    this.identiferValue = this.identifer
+  }
+
   connect() {
     this.connecting = true
     this.failed = false
     this.connected = false
     let body = {
-      _id: this.identifer,
+      _id: this.identiferValue,
     }
     axios
-      .post(this.url + "/" + this.identifer + "/connect", body, { withCredentials: true })
+      .post(this.url + "/" + this.identiferValue + "/connect", body, { withCredentials: true })
       .then(r => {
         this.connecting = false
         this.connected = true
@@ -177,7 +179,7 @@ export default class CreateDevice extends Vue {
 
   submit() {
     let body = {
-      _id: this.identifer,
+      _id: this.identiferValue,
       name: this.name,
     }
     axios
@@ -196,7 +198,7 @@ export default class CreateDevice extends Vue {
           return
         }
         let user = store.state.user
-        user.devices.push(this.identifer)
+        user.devices.push(this.identiferValue)
         store.commit("login", user)
         this.$forceUpdate()
         this.connect()

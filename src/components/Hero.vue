@@ -4,6 +4,7 @@
       <div class="container">
         <div class="blurb">
           <h1 class="title">Your Smart Mirror Platform</h1>
+          <br />
           <p class="subtitle">
             Spend your time building apps, not ops.
             The Mira platform provides Mira OS, the Mira Marketplace,
@@ -32,6 +33,11 @@ export default class Hero extends Vue {}
 </script>
 
 <style lang="stylus" scoped>
+blurb {
+  display: flex;
+  align-items: center;
+}
+
 h1 {
   font-family: 'Open Sans regular', sans-serif;
   font-weight: 300;
@@ -41,7 +47,7 @@ h1 {
 p {
   font-family: 'Open Sans regular', sans-serif;
   font-weight: 300;
-  font-size: 1.2em;
+  font-size: 1.3em;
 }
 
 .container {
@@ -50,10 +56,8 @@ p {
 }
 
 .hero-image {
-  width: 50vw;
+  width: 40vw;
   height: auto;
   margin-right: 0 !important;
-  // object-fit contain
-  // mask-image: linear-gradient(to right, rgba(0,0,0,1), rgba(0,0,0,0));
 }
 </style>

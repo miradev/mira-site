@@ -20,12 +20,14 @@
         </div>
       </div>
     </div>
-    <div class="content is-hidden-tablet">
+    <div class="content is-hidden-tablet box">
       <p class="image flex-center">
         <img :src="widget.images[0]" :alt="widget.title" class="widget-image" />
       </p>
-      <p class="title is-4">{{widget.name}}</p>
-      <p class="subtitle is-6">{{widget.description}}</p>
+      <div class="flex-center">
+        <p class="title is-4">{{widget.name}}</p>
+        <p class="subtitle is-6">{{widget.description}}</p>
+      </div>
       <div class="buttons flex-center">
         <router-link :to="'/widget/' + widget._id" class="button is-info">View</router-link>
       </div>

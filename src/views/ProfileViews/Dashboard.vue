@@ -15,7 +15,14 @@
       </div>
     </section>
     <br />
-    <h1 class="title">My Widgets</h1>
+    <div class="columns">
+      <div class="column">
+        <h1 class="title">My Widgets</h1>
+      </div>
+      <div class="column flex-right">
+        <a @click="$parent.currentPage = 6" class="title is-6 is-blue">See my widgets</a>
+      </div>
+    </div>
     <h2 v-show="widgets.length == 0">
       Oops. It looks like you haven't uploaded any widgets. Get started
       <a
@@ -23,7 +30,7 @@
       >here</a>.
     </h2>
     <section class="info-tiles">
-      <div class="tile is-ancestor has-text-centered">
+      <div class="tile has-text-centered">
         <WidgetCard v-for="widget in widgets" :key="widget._id" :widget="widget" :canSave="false"></WidgetCard>
       </div>
     </section>

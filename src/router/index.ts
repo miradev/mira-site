@@ -69,6 +69,11 @@ export default new Router({
       component: () => import(/* webpackChunkName: 'widget' */ "../views/QR.vue"),
     },
     {
+      path: "/developer",
+      name: "developer",
+      component: () => import(/* webpackChunkName: 'widget' */ "../views/Developer.vue"),
+    },
+    {
       path: "/*",
       name: "comingsoon",
       component: () => import(/* webpackChunkName: 'comingsoon' */ "../views/ComingSoon.vue"),
